@@ -27,3 +27,4 @@ dist-ssr
 PSscripts/.env
 
 ~/
+/actions-runner/
