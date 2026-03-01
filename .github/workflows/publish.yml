@@ -10,27 +10,16 @@ jobs:
   publish-tauri:
     permissions:
       contents: write
-
-    # Your self-hosted Windows runner
     runs-on: self-hosted
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node (LTS)
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: npm
-
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache Rust
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./src-tauri -> target"
 
       - name: Install frontend dependencies
         run: npm install
