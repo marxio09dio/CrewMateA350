@@ -1,0 +1,93 @@
+{
+  "id": "electric_power_up",
+  "name": "Electric Power Up",
+  "steps": [
+    {
+      "label": "Battery 1 Switch",
+      "read": "(L:INI_BATTERY_1_SWITCH)",
+      "on": "1 (>L:INI_BATTERY_1_SWITCH)",
+      "expect": 1
+    },
+    {
+      "label": "Battery Emergency 1 Switch",
+      "read": "(L:INI_BATTERY_EMER1_SWITCH)",
+      "on": "1 (>L:INI_BATTERY_EMER1_SWITCH)",
+      "expect": 1
+    },
+    {
+      "label": "Battery Emergency 2 Switch",
+      "read": "(L:INI_BATTERY_EMER2_SWITCH)",
+      "on": "1 (>L:INI_BATTERY_EMER2_SWITCH)",
+      "expect": 1
+    },
+    {
+      "label": "Battery 2 Switch",
+      "read": "(L:INI_BATTERY_2_SWITCH)",
+      "on": "1 (>L:INI_BATTERY_2_SWITCH)",
+      "expect": 1
+    },
+    {
+      "label": "Ext Power B Switch",
+      "read": "(L:INI_GEN_EXT_B_ONLINE)",
+      "on": "1 (>L:INI_GEN_EXT_B_ONLINE)",
+      "expect": 1
+    },
+    {
+      "label": "Ext Power A Switch",
+      "read": "(L:INI_GEN_EXT_A_ONLINE)",
+      "on": "1 (>L:INI_GEN_EXT_A_ONLINE)",
+      "expect": 1,
+      "wait_ms": 5000
+    },
+    {
+      "label": "Fire Test",
+      "read": "(L:INI_FIRE_TEST)",
+      "on": "1 (>L:INI_FIRE_TEST)",
+      "hold_ms": 6000,
+      "expect": 1,
+      "sound": "fire_test.ogg"
+    },
+    {
+      "label": "VHF RMP1 transmit Channel",
+      "read": "(L:INI_RMP2_TRANSMIT_CHANNEL)",
+      "on": "1 (>L:INI_RMP2_TRANSMIT_CHANNEL)",
+      "expect": 1
+    },
+    {
+      "label": "VHF RMP1 Receive Sel",
+      "read": "(L:INI_RMP2_1_RECEIVE_SEL)",
+      "on": "1 (>L:INI_RMP2_1_RECEIVE_SEL)",
+      "expect": 1
+    },
+    {
+      "label": "VHF RMP1 Volume",
+      "read": "(L:INI_RMP2_1_VOLUME)",
+      "on": "65 (>L:INI_RMP2_1_VOLUME)",
+      "expect": 65
+    },
+    {
+      "label": "VHF RMP1 Receive Sel",
+      "read": "(L:INI_RMP2_8_RECEIVE_SEL)",
+      "on": "1 (>L:INI_RMP2_8_RECEIVE_SEL)",
+      "expect": 1
+    },
+    {
+      "label": "VHF RMP1 Volume",
+      "read": "(L:INI_RMP2_8_VOLUME)",
+      "on": "65 (>L:INI_RMP2_8_VOLUME)",
+      "expect": 65
+    },
+    {
+      "label": "VHF RMP1 Receive Sel",
+      "read": "(L:INI_RMP2_9_RECEIVE_SEL)",
+      "on": "1 (>L:INI_RMP2_9_RECEIVE_SEL)",
+      "expect": 1
+    },
+    {
+      "label": "VHF RMP1 Volume",
+      "read": "(L:INI_RMP2_9_VOLUME)",
+      "on": "65 (>L:INI_RMP2_9_VOLUME)",
+      "expect": 65
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+# Dependencies
+node_modules
+bun.lock
+package-lock.json
+
+# Build outputs
+dist
+target
+*.bundle.*
+
+# Tauri
+src-tauri/target
+src-tauri/gen
+
+# Copilot Speach
+CopilotSpeech/
+
+# Misc
+.DS_Store
+*.log
+
+.github

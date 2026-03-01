@@ -1,0 +1,197 @@
+use std::sync::{mpsc, Mutex};
+mod audio;
+use audio::audio_commands::{get_sound_packs, is_audio_playing, play_sound, AudioPlayerState};
+use audio::audio_player::AudioPlayer;
+mod brigdes;
+use brigdes::speech_bridge::SpeechBridge;
+mod vosk_models;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
+use tauri::Emitter;
+use tauri::Manager;
+use vosk_models::vosk_commands::VoskModelManagerState;
+use vosk_models::vosk_commands::{
+    check_vosk_model_status, delete_vosk_model, download_vosk_model, get_selected_vosk_model,
+    get_voice_model_info, get_vosk_model_path, get_vosk_models, open_voice_models_folder,
+    set_selected_vosk_model,
+};
+use vosk_models::VoskModelManager;
+
+mod mobiflight;
+use mobiflight::mobiflight_commands::{
+    mobiflight_get, mobiflight_set, spawn_mobiflight_worker, start_telemetry_stream,
+    stop_telemetry_stream,
+};
+use mobiflight::telemetry::TelemetryVariable;
+
+mod app_data;
+use app_data::{get_log_file_path, open_logs_folder, setup_app_data_directories};
+
+mod simconnect;
+use simconnect::aircraft_title::{get_aircraft_title, start_aircraft_title_stream};
+
+#[tauri::command]
+fn set_mic_gain(state: tauri::State<'_, SpeechBridgeState>, gain: f32) {
+    let json = format!(r#"{{"gain":{:.2}}}"#, gain);
+    state.0.send_config(&json);
+}
+
+mod windows;
+use windows::{
+    close_app, open_landing_window, open_settings_window, open_takeoff_window, set_always_on_top,
+};
+
+struct AppState {
+    tx: Mutex<mpsc::Sender<WorkerRequest>>,
+}
+
+#[allow(dead_code)]
+struct SpeechBridgeState(#[allow(dead_code)] Arc<SpeechBridge>);
+
+enum WorkerRequest {
+    Set {
+        variable_string: String,
+        respond_to: mpsc::Sender<Result<(), String>>,
+    },
+    Get {
+        variable_string: String,
+        respond_to: mpsc::Sender<Result<Option<f32>, String>>,
+    },
+    StartStream {
+        variables: Vec<TelemetryVariable>,
+        interval_ms: u64,
+        app_handle: tauri::AppHandle,
+        respond_to: mpsc::Sender<Result<(), String>>,
+    },
+    StopStream(mpsc::Sender<Result<(), String>>),
+}
+
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    let worker_tx = spawn_mobiflight_worker();
+
+    tauri::Builder::default()
+        .plugin(
+            tauri_plugin_window_state::Builder::new()
+                .with_denylist(&["takeoff", "landing", "settings"])
+                .build(),
+        )
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            let _ = app
+                .get_webview_window("main")
+                .expect("no main window")
+                .set_focus();
+        }))
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_opener::init())
+        .setup(|app| {
+            // Initialize speech recognition sidecar
+            let speech = Arc::new(SpeechBridge::new(app.handle().clone()));
+            app.manage(SpeechBridgeState(speech.clone()));
+
+            // Initialize audio player
+            let audio_player = AudioPlayer::new().expect("Failed to initialize audio player");
+            app.manage(AudioPlayerState(audio_player));
+
+            // Initialize Mobiflight worker
+            app.manage(AppState {
+                tx: Mutex::new(worker_tx),
+            });
+
+            // Start aircraft title SimConnect stream
+            start_aircraft_title_stream(app.handle().clone());
+
+            // Initialize Vosk model manager
+            let vosk_model_manager = VoskModelManager::new(app.handle())
+                .expect("Failed to initialize Vosk model manager");
+            app.manage(VoskModelManagerState(std::sync::Arc::new(
+                tokio::sync::Mutex::new(vosk_model_manager),
+            )));
+
+            // Initialize logging
+            let logs_dir = match app.path().app_data_dir() {
+                Ok(app_data_dir) => {
+                    let logs_path = app_data_dir.join("logs");
+                    if let Err(e) = std::fs::create_dir_all(&logs_path) {
+                        eprintln!("Failed to create logs directory: {}", e);
+                        app_data_dir
+                    } else {
+                        logs_path
+                    }
+                }
+                Err(e) => {
+                    eprintln!("Failed to get app data directory: {}", e);
+                    std::path::PathBuf::from(".")
+                }
+            };
+
+            let log_plugin = tauri_plugin_log::Builder::new()
+                .target(tauri_plugin_log::Target::new(
+                    tauri_plugin_log::TargetKind::Folder {
+                        path: logs_dir,
+                        file_name: Some("crewmateinia350".to_string()),
+                    },
+                ))
+                .level(log::LevelFilter::Info)
+                .build();
+
+            app.handle()
+                .plugin(log_plugin)
+                .expect("Failed to initialize logging plugin");
+
+            log::info!("Crewmate INI A350 application loaded...");
+
+            if let Err(e) = setup_app_data_directories(app.handle()) {
+                log::error!("Failed to setup app data directories: {}", e);
+            }
+
+            // Close request handling
+            let should_close = Arc::new(AtomicBool::new(false));
+            app.manage(should_close.clone());
+
+            if let Some(window) = app.get_webview_window("main") {
+                let window_for_closure = window.clone();
+                window.on_window_event(move |event| {
+                    if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+                        if should_close.load(Ordering::SeqCst) {
+                            return;
+                        }
+                        api.prevent_close();
+                        let _ = window_for_closure.emit("close-requested", ());
+                    }
+                });
+            }
+
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            close_app,
+            open_landing_window,
+            open_settings_window,
+            open_takeoff_window,
+            set_always_on_top,
+            get_log_file_path,
+            open_logs_folder,
+            mobiflight_set,
+            mobiflight_get,
+            start_telemetry_stream,
+            stop_telemetry_stream,
+            get_voice_model_info,
+            open_voice_models_folder,
+            get_vosk_models,
+            download_vosk_model,
+            delete_vosk_model,
+            get_vosk_model_path,
+            get_selected_vosk_model,
+            set_selected_vosk_model,
+            check_vosk_model_status,
+            play_sound,
+            is_audio_playing,
+            get_sound_packs,
+            get_aircraft_title,
+            set_mic_gain,
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}

@@ -1,0 +1,55 @@
+{
+  "id": "before_start",
+  "name": "Before Start",
+  "steps": [
+    {
+      "label": "Left Main Pump",
+      "read": "(L:INI_OUTER_TANK_LEFT)",
+      "on": "1 (>L:INI_OUTER_TANK_LEFT)",
+      "expect": 1
+    },
+    {
+      "label": "Left STBY Pump",
+      "read": "(L:INI_INNER_TANK_LEFT)",
+      "on": "1 (>L:INI_INNER_TANK_LEFT)",
+      "expect": 1
+    },
+    {
+      "label": "Left center Pump",
+      "read": "(L:INI_CENTER_TANK_LEFT)",
+      "on": "1 (>L:INI_CENTER_TANK_LEFT)",
+      "expect": 1
+    },
+    {
+      "label": "Right center Pump",
+      "read": "(L:INI_CENTER_TANK_RIGHT)",
+      "on": "1 (>L:INI_CENTER_TANK_RIGHT)",
+      "expect": 1
+    },
+    {
+      "label": "Right Main Pump",
+      "read": "(L:INI_INNER_TANK_RIGHT)",
+      "on": "1 (>L:INI_INNER_TANK_RIGHT)",
+      "expect": 1
+    },
+    {
+      "label": "Right STBY Pump",
+      "read": "(L:INI_OUTER_TANK_RIGHT)",
+      "on": "1 (>L:INI_OUTER_TANK_RIGHT)",
+      "expect": 1
+    },
+    {
+      "label": "Beacon",
+      "read": "(L:INI_LIGHTS_BEACON)",
+      "on": "1 (>L:INI_LIGHTS_BEACON)",
+      "expect": 1
+    },
+    {
+      "label": "FPLAN",
+      "read": "(L:INI_MCDU2_SURV)",
+      "on": "1 (>L:INI_MCDU2_SURV)",
+      "expect": 1,
+      "skip_verify": true
+    }
+  ]
+}

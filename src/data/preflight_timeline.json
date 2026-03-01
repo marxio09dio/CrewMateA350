@@ -1,0 +1,40 @@
+[
+  {
+    "minuteMark": 60,
+    "label": "Arrive at aircraft",
+    "type": "reminder"
+  },
+  {
+    "minuteMark": 55,
+    "label": "Electrical power up",
+    "type": "flow",
+    "flowId": "electric_power_up"
+  },
+  {
+    "minuteMark": 50,
+    "label": "Tech log / SD page cycle",
+    "type": "reminder"
+  },
+  {
+    "minuteMark": 40,
+    "label": "PM walkaround",
+    "type": "flow",
+    "flowId": "before_walkaround"
+  },
+  {
+    "minuteMark": 30,
+    "label": "PM back from walkaround",
+    "type": "reminder",
+    "sound": "im_back.ogg"
+  },
+  {
+    "minuteMark": 25,
+    "label": "Briefing",
+    "type": "reminder"
+  },
+  {
+    "minuteMark": 1,
+    "label": "Before start checklist",
+    "type": "reminder"
+  }
+]

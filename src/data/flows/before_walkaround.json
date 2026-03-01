@@ -1,0 +1,26 @@
+{
+  "id": "before_walkaround",
+  "name": "Before Walkaround",
+  "sound_end": "walkaround",
+  "steps": [
+    {
+      "label": "Oxy Test Hatch FO",
+      "read": "(L:INI_OXYTEST_HATCH_FO)",
+      "on": "1 (>L:INI_OXYTEST_HATCH_FO)",
+      "expect": 1
+    },
+    {
+      "label": "Oxy Test Hatch FO",
+      "read": "(L:INI_OXYTEST_BLINKER_FO)",
+      "on": "1 (>L:INI_OXYTEST_BLINKER_FO)",
+      "hold_ms": 6000,
+      "expect": 1
+    },
+    {
+      "label": "Oxy Test Hatch FO",
+      "read": "(L:INI_OXYTEST_HATCH_FO)",
+      "on": "0 (>L:INI_OXYTEST_HATCH_FO)",
+      "expect": 0
+    }
+  ]
+}

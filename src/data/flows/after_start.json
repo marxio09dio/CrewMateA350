@@ -1,0 +1,43 @@
+{
+  "id": "after_start",
+  "name": "After Start",
+  "steps": [
+    {
+      "label": "Ground Spoilers",
+      "read": "(L:INI_SPOILERS_ARMED)",
+      "on": "1 (>K:SPOILERS_ARM_SET)",
+      "expect": 1
+    },
+    {
+      "label": "Flaps {flaps}",
+      "read": "(A:FLAPS HANDLE INDEX,Number)",
+      "on": "(>K:FLAPS_{flaps})",
+      "expect": "{flaps}"
+    },
+    {
+      "label": "Engine 1 Anti Ice",
+      "read": "(L:INI_ENG_ANTI_ICE1_STATE)",
+      "on": "{anti_ice_eng1_cmd}",
+      "expect": "{anti_ice_eng1_expect}"
+    },
+    {
+      "label": "Engine 2 Anti Ice",
+      "read": "(L:INI_ENG_ANTI_ICE2_STATE)",
+      "on": "{anti_ice_eng2_cmd}",
+      "expect": "{anti_ice_eng2_expect}"
+    },
+    {
+      "label": "Wing Anti Ice",
+      "read": "(L:INI_WING_ANTI_ICE1_STATE)",
+      "on": "{anti_ice_wing_cmd}",
+      "expect": "{anti_ice_wing_expect}"
+    },
+    {
+      "label": "Terrain Display",
+      "read": "(L:INI_EFIS_BSK_3_FO)",
+      "on": "1 (>L:INI_EFIS_BSK_3_FO)",
+      "expect": 1,
+      "skip_verify": true
+    }
+  ]
+}

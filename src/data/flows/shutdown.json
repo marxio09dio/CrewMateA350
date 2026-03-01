@@ -1,0 +1,42 @@
+{
+  "id": "shutdown",
+  "name": "Shutdown",
+  "steps": [
+    {
+      "label": "Right STBY Pump",
+      "read": "(L:INI_OUTER_TANK_RIGHT)",
+      "on": "0 (>L:INI_OUTER_TANK_RIGHT)",
+      "expect": 0
+    },
+    {
+      "label": "Right Main Pump",
+      "read": "(L:INI_INNER_TANK_RIGHT)",
+      "on": "0 (>L:INI_INNER_TANK_RIGHT)",
+      "expect": 0
+    },
+    {
+      "label": "Right center Pump",
+      "read": "(L:INI_CENTER_TANK_RIGHT)",
+      "on": "0 (>L:INI_CENTER_TANK_RIGHT)",
+      "expect": 0
+    },
+    {
+      "label": "Left center Pump",
+      "read": "(L:INI_CENTER_TANK_LEFT)",
+      "on": "0 (>L:INI_CENTER_TANK_LEFT)",
+      "expect": 0
+    },
+    {
+      "label": "Left STBY Pump",
+      "read": "(L:INI_INNER_TANK_LEFT)",
+      "on": "0 (>L:INI_INNER_TANK_LEFT)",
+      "expect": 0
+    },
+    {
+      "label": "Left Main Pump",
+      "read": "(L:INI_OUTER_TANK_LEFT)",
+      "on": "0 (>L:INI_OUTER_TANK_LEFT)",
+      "expect": 0
+    }
+  ]
+}

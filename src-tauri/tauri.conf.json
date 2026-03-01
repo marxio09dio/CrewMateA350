@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "crewmatea350",
+  "version": "0.1.0",
+  "identifier": "crewmatea",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist",
+    "removeUnusedCommands": true
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Crewmate INI A350",
+        "width": 320,
+        "height": 245,
+        "minWidth": 320,
+        "minHeight": 245,
+        "maximizable": false,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "externalBin": ["bin/copilot_speech"],
+    "resources": ["bin/libvosk.dll", "bin/libgcc_s_seh-1.dll", "bin/libstdc++-6.dll", "bin/libwinpthread-1.dll"],
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"]
+  }
+}

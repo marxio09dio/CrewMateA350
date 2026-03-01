@@ -1,0 +1,21 @@
+{
+  "id": "clear_left",
+  "name": "Clear Left",
+  "sound_start": "clear_right.ogg",
+  "steps": [
+    {
+      "label": "Nose Wheel Light",
+      "read": "(L:INI_LIGHTS_NOSE)",
+      "on": "1 (>L:INI_LIGHTS_NOSE)",
+      "expect": 1
+    },
+    {
+      "label": "ECAM TO CONFIG",
+      "read": "(L:PUSH_ECAM_TOCONFIG)",
+      "on": "1 (>L:PUSH_ECAM_TOCONFIG)",
+      "hold_ms": 2000,
+      "expect": 1,
+      "skip_verify": true
+    }
+  ]
+}

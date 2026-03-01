@@ -1,0 +1,166 @@
+import { mobiflightGet, mobiflightSet } from "@/API/mobiflightApi"
+import { getFlowById, resolveFlow } from "@/services/flowLoader"
+import { playSound, isSoundPlaying } from "@/services/playSounds"
+import { useFlowStore } from "@/store/flowStore"
+import type { Flow } from "@/types/flow"
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+let abortController: AbortController | null = null
+
+async function waitForSoundFinished() {
+  while (await isSoundPlaying()) {
+    await sleep(100)
+  }
+}
+
+function checkAbort(signal: AbortSignal) {
+  if (signal.aborted) throw new Error("Flow aborted")
+}
+
+async function abortableSleep(ms: number, signal: AbortSignal) {
+  const interval = 100
+  let elapsed = 0
+  while (elapsed < ms) {
+    checkAbort(signal)
+    const chunk = Math.min(interval, ms - elapsed)
+    await sleep(chunk)
+    elapsed += chunk
+  }
+}
+
+async function readValue(expression: string): Promise<number | null> {
+  try {
+    return await mobiflightGet(expression)
+  } catch (err) {
+    console.warn(`[FlowRunner] Failed to read "${expression}":`, err)
+    return null
+  }
+}
+
+async function writeValue(expression: string): Promise<void> {
+  try {
+    await mobiflightSet(expression)
+  } catch (err) {
+    console.error(`[FlowRunner] Failed to write "${expression}":`, err)
+    throw err
+  }
+}
+
+export async function executeFlow(flowId: string): Promise<void> {
+  const store = useFlowStore.getState()
+
+  if (abortController) {
+    abortController.abort()
+    abortController = null
+  }
+
+  const rawFlow = getFlowById(flowId)
+  if (!rawFlow) {
+    store.setError(`Flow "${flowId}" not found`)
+    return
+  }
+
+  const flow: Flow = resolveFlow(rawFlow)
+
+  store.setFlow(flow)
+
+  abortController = new AbortController()
+  const { signal } = abortController
+
+  try {
+    if (flow.sound_start) {
+      await waitForSoundFinished()
+      await playSound(flow.sound_start)
+      await waitForSoundFinished()
+    }
+
+    for (let i = 0; i < flow.steps.length; i++) {
+      checkAbort(signal)
+
+      const step = flow.steps[i]
+      const { setStepIndex, setStepStatus } = useFlowStore.getState()
+
+      setStepIndex(i)
+      setStepStatus(i, "executing")
+
+      if (step.sound) {
+        await waitForSoundFinished()
+        await playSound(step.sound)
+        await waitForSoundFinished()
+      }
+
+      const currentValue = await readValue(step.read)
+      checkAbort(signal)
+
+      const expectedValue = typeof step.expect === "string" ? parseFloat(step.expect) : step.expect
+      console.log(`[FlowRunner] Step "${step.label}": read=${currentValue}, expect=${expectedValue}`)
+      if (currentValue !== null && Math.abs(currentValue - expectedValue) < 0.5) {
+        // Already in correct state — skip but still honour wait_ms
+        if (step.wait_ms) {
+          await abortableSleep(step.wait_ms, signal)
+        }
+        setStepStatus(i, "skipped")
+        continue
+      }
+
+      await writeValue(step.on)
+      checkAbort(signal)
+
+      if (step.hold_ms) {
+        await abortableSleep(step.hold_ms, signal)
+        const releaseExpr = step.on.replace(/^\d+\s+/, "0 ")
+        await writeValue(releaseExpr)
+        checkAbort(signal)
+      }
+
+      if (step.wait_ms) {
+        await abortableSleep(step.wait_ms, signal)
+      }
+
+      if (step.skip_verify) {
+        setStepStatus(i, "done")
+      } else {
+        setStepStatus(i, "verifying")
+        let verified = false
+        for (let attempt = 0; attempt < 5; attempt++) {
+          checkAbort(signal)
+          await sleep(300)
+          const newValue = await readValue(step.read)
+          if (newValue !== null && Math.abs(newValue - expectedValue) < 0.5) {
+            verified = true
+            break
+          }
+        }
+
+        setStepStatus(i, verified ? "done" : "failed")
+        if (!verified) {
+          console.warn(`[FlowRunner] Step "${step.label}" verification failed (expected ${expectedValue})`)
+        }
+      }
+    }
+
+    useFlowStore.getState().setExecutionState("completed")
+
+    if (flow.sound_end) {
+      await waitForSoundFinished()
+      await playSound(flow.sound_end)
+    }
+  } catch (err) {
+    if (signal.aborted) {
+      useFlowStore.getState().setExecutionState("aborted")
+    } else {
+      useFlowStore.getState().setError(err instanceof Error ? err.message : String(err))
+    }
+  } finally {
+    abortController = null
+  }
+}
+
+export function abortFlow(): void {
+  if (abortController) {
+    abortController.abort()
+    abortController = null
+  }
+  useFlowStore.getState().setExecutionState("aborted")
+}

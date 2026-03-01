@@ -1,0 +1,42 @@
+{
+  "id": "after_landing",
+  "name": "After Landing",
+  "steps": [
+    {
+      "label": "Landing Lights",
+      "read": "(L:INI_LIGHTS_LANDING)",
+      "on": "0 (>L:INI_LIGHTS_LANDING)",
+      "expect": 0
+    },
+    {
+      "label": "Strobes",
+      "read": "(L:INI_LIGHTS_STROBE)",
+      "on": "1 (>L:INI_LIGHTS_STROBE)",
+      "expect": 1
+    },
+    {
+      "label": "Nose Wheel Light",
+      "read": "(L:INI_LIGHTS_NOSE)",
+      "on": "1 (>L:INI_LIGHTS_NOSE)",
+      "expect": 1
+    },
+    {
+      "label": "Flaps",
+      "read": "(A:FLAPS HANDLE INDEX,Number)",
+      "on": "1 (>K:FLAPS_UP)",
+      "expect": 0
+    },
+    {
+      "label": "APU",
+      "read": "(L:INI_APU_MASTER_SWITCH)",
+      "on": "1 (>L:INI_APU_MASTER_SWITCH)",
+      "expect": 1
+    },
+    {
+      "label": "APU",
+      "read": "(L:INI_APU_START_BUTTON)",
+      "on": "1 (>L:INI_APU_START_BUTTON)",
+      "expect": 1
+    }
+  ]
+}
