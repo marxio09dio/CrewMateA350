@@ -57,16 +57,15 @@ function App() {
               ) : (
                 <>
                   <TextBar text={recognizedText} isValidCommand={isValidCommand} />
+                  {currentEvent && (
+                    <span className="text-xs text-cyan-300/80 font-mono animate-pulse truncate max-w-[140px]">
+                      {currentEvent}
+                    </span>
+                  )}
+
+                  <FlowPanel />
                 </>
               )}
-
-              {currentEvent && (
-                <span className="text-xs text-cyan-300/80 font-mono animate-pulse truncate max-w-[140px]">
-                  {currentEvent}
-                </span>
-              )}
-
-              <FlowPanel />
             </>
           )}
         </div>
