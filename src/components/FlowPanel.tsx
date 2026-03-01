@@ -1,7 +1,7 @@
 import { Play, Square, Check, X, SkipForward, Loader2 } from "lucide-react"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { allFlows } from "@/services/flowLoader"
 import { executeFlow, abortFlow } from "@/services/flowRunner"
 import { useFlowStore } from "@/store/flowStore"
@@ -29,41 +29,51 @@ export function FlowPanel() {
   const totalSteps = currentFlow?.steps.length ?? 0
   const completedSteps = stepStatuses.filter((s) => s === "done" || s === "skipped").length
 
+  const [selectedFlowId, setSelectedFlowId] = useState<string | null>(allFlows[0]?.id ?? null)
+
+  useEffect(() => {
+    if (currentFlow) setSelectedFlowId(currentFlow.id)
+  }, [currentFlow])
+
   return (
     <div className="mt-4 space-y-3">
-      {/* Flow list */}
-      <div className="flex flex-wrap gap-2">
-        <TooltipProvider>
-          {allFlows.map((flow) => {
-            const isActive = currentFlow?.id === flow.id && isRunning
-            return (
-              <Tooltip key={flow.id}>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={() => (isActive ? abortFlow() : executeFlow(flow.id))}
-                    disabled={isRunning && !isActive}
-                    className={`
-                      h-8 px-3 text-xs bg-transparent border border-slate-700/50
-                      hover:bg-cyan-400/10 transition
-                      ${isActive ? "border-cyan-400 bg-cyan-400/10" : ""}
-                      ${isRunning && !isActive ? "opacity-40" : ""}
-                    `}
-                  >
-                    {isActive ? (
-                      <Square className="w-3 h-3 mr-1.5 text-red-400" />
-                    ) : (
-                      <Play className="w-3 h-3 mr-1.5 text-cyan-300" />
-                    )}
-                    <span className="text-slate-200">{flow.name}</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  {isActive ? "Stop flow" : `Run ${flow.name} (${flow.steps.length} steps)`}
-                </TooltipContent>
-              </Tooltip>
-            )
-          })}
-        </TooltipProvider>
+      {/* Flow selector + play/stop */}
+      <div className="flex items-center gap-2">
+        <span className="text-cyan-400 text-xs">Flow</span>
+        <select
+          aria-label="Select flow"
+          value={selectedFlowId ?? ""}
+          onChange={(e) => setSelectedFlowId(e.target.value || null)}
+          disabled={isRunning && currentFlow?.id !== selectedFlowId}
+          className="h-8 px-3 text-xs bg-transparent border border-slate-700/50 text-slate-200 rounded"
+        >
+          {allFlows.map((flow) => (
+            <option key={flow.id} value={flow.id} className="bg-slate-900 text-slate-200">
+              {flow.name}
+            </option>
+          ))}
+        </select>
+
+        <Button
+          onClick={() => {
+            if (isRunning && currentFlow?.id === selectedFlowId) {
+              abortFlow()
+            } else if (selectedFlowId) {
+              executeFlow(selectedFlowId)
+            }
+          }}
+          disabled={isRunning && currentFlow?.id !== selectedFlowId}
+          className={`h-8 px-3 text-xs bg-transparent border border-slate-700/50 hover:bg-cyan-400/10 transition ${
+            isRunning && currentFlow?.id === selectedFlowId ? "border-cyan-400 bg-cyan-400/10" : ""
+          } ${isRunning && currentFlow?.id !== selectedFlowId ? "opacity-40" : ""}`}
+        >
+          {isRunning && currentFlow?.id === selectedFlowId ? (
+            <Square className="w-3 h-3 mr-1.5 text-red-400" />
+          ) : (
+            <Play className="w-3 h-3 mr-1.5 text-cyan-300" />
+          )}
+          <span className="text-slate-200">{isRunning && currentFlow?.id === selectedFlowId ? "Stop" : "Run"}</span>
+        </Button>
       </div>
 
       {/* Active flow progress */}

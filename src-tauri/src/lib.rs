@@ -85,6 +85,7 @@ pub fn run() {
         }))
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_prevent_default::debug())
         .setup(|app| {
             // Initialize speech recognition sidecar
             let speech = Arc::new(SpeechBridge::new(app.handle().clone()));
