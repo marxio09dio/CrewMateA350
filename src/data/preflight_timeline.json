@@ -25,7 +25,7 @@
     "minuteMark": 30,
     "label": "PM back from walkaround",
     "type": "reminder",
-    "sound": "im_back.ogg"
+    "sound": "walkaround_completed.ogg"
   },
   {
     "minuteMark": 25,
