@@ -25,3 +25,5 @@ dist-ssr
 
 # Environment secrets
 PSscripts/.env
+
+~/

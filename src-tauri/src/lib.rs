@@ -71,6 +71,7 @@ pub fn run() {
     let worker_tx = spawn_mobiflight_worker();
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(
             tauri_plugin_window_state::Builder::new()
                 .with_denylist(&["takeoff", "landing", "settings"])

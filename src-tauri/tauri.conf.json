@@ -30,7 +30,13 @@
     "active": true,
     "targets": "all",
     "externalBin": ["bin/copilot_speech"],
-    "resources": ["bin/libvosk.dll", "bin/libgcc_s_seh-1.dll", "bin/libstdc++-6.dll", "bin/libwinpthread-1.dll"],
+    "resources": [
+      "sounds",
+      "bin/libvosk.dll",
+      "bin/libgcc_s_seh-1.dll",
+      "bin/libstdc++-6.dll",
+      "bin/libwinpthread-1.dll"
+    ],
     "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"]
   }
 }
