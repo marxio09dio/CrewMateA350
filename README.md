@@ -22,7 +22,7 @@
 2. Open the CrewMate.exe (the voice recognition engine will start automatically)
 3. Download and activate a voice model from the settings window
 
-## Requierments
+## Requirements
 [MobiFlight WASM Module](https://github.com/MobiFlight/MobiFlight-WASM-Module) needs to be installed on your community folder
 
 
