@@ -3,6 +3,7 @@
 ![CrewMate Logo](./src-tauri/icons/icon.png)
 
 > **CrewMate A350** is a free and open-source alternative to Copilot-style apps for aircraft workflows.
+> All data from the voice recognition is processed locally on your machine.
 
 ---
 
@@ -14,6 +15,16 @@
 - [License](LICENSE)
 
 ---
+
+## Installation and Usage
+
+1. Install the .msi package
+2. Open the CrewMate.exe (the voice recognition engine will start automatically)
+3. Download and activate a voice model from the settings window
+
+## Requierments
+![MobiFlight WASM Module](https://github.com/MobiFlight/MobiFlight-WASM-Module) needs to be installed on your community folder
+
 
 ## Voice Commands (Examples)
 
@@ -56,10 +67,10 @@ If you encounter a problem or want to request a new feature, please [open an iss
 
 ## Want to Contribute?
 
-Contributions are welcomed! Check out the [Contribution Guidelines](.github/CONTRIBUTING.md) to get started.
+Contributions are welcome! Check out the [Contribution Guidelines](.github/CONTRIBUTING.md) to get started.
 
 ## License
 
 This project is licensed under the GNU GPLv3.
 
-This project is not endorsed by or affiliated with Microsoft nor Inibuilds.
+This project is not endorsed by or affiliated with Microsoft or Inibuilds.
