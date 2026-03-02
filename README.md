@@ -23,8 +23,8 @@
 3. Download and activate a voice model from the settings window
 
 ## Requirements
-[MobiFlight WASM Module](https://github.com/MobiFlight/MobiFlight-WASM-Module) needs to be installed on your community folder
 
+[MobiFlight WASM Module](https://github.com/MobiFlight/MobiFlight-WASM-Module) needs to be installed on your community folder
 
 ## Voice Commands (Examples)
 

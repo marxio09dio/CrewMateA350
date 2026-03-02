@@ -7,13 +7,13 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { VoiceModelSettings } from "@/components/VoiceModelSettings"
 import { useVoiceStore } from "@/store/voiceStore"
+
 export function SettingsWindow() {
   const [availableSoundPacks, setAvailableSoundPacks] = useState<string[]>([])
   const [isCapturingKey, setIsCapturingKey] = useState(false)
 
   const { soundPack, setPttShortcut, setSoundPack } = useVoiceStore()
 
-  // Fetch available sound packs on mount
   useEffect(() => {
     const fetchSoundPacks = async () => {
       try {
@@ -199,17 +199,6 @@ export function SettingsWindow() {
         </div>
 
         <VoiceModelSettings />
-        <div className="flex justify-between items-center text-xs text-slate-500 px-1">
-          <span>App Version</span>
-          <span className="font-mono">v{import.meta.env.VITE_APP_VERSION || "0.1.0"}</span>
-        </div>
-
-        {/* Buy Me a Coffee Button */}
-        <div className="px-4 py-3 flex justify-center">
-          <a href="https://www.buymeacoffee.com/marxio09dio" target="_blank" rel="noopener noreferrer">
-            <img src="/buymeacoffee.png" alt="Buy Me A Coffee" className="h-[45px] w-auto" />
-          </a>
-        </div>
 
         <Button onClick={handleClose} className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2">
           Close

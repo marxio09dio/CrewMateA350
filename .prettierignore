@@ -20,3 +20,4 @@ CopilotSpeech/
 *.log
 
 .github
+actions-runner/
