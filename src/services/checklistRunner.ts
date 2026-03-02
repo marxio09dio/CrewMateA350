@@ -249,6 +249,24 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
         continue // re-challenge
       }
 
+      // ── Verify actual aircraft SimVar state matches what the store expects ─
+      if (mapEntry?.simvar_checks?.length) {
+        let simvarOk = true
+        for (const check of mapEntry.simvar_checks) {
+          const raw = await readSimVar(check.var)
+          checkAbort(signal)
+          if (raw === null || Math.abs(raw - check.expected) >= 0.5) {
+            simvarOk = false
+            break
+          }
+        }
+        if (!simvarOk) {
+          await playSound(item.store_check.incorrect)
+          await waitForSoundFinished()
+          continue // re-challenge
+        }
+      }
+
       break
     }
 

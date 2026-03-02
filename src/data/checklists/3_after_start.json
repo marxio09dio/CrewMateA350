@@ -9,9 +9,33 @@
       "store_check": {
         "store": "takeoff.antiIce",
         "validation_map": [
-          { "store_value": "off",       "expected_response": "off" },
-          { "store_value": "oneng",     "expected_response": "on" },
-          { "store_value": "onengwing", "expected_response": "on" }
+          {
+            "store_value": "off",
+            "expected_response": "off",
+            "simvar_checks": [
+              { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 0 },
+              { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 0 },
+              { "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
+            ]
+          },
+          {
+            "store_value": "oneng",
+            "expected_response": "on",
+            "simvar_checks": [
+              { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
+              { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
+              { "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
+            ]
+          },
+          {
+            "store_value": "onengwing",
+            "expected_response": "on",
+            "simvar_checks": [
+              { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
+              { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
+              { "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 1 }
+            ]
+          }
         ],
         "incorrect": "are_you_sure.ogg"
       }

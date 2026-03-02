@@ -19,8 +19,22 @@
       "store_check": {
         "store": "takeoff.packs",
         "validation_map": [
-          { "store_value": "on",  "expected_response": "on" },
-          { "store_value": "off", "expected_response": "off" }
+          {
+            "store_value": "on",
+            "expected_response": "on",
+            "simvar_checks": [
+              { "var": "(L:INI_AIR_PACK1_BUTTON)", "expected": 1 },
+              { "var": "(L:INI_AIR_PACK2_BUTTON)", "expected": 1 }
+            ]
+          },
+          {
+            "store_value": "off",
+            "expected_response": "off",
+            "simvar_checks": [
+              { "var": "(L:INI_AIR_PACK1_BUTTON)", "expected": 0 },
+              { "var": "(L:INI_AIR_PACK2_BUTTON)", "expected": 0 }
+            ]
+          }
         ],
         "incorrect": "are_you_sure.ogg"
       }
