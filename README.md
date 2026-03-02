@@ -1,14 +1,14 @@
 # CrewMate A350
 
+[![FlightSim.to Profile](https://img.shields.io/badge/FlightSim.to-marxio09dio-007ACC?style=flat-square&logo=airplane)](https://flightsim.to/profile/marxio09dio)
+[![Latest Release](https://img.shields.io/github/v/release/marxio09dio/CrewMateA350?label=Latest%20Release)](https://github.com/marxio09dio/CrewMateA350/releases)
+
 ![CrewMate Logo](./src-tauri/icons/icon.png)
 
 > **CrewMate A350** is a free and open-source alternative to Copilot-style apps for aircraft workflows.
 > All data from the voice recognition is processed locally on your machine.
 
 ---
-
-[![FlightSim.to Profile](https://img.shields.io/badge/FlightSim.to-marxio09dio-007ACC?style=flat-square&logo=airplane)](https://flightsim.to/profile/marxio09dio)
-[![Latest Release](https://img.shields.io/github/v/release/marxio09dio/CrewMateA350?label=Latest%20Release)](https://github.com/marxio09dio/CrewMateA350/releases)
 
 ## Quick Links
 
