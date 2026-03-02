@@ -8,6 +8,7 @@
 ---
 
 [![FlightSim.to Profile](https://img.shields.io/badge/FlightSim.to-marxio09dio-007ACC?style=flat-square&logo=airplane)](https://flightsim.to/profile/marxio09dio)
+[![Latest Release](https://img.shields.io/github/v/release/marxio09dio/CrewMateA350?label=Latest%20Release)](https://github.com/marxio09dio/CrewMateA350/releases)
 
 ## Quick Links
 
