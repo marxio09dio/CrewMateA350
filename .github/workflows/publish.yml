@@ -37,3 +37,16 @@ jobs:
           releaseDraft: false
           prerelease: false
           includeUpdaterJson: true
+      - name: "Debug: list release assets"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log('Latest release tag:', release.data.tag_name);
+            console.log('Assets:');
+            for (const a of release.data.assets) {
+              console.log(`${a.name} -> ${a.browser_download_url}`);
+            }
