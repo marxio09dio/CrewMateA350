@@ -1,0 +1,41 @@
+{
+  "id": "taxi",
+  "name": "Taxi Checklist",
+  "items": [
+    {
+      "challenge": "flap_settings.ogg",
+      "response": ["config one plus f", "config two", "config 1", "config 2", "set and checked"],
+      "label": "Flap Settings",
+      "simvar_check": {
+        "var_name": "FLAPS HANDLE INDEX",
+        "var_type": "simvar",
+        "validation_map": [
+          {
+            "sim_value": 1.0,
+            "expected_response": "config one plus f",
+            "copilot_confirmation": "config_1_plus_f.ogg"
+          },
+          {
+            "sim_value": 2.0,
+            "expected_response": "config two",
+            "copilot_confirmation": "config_2.ogg"
+          }
+        ]
+      },
+      "store_check": {
+        "store": "takeoff.flaps",
+        "validation_map": [
+          { "store_value": "1", "expected_response": "config one plus f" },
+          { "store_value": "2", "expected_response": "config two" }
+        ],
+        "incorrect": "are_you_sure.ogg"
+      }
+    },
+    {
+      "challenge": "radar.ogg",
+      "response": ["on", "off", "set and checked"],
+      "label": "Radar"
+    }
+  ],
+  "completion": "taxi_checklist_completed.ogg"
+}

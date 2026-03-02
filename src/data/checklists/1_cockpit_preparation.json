@@ -1,0 +1,22 @@
+{
+  "id": "cockpit_preparation",
+  "name": "Cockpit Preparation",
+  "items": [
+    {
+      "challenge": "gear_pins_and_covers.ogg",
+      "response": ["removed"],
+      "label": "Gear Pins and Covers"
+    },
+    {
+      "challenge": "fuel_quantity.ogg",
+      "response": ["set and checked"],
+      "label": "Fuel Quantity"
+    },
+    {
+      "challenge": "baro_ref.ogg",
+      "response": ["set and checked", "#3", "#4"],
+      "label": "Barometric Reference"
+    }
+  ],
+  "completion": "cockpit_preparation_checklist_completed.ogg"
+}

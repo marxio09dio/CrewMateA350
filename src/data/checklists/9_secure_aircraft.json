@@ -1,0 +1,32 @@
+{
+  "id": "secure_aircraft",
+  "name": "Secure Aircraft Checklist",
+  "items": [
+    {
+      "challenge": "exterior_lights.ogg",
+      "response": ["off", "set and checked"],
+      "label": "Exterior Lights"
+    },
+    {
+      "challenge": "ground_servicing.ogg",
+      "response": ["off", "set and checked"],
+      "label": "Ground Servicing"
+    },
+    {
+      "challenge": "external_power.ogg",
+      "response": ["off", "set and checked", "set", "on"],
+      "label": "External Power"
+    },
+    {
+      "challenge": "efbs.ogg",
+      "response": ["off", "set and checked"],
+      "label": "EFBs"
+    },
+    {
+      "challenge": "batteries.ogg",
+      "response": ["off", "set and checked"],
+      "label": "Batteries"
+    }
+  ],
+  "completion": "securing_the_aircraft_checklist_completed.ogg"
+}

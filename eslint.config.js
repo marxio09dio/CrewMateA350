@@ -4,7 +4,16 @@ import importPlugin from "eslint-plugin-import"
 
 export default [
   {
-    ignores: ["dist", "target", "node_modules", "src-tauri", "eslint.config.js", "tailwind.config.js", ".github", "actions-runner"]
+    ignores: [
+      "dist",
+      "target",
+      "node_modules",
+      "src-tauri",
+      "eslint.config.js",
+      "tailwind.config.js",
+      ".github",
+      "actions-runner"
+    ]
   },
 
   js.configs.recommended,

@@ -1,0 +1,30 @@
+{
+  "id": "line_up",
+  "name": "Line Up Checklist",
+  "items": [
+    {
+      "challenge": "cabin_crew.ogg",
+      "response": ["advised", "signaled"],
+      "label": "Cabin Advisory"
+    },
+    {
+      "challenge": "takeoff_runway.ogg",
+      "response": ["#2", "confirmed"],
+      "label": "Take off Runway"
+    },
+    {
+      "label": "Packs Settings",
+      "challenge": "packs_one_and_two.ogg",
+      "response": ["on", "off", "set and checked"],
+      "store_check": {
+        "store": "takeoff.packs",
+        "validation_map": [
+          { "store_value": "on",  "expected_response": "on" },
+          { "store_value": "off", "expected_response": "off" }
+        ],
+        "incorrect": "are_you_sure.ogg"
+      }
+    }
+  ],
+  "completion": "line_up_checklist_completed.ogg"
+}

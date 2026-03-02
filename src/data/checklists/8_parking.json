@@ -1,0 +1,17 @@
+{
+  "id": "parking",
+  "name": "Parking Checklist",
+  "items": [
+    {
+      "challenge": "parking_brake_or_chocks.ogg",
+      "response": ["chocks in place", "parking brake set", "set and checked"],
+      "label": "Parking Brake or Chocks"
+    },
+    {
+      "challenge": "wing_lights.ogg",
+      "response": ["off", "set and checked"],
+      "label": "Wing Lights"
+    }
+  ],
+  "completion": "parking_checklist_completed.ogg"
+}

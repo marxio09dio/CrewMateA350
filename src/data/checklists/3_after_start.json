@@ -1,0 +1,31 @@
+{
+  "id": "after_start",
+  "name": "After Start",
+  "items": [
+    {
+      "label": "Anti Ice",
+      "challenge": "anti_ice.ogg",
+      "response": ["on", "off", "set and checked"],
+      "store_check": {
+        "store": "takeoff.antiIce",
+        "validation_map": [
+          { "store_value": "off",       "expected_response": "off" },
+          { "store_value": "oneng",     "expected_response": "on" },
+          { "store_value": "onengwing", "expected_response": "on" }
+        ],
+        "incorrect": "are_you_sure.ogg"
+      }
+    },
+    {
+      "challenge": "flight_controls.ogg",
+      "response": ["checked"],
+      "label": "Flight Controls"
+    },
+    {
+      "challenge": "ground_clearance.ogg",
+      "response": ["received"],
+      "label": "Ground Clearance"
+    }
+  ],
+  "completion": "after_start_checklist_completed.ogg"
+}

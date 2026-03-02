@@ -1,4 +1,5 @@
 import { executeFlow } from "@/services/flowRunner"
+import { abortChecklist, executeChecklist } from "@/services/checklistRunner"
 import { playSound } from "@/services/playSounds"
 import { usePreflightTimerStore } from "@/store/preflightTimerStore"
 
@@ -208,6 +209,58 @@ export function createVoiceCommands(): VoiceCommand[] {
       phrases: ["lets prepare the aircraft", "lets prepare the flight", "lets set up the aircraft"],
       action: () => usePreflightTimerStore.getState().start(),
       description: "Start preflight countdown timer"
+    },
+
+    // Checklist Commands
+    {
+      phrases: ["cockpit preparation checklist"],
+      action: () => executeChecklist("cockpit_preparation"),
+      description: "Start cockpit preparation checklist"
+    },
+    {
+      phrases: ["before start checklist"],
+      action: () => executeChecklist("before_start"),
+      description: "Start before start checklist"
+    },
+    {
+      phrases: ["after start checklist"],
+      action: () => executeChecklist("after_start"),
+      description: "Start after start checklist"
+    },
+    {
+      phrases: ["taxi checklist"],
+      action: () => executeChecklist("taxi"),
+      description: "Start taxi checklist"
+    },
+    {
+      phrases: ["lineup checklist", "line up checklist"],
+      action: () => executeChecklist("line_up"),
+      description: "Start line up checklist"
+    },
+    {
+      phrases: ["approach checklist"],
+      action: () => executeChecklist("approach"),
+      description: "Start approach checklist"
+    },
+    {
+      phrases: ["landing checklist"],
+      action: () => executeChecklist("landing"),
+      description: "Start landing checklist"
+    },
+    {
+      phrases: ["parking checklist"],
+      action: () => executeChecklist("parking"),
+      description: "Start parking checklist"
+    },
+    {
+      phrases: ["secure aircraft checklist", "securing the aircraft checklist"],
+      action: () => executeChecklist("secure_aircraft"),
+      description: "Start secure aircraft checklist"
+    },
+    {
+      phrases: ["stop checklist", "abort checklist", "cancel checklist"],
+      action: () => abortChecklist(),
+      description: "Stop current checklist"
     }
   ]
 }

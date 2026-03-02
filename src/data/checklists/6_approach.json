@@ -1,0 +1,27 @@
+{
+  "id": "approach",
+  "name": "Approach",
+  "items": [
+    {
+      "challenge": "baro_ref.ogg",
+      "response": ["#3", "#4", "set and checked"],
+      "label": "Barometric Reference"
+    },
+    {
+      "challenge": "minimum.ogg",
+      "response": ["#3", "#4", "set and checked"],
+      "label": "Minimums Reference"
+    },
+    {
+      "challenge": "runway_condition.ogg",
+      "response": ["set and checked"],
+      "label": "Runway condition"
+    },
+    {
+      "challenge": "auto_brake.ogg",
+      "response": ["set and checked", "medium", "BTV"],
+      "label": "Auto Brake"
+    }
+  ],
+  "completion": "approach_checklist_completed.ogg"
+}

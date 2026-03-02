@@ -22,6 +22,7 @@ const simVars: { key: string; expression: string }[] = [
   { key: "throttleLever1", expression: "(A:GENERAL ENG THROTTLE LEVER POSITION:1,Number)" },
   { key: "throttleLever2", expression: "(A:GENERAL ENG THROTTLE LEVER POSITION:2,Number)" },
   { key: "brakeLeftPosition", expression: "(A:BRAKE LEFT POSITION,Number)" },
+  { key: "parkingBrake", expression: "(A:BRAKE PARKING INDICATOR,Bool)" },
   { key: "brakeRightPosition", expression: "(A:BRAKE RIGHT POSITION,Number)" },
   { key: "aileronPosition", expression: "(A:AILERON POSITION,Position)" },
   { key: "elevatorPosition", expression: "(A:ELEVATOR POSITION,Position)" },

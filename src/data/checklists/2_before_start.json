@@ -1,0 +1,30 @@
+{
+  "id": "before_start",
+  "name": "Before Start",
+  "items": [
+    {
+      "challenge": "parking_brake.ogg",
+      "var": "A:BRAKE PARKING INDICATOR,Bool",
+      "expected": true,
+      "incorrect":"are_you_sure.ogg",
+      "response": ["set"],
+      "label": "Parking Brake"
+    },
+    {
+      "challenge": "takeoff_speeds_and_thrust.ogg",
+      "response": ["set and checked"],
+      "label": "Takeoff Speeds and Thrust"
+    },
+    {
+      "challenge": "slides.ogg",
+      "response": ["armed"],
+      "label": "Slides"
+    },
+    {
+      "challenge": "nws_disc_memo.ogg",
+      "response": ["on"],
+      "label": "Nose Wheel disconnect Memo"
+    }
+  ],
+  "completion": "before_start_checklist_completed.ogg"
+}

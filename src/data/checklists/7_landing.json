@@ -1,0 +1,31 @@
+{
+  "id": "landing",
+  "name": "Landing Checklist",
+  "mode": "silent",
+  "items": [
+    {
+      "label": "Spoilers Armed",
+      "var": "A:SPOILERS ARMED,Bool",
+      "expected": true,
+      "incorrect": "check_spoilers.ogg"
+    },
+    {
+      "label": "Flaps",
+      "store_check": {
+        "store": "landing.flaps",
+        "validation_map": [
+          { "store_value": "3",    "simvar_name": "FLAPS HANDLE INDEX", "expected_simvar": 3.0 },
+          { "store_value": "Full", "simvar_name": "FLAPS HANDLE INDEX", "expected_simvar": 4.0 }
+        ],
+        "incorrect": "check_flaps.ogg"
+      }
+    },
+    {
+      "label": "Gear Down",
+      "var": "A:GEAR TOTAL PCT EXTENDED,Percent",
+      "expected": 1.0,
+      "incorrect": "check_landing_gear.ogg"
+    }
+  ],
+  "completion": "landing_checklist_completed.ogg"
+}
