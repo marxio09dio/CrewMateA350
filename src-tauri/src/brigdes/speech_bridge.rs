@@ -75,6 +75,7 @@ impl SpeechBridge {
                     CommandEvent::Stdout(line) => {
                         if let Ok(value) = serde_json::from_slice::<Value>(&line) {
                             if value["type"] == "speech" {
+                                println!("[Speech] Recognized: {}", value);
                                 let _ = app_cb.emit("speech_recognized", value);
                             }
                         }
