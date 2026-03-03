@@ -41,6 +41,8 @@ const simVars: { key: string; expression: string }[] = [
   { key: "iniEngAntiIce1State", expression: "(L:INI_ENG_ANTI_ICE1_STATE)" },
   { key: "iniEngAntiIce2State", expression: "(L:INI_ENG_ANTI_ICE2_STATE)" },
   { key: "iniWingAntiIce1State", expression: "(L:INI_WING_ANTI_ICE1_STATE)" },
+  { key: "iniAirPack1Button", expression: "(L:INI_AIR_PACK1_BUTTON, Bool)" },
+  { key: "iniAirPack2Button", expression: "(L:INI_AIR_PACK2_BUTTON, Bool)" },
   { key: "ignitionKnob", expression: "(L:INI_IGNITION_KNOB)" },
   { key: "flapsIndex", expression: "(A:FLAPS HANDLE INDEX,Number)" },
   { key: "mixture1", expression: "(L:INI_MIXTURE_RATIO1_HANDLE)" },
