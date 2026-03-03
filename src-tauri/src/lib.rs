@@ -29,6 +29,7 @@ use app_data::{get_log_file_path, open_logs_folder, setup_app_data_directories};
 
 mod simconnect;
 use simconnect::aircraft_title::{get_aircraft_title, start_aircraft_title_stream};
+use simconnect::flight_state::start_flight_state_stream;
 
 #[tauri::command]
 fn set_mic_gain(state: tauri::State<'_, SpeechBridgeState>, gain: f32) {
@@ -103,6 +104,7 @@ pub fn run() {
 
             // Start aircraft title SimConnect stream
             start_aircraft_title_stream(app.handle().clone());
+            start_flight_state_stream(app.handle().clone());
 
             // Initialize Vosk model manager
             let vosk_model_manager = VoskModelManager::new(app.handle())

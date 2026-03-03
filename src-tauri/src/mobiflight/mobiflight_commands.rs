@@ -112,6 +112,10 @@ pub fn spawn_mobiflight_worker() -> mpsc::Sender<WorkerRequest> {
                                     continue;
                                 }
                             }
+                        } else if let Some(c) = client.as_mut() {
+                            // Client already exists (stream restart after flight load) —
+                            // clear slot table so LVARs re-register with correct indices.
+                            let _ = c.clear_sim_variables();
                         }
 
                         // Seed all variables so MobiFlight WASM registers them

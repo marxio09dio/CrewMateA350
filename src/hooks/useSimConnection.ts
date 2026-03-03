@@ -57,12 +57,12 @@ export function useSimConnection() {
   const retryRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
-    const connect = async () => {
-      if (useTelemetryStore.getState().status === "connected") return
-
+    const startStream = async () => {
       useTelemetryStore.getState().setStatus("connecting")
-
       try {
+        // Always stop first so MobiFlight WASM clears its LVAR slot table,
+        // ensuring fresh slot IDs that match the now-loaded aircraft.
+        await invoke("stop_telemetry_stream").catch(() => {})
         await invoke("start_telemetry_stream", {
           variables: simVars,
           intervalMs: STREAM_INTERVAL_MS
@@ -72,15 +72,39 @@ export function useSimConnection() {
       }
     }
 
-    void connect()
-
-    if (retryRef.current) clearInterval(retryRef.current)
-    retryRef.current = setInterval(() => {
-      const current = useTelemetryStore.getState().status
-      if (current !== "connected") {
-        void connect()
+    const stopStream = () => {
+      if (retryRef.current) {
+        clearInterval(retryRef.current)
+        retryRef.current = null
       }
-    }, RETRY_INTERVAL_MS)
+      invoke("stop_telemetry_stream").catch(() => {})
+      useTelemetryStore.getState().setStatus("connecting")
+    }
+
+    // Retry logic: only active while a flight is loaded
+    const startRetry = () => {
+      if (retryRef.current) clearInterval(retryRef.current)
+      retryRef.current = setInterval(() => {
+        const current = useTelemetryStore.getState().status
+        if (current !== "connected") {
+          void startStream()
+        }
+      }, RETRY_INTERVAL_MS)
+    }
+
+    let unlistenFlightState: (() => void) | null = null
+    const setupFlightStateListener = async () => {
+      unlistenFlightState = await listen<boolean>("sim-in-flight", (event) => {
+        if (event.payload) {
+          // Flight loaded — restart the stream so LVARs register with correct slots
+          void startStream()
+          startRetry()
+        } else {
+          stopStream()
+        }
+      })
+    }
+    void setupFlightStateListener()
 
     let unlistenTelemetry: (() => void) | null = null
     const setupTelemetryListener = async () => {
@@ -118,6 +142,7 @@ export function useSimConnection() {
         clearInterval(retryRef.current)
         retryRef.current = null
       }
+      if (unlistenFlightState) unlistenFlightState()
       if (unlistenTelemetry) unlistenTelemetry()
       if (unlistenTitle) unlistenTitle()
 
