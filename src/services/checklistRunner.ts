@@ -80,7 +80,9 @@ function getStoreValue(storePath: string): string | undefined {
 
 async function readSimVar(expression: string): Promise<number | null> {
   try {
-    return await mobiflightGet(expression)
+    const value = await mobiflightGet(expression)
+    console.log(`[ChecklistRunner] readSimVar("${expression}") → ${value}`)
+    return value
   } catch (err) {
     console.warn(`[ChecklistRunner] Failed to read simvar "${expression}":`, err)
     return null
@@ -243,6 +245,8 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       const expectedResp = mapEntry?.expected_response ?? null
       const responseMatches = expectedResp !== null && spoken !== null && spoken.includes(expectedResp.toLowerCase())
 
+      console.log(`[ChecklistRunner] store_check: store="${item.store_check.store}" storeVal="${storeVal}" expectedResp="${expectedResp}" spoken="${spoken}" responseMatches=${responseMatches}`)
+
       if (!responseMatches) {
         await playSound(item.store_check.incorrect)
         await waitForSoundFinished()
@@ -251,15 +255,21 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
 
       // ── Verify actual aircraft SimVar state matches what the store expects ─
       if (mapEntry?.simvar_checks?.length) {
+        console.log(`[ChecklistRunner] Running ${mapEntry.simvar_checks.length} simvar_check(s) for store="${storeVal}"`)
         let simvarOk = true
         for (const check of mapEntry.simvar_checks) {
           const raw = await readSimVar(check.var)
           checkAbort(signal)
-          if (raw === null || Math.abs(raw - check.expected) >= 0.5) {
+          // Bool LVARs can return non-1 values (e.g. 43.14) when ON — compare truthy/falsy
+          const rawBool = raw !== null ? (raw > 0.5 ? 1 : 0) : null
+          const pass = rawBool !== null && rawBool === check.expected
+          console.log(`[ChecklistRunner]   check: var="${check.var}" expected=${check.expected} raw=${raw} rawBool=${rawBool} → ${pass ? "PASS" : "FAIL"}`)
+          if (!pass) {
             simvarOk = false
             break
           }
         }
+        console.log(`[ChecklistRunner] simvar_checks result: ${simvarOk ? "ALL PASS" : "FAILED"}`)
         if (!simvarOk) {
           await playSound(item.store_check.incorrect)
           await waitForSoundFinished()
