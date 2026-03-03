@@ -37,7 +37,6 @@ function App() {
 
   const currentEvent = usePreflightTimerStore((s) => s.currentEvent)
 
-  console.log("aicraft title:", useTelemetryStore((s) => s.aircraftTitle))
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1 bg-black text-white p-2">

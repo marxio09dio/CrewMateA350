@@ -245,7 +245,9 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       const expectedResp = mapEntry?.expected_response ?? null
       const responseMatches = expectedResp !== null && spoken !== null && spoken.includes(expectedResp.toLowerCase())
 
-      console.log(`[ChecklistRunner] store_check: store="${item.store_check.store}" storeVal="${storeVal}" expectedResp="${expectedResp}" spoken="${spoken}" responseMatches=${responseMatches}`)
+      console.log(
+        `[ChecklistRunner] store_check: store="${item.store_check.store}" storeVal="${storeVal}" expectedResp="${expectedResp}" spoken="${spoken}" responseMatches=${responseMatches}`
+      )
 
       if (!responseMatches) {
         await playSound(item.store_check.incorrect)
@@ -255,7 +257,9 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
 
       // ── Verify actual aircraft SimVar state matches what the store expects ─
       if (mapEntry?.simvar_checks?.length) {
-        console.log(`[ChecklistRunner] Running ${mapEntry.simvar_checks.length} simvar_check(s) for store="${storeVal}"`)
+        console.log(
+          `[ChecklistRunner] Running ${mapEntry.simvar_checks.length} simvar_check(s) for store="${storeVal}"`
+        )
         let simvarOk = true
         for (const check of mapEntry.simvar_checks) {
           const raw = await readSimVar(check.var)
@@ -263,7 +267,9 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
           // Bool LVARs can return non-1 values (e.g. 43.14) when ON — compare truthy/falsy
           const rawBool = raw !== null ? (raw > 0.5 ? 1 : 0) : null
           const pass = rawBool !== null && rawBool === check.expected
-          console.log(`[ChecklistRunner]   check: var="${check.var}" expected=${check.expected} raw=${raw} rawBool=${rawBool} → ${pass ? "PASS" : "FAIL"}`)
+          console.log(
+            `[ChecklistRunner]   check: var="${check.var}" expected=${check.expected} raw=${raw} rawBool=${rawBool} → ${pass ? "PASS" : "FAIL"}`
+          )
           if (!pass) {
             simvarOk = false
             break

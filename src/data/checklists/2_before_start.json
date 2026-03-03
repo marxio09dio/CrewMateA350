@@ -6,7 +6,7 @@
       "challenge": "parking_brake.ogg",
       "var": "A:BRAKE PARKING INDICATOR,Bool",
       "expected": true,
-      "incorrect":"are_you_sure.ogg",
+      "incorrect": "are_you_sure.ogg",
       "response": ["set"],
       "label": "Parking Brake"
     },

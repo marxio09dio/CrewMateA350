@@ -14,7 +14,7 @@
       "store_check": {
         "store": "landing.flaps",
         "validation_map": [
-          { "store_value": "3",    "simvar_name": "FLAPS HANDLE INDEX", "expected_simvar": 3.0 },
+          { "store_value": "3", "simvar_name": "FLAPS HANDLE INDEX", "expected_simvar": 3.0 },
           { "store_value": "Full", "simvar_name": "FLAPS HANDLE INDEX", "expected_simvar": 4.0 }
         ],
         "incorrect": "check_flaps.ogg"

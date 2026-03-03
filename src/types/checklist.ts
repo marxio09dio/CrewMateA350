@@ -24,16 +24,16 @@ export interface ChecklistSimvarCheck {
 // ─── Store check (performance store values, e.g. packs, anti-ice, landing flaps) ─
 
 export interface SimvarCheck {
-  var: string    // SimVar / LVAR expression readable by mobiflightGet
+  var: string // SimVar / LVAR expression readable by mobiflightGet
   expected: number
 }
 
 export interface StoreValidationEntry {
   store_value: string
-  expected_response?: string  // used in normal (challenge/response) mode
+  expected_response?: string // used in normal (challenge/response) mode
   simvar_checks?: SimvarCheck[] // aircraft state verification after verbal match
-  simvar_name?: string       // used in silent mode: SimVar to read
-  expected_simvar?: number   // used in silent mode: expected SimVar value
+  simvar_name?: string // used in silent mode: SimVar to read
+  expected_simvar?: number // used in silent mode: expected SimVar value
 }
 
 export interface ChecklistStoreCheck {
