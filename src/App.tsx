@@ -41,7 +41,7 @@ function App() {
     <div className="flex flex-col min-h-screen">
       <main className="flex-1 bg-black text-white p-2">
         <div className="max-w-6xl mx-auto">
-          {connected ? (
+          {!connected ? (
             <div className="flex flex-col items-center justify-center mb-6">
               <h3 className="text-lg font-semibold text-red-400 mb-1">Connection Error</h3>
               <p className="text-red-300 text-sm opacity-80">Start Microsoft Flight Simulator and restart this app.</p>

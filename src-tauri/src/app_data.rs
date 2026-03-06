@@ -27,6 +27,26 @@ pub async fn get_log_file_path(app_handle: AppHandle) -> Result<String, String> 
 }
 
 #[tauri::command]
+pub async fn open_app_data_folder(app_handle: AppHandle) -> Result<(), String> {
+    let app_data_dir = app_handle
+        .path()
+        .app_data_dir()
+        .map_err(|e| e.to_string())?;
+
+    std::fs::create_dir_all(&app_data_dir).map_err(|e| e.to_string())?;
+
+    #[cfg(target_os = "windows")]
+    {
+        std::process::Command::new("explorer")
+            .arg(&app_data_dir)
+            .spawn()
+            .map_err(|e| e.to_string())?;
+    }
+
+    Ok(())
+}
+
+#[tauri::command]
 pub async fn open_logs_folder(app_handle: AppHandle) -> Result<(), String> {
     let logs_dir = app_handle
         .path()
