@@ -127,6 +127,12 @@ listen<Partial<Omit<VoiceStore, "setVoiceEnabled" | "setVoiceMode" | "setPttShor
     if (event.payload.micGain !== undefined) {
       useVoiceStore.setState({ micGain: event.payload.micGain })
     }
+    if (event.payload.outputDevice !== undefined) {
+      useVoiceStore.setState({ outputDevice: event.payload.outputDevice })
+    }
+    if (event.payload.inputDevice !== undefined) {
+      useVoiceStore.setState({ inputDevice: event.payload.inputDevice })
+    }
 
     isUpdatingFromEvent = false
   }
