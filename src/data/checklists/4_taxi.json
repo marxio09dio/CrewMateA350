@@ -7,7 +7,7 @@
       "response": ["config one plus f", "config two", "set and checked"],
       "label": "Flap Settings",
       "simvar_check": {
-        "var_name": "FLAPS HANDLE INDEX",
+        "var_name": "(A:FLAPS HANDLE INDEX, number)",
         "var_type": "simvar",
         "validation_map": [
           {

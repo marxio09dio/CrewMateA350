@@ -9,6 +9,9 @@ import climbTenThousand from "@/data/flows/climb_ten_thousand_flow.json"
 import descTenThousand from "@/data/flows/desc_ten_thousand_flow.json"
 import electricPowerUp from "@/data/flows/electric_power_up.json"
 import shutdown from "@/data/flows/shutdown.json"
+import curtains_open from "@/data/flows/curtains_open.json"
+import curtains_close from "@/data/flows/curtains_close.json"
+
 import { usePerformanceStore } from "@/store/performanceStore"
 import type { Flow, FlowStep } from "@/types/flow"
 
@@ -23,7 +26,9 @@ export const allFlows: Flow[] = [
   climbTenThousand,
   descTenThousand,
   afterLanding,
-  shutdown
+  shutdown,
+  curtains_open,
+  curtains_close
 ] as Flow[]
 
 export function getFlowById(id: string): Flow | undefined {

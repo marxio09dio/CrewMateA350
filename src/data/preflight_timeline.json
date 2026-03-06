@@ -2,7 +2,8 @@
   {
     "minuteMark": 60,
     "label": "Arrive at aircraft",
-    "type": "reminder"
+    "type": "flow",
+    "flowId": "open_curtains"
   },
   {
     "minuteMark": 55,

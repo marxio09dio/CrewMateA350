@@ -1,0 +1,96 @@
+{
+  "id": "close_curtains",
+  "name": "Close Curtains",
+  "steps": [
+    {
+      "label": "Curtain 1 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN1_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN1_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 1 M Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN1_M_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN1_M_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 2 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN2_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN2_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 2 M Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN2_M_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN2_M_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 4 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN4_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN4_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 5 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN5_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN5_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 5 M Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN5_M_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN5_M_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 6 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN6_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN6_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 6 M Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN6_M_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN6_M_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 7 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN7_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN7_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 7 M Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN7_M_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN7_M_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 8 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN8_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN8_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 8 M Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN8_M_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN8_M_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 9 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN9_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN9_VIS)",
+      "expect": 0
+    },
+    {
+      "label": "Curtain 10 Close",
+      "read": "(L:INI_SKEL_CAB_CURTAIN10_VIS)",
+      "on": "0 (>L:INI_SKEL_CAB_CURTAIN10_VIS)",
+      "expect": 0
+    }
+  ]
+}

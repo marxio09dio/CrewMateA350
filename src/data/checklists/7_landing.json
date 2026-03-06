@@ -5,7 +5,7 @@
   "items": [
     {
       "label": "Spoilers Armed",
-      "var": "A:SPOILERS ARMED,Bool",
+      "var": "(A:SPOILERS ARMED, Bool)",
       "expected": true,
       "incorrect": "check_spoilers.ogg"
     },
@@ -14,15 +14,15 @@
       "store_check": {
         "store": "landing.flaps",
         "validation_map": [
-          { "store_value": "3", "simvar_name": "FLAPS HANDLE INDEX", "expected_simvar": 3.0 },
-          { "store_value": "Full", "simvar_name": "FLAPS HANDLE INDEX", "expected_simvar": 4.0 }
+          { "store_value": "3", "simvar_name": "(A:FLAPS HANDLE INDEX, number)", "expected_simvar": 3.0 },
+          { "store_value": "Full", "simvar_name": "(A:FLAPS HANDLE INDEX, number)", "expected_simvar": 4.0 }
         ],
         "incorrect": "check_flaps.ogg"
       }
     },
     {
       "label": "Gear Down",
-      "var": "A:GEAR TOTAL PCT EXTENDED,Percent",
+      "var": "(A:GEAR HANDLE POSITION,Position)",
       "expected": 1.0,
       "incorrect": "check_landing_gear.ogg"
     }

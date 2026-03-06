@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core"
 import { getCurrentWindow } from "@tauri-apps/api/window"
-import { Volume2 } from "lucide-react"
+import { FolderOpen, Volume2 } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -74,7 +74,7 @@ export function SettingsWindow() {
         </div>
 
         <div className="grid grid-cols-[120px_1fr] items-center gap-3">
-          <Label className="text-sm text-slate-300">Sound Pack</Label>
+          <Label className="text-sm text-slate-300">Copilot</Label>
 
           <select
             id="soundPack"
@@ -159,6 +159,14 @@ export function SettingsWindow() {
         </div>
 
         <VoiceModelSettings />
+
+        <Button
+          onClick={() => invoke("open_app_data_folder")}
+          className="w-full bg-slate-800 border border-slate-500 text-white hover:bg-slate-700 font-semibold py-2"
+        >
+          <FolderOpen className="h-4 w-4 mr-2" />
+          Open App Data Folder
+        </Button>
 
         <Button onClick={handleClose} className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2">
           Close
