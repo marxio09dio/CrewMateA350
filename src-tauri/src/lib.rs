@@ -23,7 +23,9 @@ use simconnect::simvars::{
 };
 
 mod app_data;
-use app_data::{get_log_file_path, open_logs_folder, setup_app_data_directories};
+use app_data::{
+    get_log_file_path, open_app_data_folder, open_logs_folder, setup_app_data_directories,
+};
 
 mod simconnect;
 use simconnect::aircraft_title::{get_aircraft_title, start_aircraft_title_stream};
@@ -174,6 +176,7 @@ pub fn run() {
             open_takeoff_window,
             set_always_on_top,
             get_log_file_path,
+            open_app_data_folder,
             open_logs_folder,
             simvar_set,
             simvar_get,
