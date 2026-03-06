@@ -10,12 +10,16 @@ interface VoiceStore {
   soundPack: string
   soundVolume: number
   micGain: number
+  outputDevice: string
+  inputDevice: string
   setVoiceEnabled: (enabled: boolean) => void
   setVoiceMode: (mode: "continuous" | "ptt") => void
   setPttShortcut: (shortcut: string) => void
   setSoundPack: (pack: string) => void
   setSoundVolume: (volume: number) => void
   setMicGain: (gain: number) => void
+  setOutputDevice: (device: string) => void
+  setInputDevice: (device: string) => void
 }
 
 let isUpdatingFromEvent = false
@@ -29,6 +33,8 @@ export const useVoiceStore = create<VoiceStore>()(
       soundPack: "Jenny",
       soundVolume: 100,
       micGain: 180,
+      outputDevice: "default",
+      inputDevice: "default",
       setVoiceEnabled: (enabled) => {
         set({ voiceEnabled: enabled })
         if (!isUpdatingFromEvent) {
@@ -65,6 +71,20 @@ export const useVoiceStore = create<VoiceStore>()(
         if (!isUpdatingFromEvent) {
           emit("voice-settings-changed", { micGain: gain })
         }
+      },
+      setOutputDevice: (device) => {
+        set({ outputDevice: device })
+        invoke("set_output_device", { deviceName: device }).catch(() => {})
+        if (!isUpdatingFromEvent) {
+          emit("voice-settings-changed", { outputDevice: device })
+        }
+      },
+      setInputDevice: (device) => {
+        set({ inputDevice: device })
+        invoke("set_input_device", { deviceName: device }).catch(() => {})
+        if (!isUpdatingFromEvent) {
+          emit("voice-settings-changed", { inputDevice: device })
+        }
       }
     }),
     {
@@ -72,6 +92,12 @@ export const useVoiceStore = create<VoiceStore>()(
       onRehydrateStorage: () => (state) => {
         if (state?.micGain) {
           invoke("set_mic_gain", { gain: state.micGain / 100 }).catch(() => {})
+        }
+        if (state?.outputDevice && state.outputDevice !== "default") {
+          invoke("set_output_device", { deviceName: state.outputDevice }).catch(() => {})
+        }
+        if (state?.inputDevice && state.inputDevice !== "default") {
+          invoke("set_input_device", { deviceName: state.inputDevice }).catch(() => {})
         }
       }
     }

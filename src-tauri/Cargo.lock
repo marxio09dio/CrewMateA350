@@ -889,6 +889,7 @@ name = "crewmatea350"
 version = "0.1.3"
 dependencies = [
  "anyhow",
+ "cpal",
  "env_logger",
  "futures-util",
  "log",

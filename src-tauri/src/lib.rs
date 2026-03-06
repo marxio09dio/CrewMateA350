@@ -1,6 +1,10 @@
 use std::sync::{mpsc, Mutex};
 mod audio;
-use audio::audio_commands::{get_sound_packs, is_audio_playing, play_sound, AudioPlayerState};
+use audio::audio_commands::{
+    get_sound_packs, is_audio_playing, play_sound, set_output_device, AudioPlayerState,
+    SelectedOutputDevice,
+};
+use audio::audio_devices::{get_available_input_devices, get_available_output_devices};
 use audio::audio_player::AudioPlayer;
 mod brigdes;
 use brigdes::speech_bridge::SpeechBridge;
@@ -32,6 +36,13 @@ use simconnect::flight_state::start_flight_state_stream;
 #[tauri::command]
 fn set_mic_gain(state: tauri::State<'_, SpeechBridgeState>, gain: f32) {
     let json = format!(r#"{{"gain":{:.2}}}"#, gain);
+    state.0.send_config(&json);
+}
+
+#[tauri::command]
+fn set_input_device(state: tauri::State<'_, SpeechBridgeState>, device_name: String) {
+    let sanitized = device_name.replace('\\', "\\\\").replace('"', "\\\"");
+    let json = format!(r#"{{"input_device":"{}"}}"#, sanitized);
     state.0.send_config(&json);
 }
 
@@ -94,6 +105,7 @@ pub fn run() {
             // Initialize audio player
             let audio_player = AudioPlayer::new().expect("Failed to initialize audio player");
             app.manage(AudioPlayerState(audio_player));
+            app.manage(SelectedOutputDevice(Mutex::new(None)));
 
             // Initialize SimVar worker
             app.manage(AppState {
@@ -191,8 +203,12 @@ pub fn run() {
             play_sound,
             is_audio_playing,
             get_sound_packs,
+            set_output_device,
+            get_available_output_devices,
+            get_available_input_devices,
             get_aircraft_title,
             set_mic_gain,
+            set_input_device,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

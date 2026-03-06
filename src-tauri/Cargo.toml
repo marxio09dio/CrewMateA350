@@ -33,6 +33,7 @@ futures-util = "0.3"
 reqwest = { version = "0.12", features = ["stream"] }
 zip = "0.6"
 rodio = { version = "0.19", default-features = true }
+cpal = "0.15"
 tauri-plugin-log = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-prevent-default = "3"

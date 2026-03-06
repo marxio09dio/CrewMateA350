@@ -9,10 +9,18 @@ import { Slider } from "@/components/ui/slider"
 import { VoiceModelSettings } from "@/components/VoiceModelSettings"
 import { useVoiceStore } from "@/store/voiceStore"
 
+interface AudioDevice {
+  index: string
+  name: string
+  is_default: boolean
+}
+
 export function SettingsWindow() {
   const [availableSoundPacks, setAvailableSoundPacks] = useState<string[]>([])
+  const [availableOutputDevices, setAvailableOutputDevices] = useState<AudioDevice[]>([])
+  const [availableInputDevices, setAvailableInputDevices] = useState<AudioDevice[]>([])
 
-  const { soundPack, setSoundPack } = useVoiceStore()
+  const { soundPack, setSoundPack, outputDevice, setOutputDevice, inputDevice, setInputDevice } = useVoiceStore()
 
   useEffect(() => {
     const fetchSoundPacks = async () => {
@@ -35,7 +43,21 @@ export function SettingsWindow() {
       }
     }
 
+    const fetchAudioDevices = async () => {
+      try {
+        const [outputs, inputs] = await Promise.all([
+          invoke<AudioDevice[]>("get_available_output_devices"),
+          invoke<AudioDevice[]>("get_available_input_devices")
+        ])
+        setAvailableOutputDevices(outputs ?? [])
+        setAvailableInputDevices(inputs ?? [])
+      } catch (error) {
+        console.error("Failed to fetch audio devices:", error)
+      }
+    }
+
     fetchSoundPacks()
+    fetchAudioDevices()
   }, [])
 
   const handleClose = () => {
@@ -69,6 +91,41 @@ export function SettingsWindow() {
           </select>
         </div>
 
+        <div className="grid grid-cols-[120px_1fr] items-center gap-3">
+          <Label className="text-sm text-slate-300">Output Device</Label>
+
+          <select
+            id="outputDevice"
+            name="outputDevice"
+            value={outputDevice}
+            onChange={(e) => setOutputDevice(e.target.value)}
+            className="w-full h-9 bg-slate-900/50 border border-slate-600 text-white text-sm rounded-md px-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            {availableOutputDevices.map((device) => (
+              <option key={device.index} value={device.index === "default" ? "default" : device.name}>
+                {device.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="grid grid-cols-[120px_1fr] items-center gap-3">
+          <Label className="text-sm text-slate-300">Input Device</Label>
+
+          <select
+            id="inputDevice"
+            name="inputDevice"
+            value={inputDevice}
+            onChange={(e) => setInputDevice(e.target.value)}
+            className="w-full h-9 bg-slate-900/50 border border-slate-600 text-white text-sm rounded-md px-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            {availableInputDevices.map((device) => (
+              <option key={device.index} value={device.index === "default" ? "default" : device.name}>
+                {device.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="grid grid-cols-[120px_1fr] items-center gap-3">
           <Label className="text-sm text-slate-300">Sound Volume</Label>
           <div className="flex items-center gap-3">

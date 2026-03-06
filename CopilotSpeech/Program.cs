@@ -104,6 +104,38 @@ class Program
                     AudioGain = gainProp.GetSingle();
                     Console.Error.WriteLine($"[CONFIG] Audio gain set to {AudioGain:F2}");
                 }
+                if (doc.RootElement.TryGetProperty("input_device", out var deviceProp))
+                {
+                    var deviceName = deviceProp.GetString() ?? "";
+                    int deviceNumber = 0; // default to first device
+
+                    if (deviceName != "default" && deviceName != "")
+                    {
+                        for (int i = 0; i < WaveIn.DeviceCount; i++)
+                        {
+                            var caps = WaveIn.GetCapabilities(i);
+                            var productName = caps.ProductName;
+                            if (
+                                productName.Contains(deviceName, StringComparison.OrdinalIgnoreCase)
+                                || deviceName.Contains(
+                                    productName,
+                                    StringComparison.OrdinalIgnoreCase
+                                )
+                            )
+                            {
+                                deviceNumber = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    mic.StopRecording();
+                    mic.DeviceNumber = deviceNumber;
+                    mic.StartRecording();
+                    Console.Error.WriteLine(
+                        $"[CONFIG] Input device set to {deviceNumber} ({deviceName})"
+                    );
+                }
             }
             catch
             {
