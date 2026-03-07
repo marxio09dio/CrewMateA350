@@ -79,14 +79,25 @@ function getStoreValue(storePath: string): string | undefined {
 }
 
 async function readSimVar(expression: string): Promise<number | null> {
-  try {
-    const value = await simvarGet(expression)
-    console.log(`[ChecklistRunner] readSimVar("${expression}") → ${value}`)
-    return value
-  } catch (err) {
-    console.warn(`[ChecklistRunner] Failed to read simvar "${expression}":`, err)
-    return null
+  // On first registration the SimConnect cache may not be populated yet.
+  // Retry a few times with a short delay before giving up.
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      const value = await simvarGet(expression)
+      if (value !== null) {
+        console.log(
+          `[ChecklistRunner] readSimVar("${expression}") → ${value}${attempt > 0 ? ` (attempt ${attempt + 1})` : ""}`
+        )
+        return value
+      }
+    } catch (err) {
+      console.warn(`[ChecklistRunner] Failed to read simvar "${expression}":`, err)
+      return null
+    }
+    await sleep(150)
   }
+  console.warn(`[ChecklistRunner] readSimVar("${expression}") → null after retries`)
+  return null
 }
 
 // ─── Abort controller ─────────────────────────────────────────────────────────
@@ -164,6 +175,7 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
   }
 
   const responseList = item.response ?? []
+  const hold = () => useChecklistStore.getState().holdOnIncorrect
 
   // Repeat challenge until we get a valid, confirmed response
   while (true) {
@@ -212,7 +224,8 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
         const incorrectAudio = item.simvar_check.incorrect ?? item.incorrect ?? "are_you_sure.ogg"
         await playSound(incorrectAudio)
         await waitForSoundFinished()
-        continue // re-challenge
+        if (hold()) continue
+        else break // re-challenge or advance
       }
 
       // ── Also run store_check if present (e.g. flap position vs plan) ───
@@ -225,7 +238,8 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
         if (!storeMatches) {
           await playSound(item.store_check.incorrect)
           await waitForSoundFinished()
-          continue // re-challenge
+          if (hold()) continue
+          else break // re-challenge or advance
         }
       }
 
@@ -252,7 +266,8 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       if (!responseMatches) {
         await playSound(item.store_check.incorrect)
         await waitForSoundFinished()
-        continue // re-challenge
+        if (hold()) continue
+        else break // re-challenge or advance
       }
 
       // ── Verify actual aircraft SimVar state matches what the store expects ─
@@ -279,7 +294,8 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
         if (!simvarOk) {
           await playSound(item.store_check.incorrect)
           await waitForSoundFinished()
-          continue // re-challenge
+          if (hold()) continue
+          else break // re-challenge or advance
         }
       }
 
@@ -297,10 +313,35 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       if (!ok) {
         await playSound(item.incorrect ?? "are_you_sure.ogg")
         await waitForSoundFinished()
-        continue // re-challenge
+        if (hold()) continue
+        else break // re-challenge or advance
       }
 
       break
+    }
+
+    // ── simvar_checks: validate a list of SimVar states after verbal response ─
+    if (item.simvar_checks?.length) {
+      let simvarOk = true
+      for (const check of item.simvar_checks) {
+        const raw = await readSimVar(check.var)
+        checkAbort(signal)
+        const rawBool = raw !== null ? (raw > 0.5 ? 1 : 0) : null
+        const pass = rawBool !== null && rawBool === check.expected
+        console.log(
+          `[ChecklistRunner] simvar_checks: var="${check.var}" expected=${check.expected} raw=${raw} rawBool=${rawBool} → ${pass ? "PASS" : "FAIL"}`
+        )
+        if (!pass) {
+          simvarOk = false
+          break
+        }
+      }
+      if (!simvarOk) {
+        await playSound(item.incorrect ?? "are_you_sure.ogg")
+        await waitForSoundFinished()
+        if (hold()) continue
+        else break // re-challenge or advance
+      }
     }
 
     // No extra validation — accept the matched response

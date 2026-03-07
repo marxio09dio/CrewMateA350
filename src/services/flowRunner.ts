@@ -30,12 +30,19 @@ async function abortableSleep(ms: number, signal: AbortSignal) {
 }
 
 async function readValue(expression: string): Promise<number | null> {
-  try {
-    return await simvarGet(expression)
-  } catch (err) {
-    console.warn(`[FlowRunner] Failed to read "${expression}":`, err)
-    return null
+  // On first registration the SimConnect cache may not be populated yet.
+  // Retry a few times with a short delay before giving up.
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      const value = await simvarGet(expression)
+      if (value !== null) return value
+    } catch (err) {
+      console.warn(`[FlowRunner] Failed to read "${expression}":`, err)
+      return null
+    }
+    await sleep(150)
   }
+  return null
 }
 
 async function writeValue(expression: string): Promise<void> {

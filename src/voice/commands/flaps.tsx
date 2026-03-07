@@ -64,20 +64,13 @@ export async function setFlaps(setting: number) {
 
     const speedLimit = flapSpeedLimits[effectiveVariant][setting]
 
-    console.log(
-      `[Flaps] Aircraft=${variant ?? "Unknown"} | IAS=${currentSpeed}kts | Flap=${setting} | Limit=${speedLimit}`,
-      telemetry
-    )
-
     if (speedLimit && currentSpeed > speedLimit) {
-      console.warn(`[Flaps] Denied: ${currentSpeed}kts exceeds ${speedLimit}kts for ${effectiveVariant}`)
       playSound("check_speed.ogg")
       return
     }
 
     const keyEvent = keyEventMap[setting]
     if (!keyEvent) {
-      console.error("[Flaps] Invalid flap setting:", setting)
       return
     }
 
@@ -89,15 +82,11 @@ export async function setFlaps(setting: number) {
       await delay(1000)
       await simvarSet(commandExpression)
 
-      console.log(`[Flaps] Command sent: ${keyEvent} | Expression: ${commandExpression}`)
-
       await delay(1000)
       const sound = soundMap[setting]
       if (sound) playSound(sound)
     } else {
       await simvarSet(commandExpression)
-
-      console.log(`[Flaps] Command sent: ${keyEvent} | Expression: ${commandExpression}`)
 
       await delay(1000)
       const sound = soundMap[setting]

@@ -4,7 +4,7 @@
   "items": [
     {
       "challenge": "flap_settings.ogg",
-      "response": ["config one plus f", "config two", "set and checked"],
+      "response": ["config one plus f", "config two", "config three", "set and checked"],
       "label": "Flap Settings",
       "simvar_check": {
         "var_name": "(A:FLAPS HANDLE INDEX, number)",
@@ -19,6 +19,11 @@
             "sim_value": 2.0,
             "expected_response": "config two",
             "copilot_confirmation": "config_2.ogg"
+          },
+          {
+            "sim_value": 3.0,
+            "expected_response": "config three",
+            "copilot_confirmation": "config_3.ogg"
           }
         ]
       },
@@ -26,7 +31,8 @@
         "store": "takeoff.flaps",
         "validation_map": [
           { "store_value": "1", "expected_response": "config one plus f" },
-          { "store_value": "2", "expected_response": "config two" }
+          { "store_value": "2", "expected_response": "config two" },
+          { "store_value": "3", "expected_response": "config three" }
         ],
         "incorrect": "are_you_sure.ogg"
       }

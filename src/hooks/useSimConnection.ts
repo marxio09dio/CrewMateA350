@@ -104,13 +104,14 @@ export function useSimConnection() {
         }
       })
 
-      /** If the app is opened while already in the cockpit (camera < 11), the Rust
-      thread emits "sim-in-flight" before the listener above is registered and the
-      event is silently dropped.  Kick off the stream immediately after the listener
-      is guaranteed to be registered so we never get stuck on the error screen.
-       */
-      void startStream()
-      startRetry()
+      // After the listener is registered, query whether we're already in the cockpit.
+      // This handles the app being opened while already in a loaded flight — the Rust
+      // side emits with a 300ms delay now, but this is a belt-and-suspenders fallback.
+      const alreadyInCockpit = await invoke<boolean>("get_in_cockpit").catch(() => false)
+      if (alreadyInCockpit) {
+        void startStream()
+        startRetry()
+      }
     }
     void setupFlightStateListener()
 

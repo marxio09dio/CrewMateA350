@@ -1,12 +1,14 @@
 import { invoke } from "@tauri-apps/api/core"
 import { getCurrentWindow } from "@tauri-apps/api/window"
-import { FolderOpen, Volume2 } from "lucide-react"
+import { FolderOpen, Volume2, ClipboardList } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { VoiceModelSettings } from "@/components/VoiceModelSettings"
+import { useChecklistStore } from "@/store/checklistStore"
 import { useVoiceStore } from "@/store/voiceStore"
 
 interface AudioDevice {
@@ -21,6 +23,8 @@ export function SettingsWindow() {
   const [availableInputDevices, setAvailableInputDevices] = useState<AudioDevice[]>([])
 
   const { soundPack, setSoundPack, outputDevice, setOutputDevice, inputDevice, setInputDevice } = useVoiceStore()
+  const { soundPack, setSoundPack } = useVoiceStore()
+  const { holdOnIncorrect, setHoldOnIncorrect } = useChecklistStore()
 
   useEffect(() => {
     const fetchSoundPacks = async () => {
@@ -159,6 +163,23 @@ export function SettingsWindow() {
         </div>
 
         <VoiceModelSettings />
+
+        <div className="flex items-center gap-2 pt-1">
+          <ClipboardList className="h-3 w-3 text-cyan-400 shrink-0" />
+          <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">Checklist</span>
+          <div className="flex-1 h-px bg-slate-700/60" />
+        </div>
+
+        <div className="grid grid-cols-[1fr_auto] items-center gap-3">
+          <Label htmlFor="holdOnIncorrect" className="text-sm text-slate-300 cursor-pointer">
+            Hold checklist on incorrect item
+          </Label>
+          <Checkbox
+            id="holdOnIncorrect"
+            checked={holdOnIncorrect}
+            onCheckedChange={(checked) => setHoldOnIncorrect(checked === true)}
+          />
+        </div>
 
         <Button
           onClick={() => invoke("open_app_data_folder")}

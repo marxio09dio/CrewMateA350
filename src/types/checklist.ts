@@ -55,6 +55,9 @@ export interface ChecklistItem {
 
   // Performance store check (e.g. packs, anti-ice, landing flaps)
   store_check?: ChecklistStoreCheck
+
+  // Direct list of SimVar checks applied after the verbal response is accepted
+  simvar_checks?: SimvarCheck[]
 }
 
 export interface Checklist {

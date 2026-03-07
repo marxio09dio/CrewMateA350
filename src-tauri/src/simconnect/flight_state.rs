@@ -5,6 +5,13 @@ use std::thread;
 use std::time::Duration;
 use tauri::{AppHandle, Emitter};
 
+static IN_COCKPIT: AtomicBool = AtomicBool::new(false);
+
+/// Returns whether the cockpit has been detected in the current session.
+pub fn is_in_cockpit() -> bool {
+    IN_COCKPIT.load(Ordering::Relaxed)
+}
+
 #[repr(C)]
 #[derive(Debug, Clone)]
 struct CameraState {
@@ -39,7 +46,14 @@ pub fn start_flight_state_stream(app: AppHandle) {
             SimConnectRecv::SimObjectData(e) => {
                 if let Some(data) = e.into::<CameraState>(sim) {
                     if (data.value as u32) < 11 && !detected_cb.swap(true, Ordering::SeqCst) {
-                        let _ = app_cb.emit("sim-in-flight", true);
+                        IN_COCKPIT.store(true, Ordering::Relaxed);
+                        // Delay the emit by 300 ms so the frontend listener has time to
+                        // register before the event fires, avoiding the missed-event race.
+                        let app_for_emit = app_cb.clone();
+                        thread::spawn(move || {
+                            thread::sleep(Duration::from_millis(300));
+                            let _ = app_for_emit.emit("sim-in-flight", true);
+                        });
                     }
                 }
             }
