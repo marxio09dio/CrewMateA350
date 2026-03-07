@@ -1,0 +1,12 @@
+{
+  "id": "open_table",
+  "name": "Open FO Table",
+  "steps": [
+    {
+      "label": "table",
+      "read": "(L:INI_FO_TRAY_COVER_TGT)",
+      "on": "1 (>L:INI_FO_TRAY_COVER_TGT)",
+      "expect": 1
+    }
+  ]
+}

@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 
 # Environment secrets
-PSscripts/.env
+Scripts/.env
 
 ~/
