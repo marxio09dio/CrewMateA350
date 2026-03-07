@@ -23,7 +23,6 @@ export function SettingsWindow() {
   const [availableInputDevices, setAvailableInputDevices] = useState<AudioDevice[]>([])
 
   const { soundPack, setSoundPack, outputDevice, setOutputDevice, inputDevice, setInputDevice } = useVoiceStore()
-  const { soundPack, setSoundPack } = useVoiceStore()
   const { holdOnIncorrect, setHoldOnIncorrect } = useChecklistStore()
 
   useEffect(() => {
