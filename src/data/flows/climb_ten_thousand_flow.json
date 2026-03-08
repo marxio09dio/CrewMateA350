@@ -9,10 +9,17 @@
       "expect": 0
     },
     {
-      "label": "Logo Lights",
-      "read": "(L:INI_LIGHTS_LOGO)",
-      "on": "2 (>L:INI_LIGHTS_LOGO)",
-      "expect": 2
+      "label": "Weather Radar",
+      "read": "(L:INI_EFIS_BSK_2_FO)",
+      "on": "1 (>L:INI_EFIS_BSK_2_FO)",
+      "expect": 1,
+      "skip_verify": true
+    },
+    {
+      "label": "Table",
+      "read": "(L:INI_FO_TRAY_COVER_TGT)",
+      "on": "1 (>L:INI_FO_TRAY_COVER_TGT)",
+      "expect": 1
     }
   ]
 }

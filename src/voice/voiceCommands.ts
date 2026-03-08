@@ -145,12 +145,28 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Turns on taxi lights"
     },
     {
+      phrases: ["Takeoff Light On please", "Takeoff Light On"],
+      action: () => {
+        playSound("check.ogg")
+        setTaxiLights(0)
+      },
+      description: "Turns on takeoff lights"
+    },
+    {
       phrases: ["Strobe Lights Off please", "Strobe Lights Off"],
       action: () => {
         playSound("check.ogg")
         setStrobeLights(2)
       },
       description: "Turns off strobe lights"
+    },
+    {
+      phrases: ["Strobe Lights Auto please", "Strobe Lights Auto"],
+      action: () => {
+        playSound("check.ogg")
+        setStrobeLights(1)
+      },
+      description: "Turns strobe lights to auto"
     },
     {
       phrases: ["Strobe Lights On please", "Strobe Lights On"],
@@ -178,6 +194,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       },
       description: "Turns off flight director"
     },
+    
     // Autopilot Commands
     {
       phrases: [
