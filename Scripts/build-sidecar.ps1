@@ -36,11 +36,11 @@ if (Test-Path $sourceRuntimeDir) {
         "libstdc++-6.dll",
         "libwinpthread-1.dll"
     )
-
+}
     foreach ($dll in $dllsToCopy) {
         $sourcePath = "$sourceRuntimeDir\$dll"
         $destPath = "$binDir\$dll"
-        
+    }
         if (Test-Path $sourcePath) {
             Copy-Item $sourcePath $destPath -Force
             Write-Host "✓ Copied $dll" -ForegroundColor Green

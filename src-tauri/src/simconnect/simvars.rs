@@ -341,7 +341,7 @@ pub fn spawn_simvar_worker() -> mpsc::Sender<WorkerRequest> {
                 .unwrap_or(Duration::from_millis(5));
             match rx.recv_timeout(timeout) {
                 Ok(req) => handle_request(req, &mut sim, &mut stream),
-                Err(mpsc::RecvTimeoutError::Timeout) => on_tick(&mut sim, &mut stream),
+                Err(mpsc::RecvTimeoutError::Timeout) => on_tick(&mut sim, &stream),
                 Err(mpsc::RecvTimeoutError::Disconnected) => break,
             }
         }
