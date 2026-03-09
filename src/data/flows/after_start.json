@@ -33,6 +33,26 @@
       "expect": "{anti_ice_wing_expect}"
     },
     {
+      "label": "HUD Deploy",
+      "read": "(L:INI_HUD_RIGHT_STATE)",
+      "on": "1 (>L:INI_HUD_RIGHT_STATE)",
+      "expect": 1,
+      "only_if": {
+        "read": "(L:INI_IS_HUD)",
+        "one_of": [1]
+      }
+    },
+      {
+      "label": "HUD Uncover",
+      "read": "(L:INI_HUD_COVER_RIGHT)",
+      "on": "0 (>L:INI_HUD_COVER_RIGHT)",
+      "expect": 0,
+      "only_if": {
+        "read": "(L:INI_IS_HUD)",
+        "one_of": [1]
+      }
+    },
+    {
       "label": "Terrain Display",
       "read": "(L:INI_EFIS_BSK_3_FO)",
       "on": "1 (>L:INI_EFIS_BSK_3_FO)",

@@ -515,5 +515,18 @@ class Program
             "start apu",
             "start apu please",
             "go around flaps",
+            "wipers off",
+            "wipers off please",
+            "wipers slow",
+            "wipers slow please",
+            "wipers fast",
+            "wipers fast please",
+            "wipers slow intermittent",
+            "wipers medium intermittent",
+            "wipers fast intermittent",
+            "seat belts on",
+            "seat belts on please",
+            "seat belts auto",
+            "seat belts auto please",
         };
 }
