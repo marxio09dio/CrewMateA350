@@ -36,20 +36,20 @@ if (Test-Path $sourceRuntimeDir) {
         "libstdc++-6.dll",
         "libwinpthread-1.dll"
     )
-}
+
     foreach ($dll in $dllsToCopy) {
         $sourcePath = "$sourceRuntimeDir\$dll"
         $destPath = "$binDir\$dll"
     }
-        if (Test-Path $sourcePath) {
-            Copy-Item $sourcePath $destPath -Force
-            Write-Host "✓ Copied $dll" -ForegroundColor Green
-        }
-        else {
-            Write-Host "✗ Warning: $dll not found at $sourcePath" -ForegroundColor Yellow
-        }
+    if (Test-Path $sourcePath) {
+        Copy-Item $sourcePath $destPath -Force
+        Write-Host "✓ Copied $dll" -ForegroundColor Green
+    }
+    else {
+        Write-Host "✗ Warning: $dll not found at $sourcePath" -ForegroundColor Yellow
     }
 }
+
 else {
     Write-Host "✗ Error: Runtime directory not found: $sourceRuntimeDir" -ForegroundColor Red
 }

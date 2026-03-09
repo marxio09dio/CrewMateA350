@@ -74,7 +74,7 @@ export async function setFlaps(setting: number, skipAnnouncement = false) {
       return
     }
 
-    const commandExpression = `1 (>K:${keyEvent})`
+    const commandExpression = `(>K:${keyEvent})`
 
     if (!isOnGround) {
       if (!skipAnnouncement) {

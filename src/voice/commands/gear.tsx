@@ -19,7 +19,7 @@ export async function setGearHandle(position: number) {
     }
 
     const eventName = position === 1 ? "GEAR_DOWN" : "GEAR_UP"
-    const commandExpression = `1 (>K:${eventName})`
+    const commandExpression = `(>K:${eventName})`
 
     if (position === 1) {
       playSound("speed_checked.ogg")
