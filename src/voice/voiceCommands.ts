@@ -12,12 +12,11 @@ import { setFlightDirector } from "./commands/flight_director"
 import { setGearHandle } from "./commands/gear"
 import { executeGoAround } from "./commands/goAround"
 import { setLandingLights } from "./commands/landing_lights"
+import { setSeatBelts } from "./commands/seat_belts"
 import { setStrobeLights } from "./commands/strobe_lights"
 import { setTaxiLights } from "./commands/taxi_lights"
 import { setWingAntiIce } from "./commands/wing_anti_ice"
 import { setWipers } from "./commands/wipers"
-import { setSeatBelts } from "./commands/seat_belts"
-
 
 interface VoiceCommand {
   phrases: string[]
@@ -228,7 +227,7 @@ export function createVoiceCommands(): VoiceCommand[] {
         setWipers(0)
       },
       description: "Sets wipers to slow intermittent speed"
-    },  
+    },
     {
       phrases: ["Wipers medium intermittent"],
       action: () => {
@@ -263,7 +262,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       },
       description: "Turns off flight director"
     },
-    
+
     // Autopilot Commands
     {
       phrases: [

@@ -42,7 +42,7 @@
         "one_of": [1]
       }
     },
-      {
+    {
       "label": "HUD Uncover",
       "read": "(L:INI_HUD_COVER_RIGHT)",
       "on": "0 (>L:INI_HUD_COVER_RIGHT)",

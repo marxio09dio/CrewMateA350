@@ -1,0 +1,57 @@
+{
+  "id": "departure_change",
+  "name": "Departure Change Checklist",
+  "items": [
+    {
+      "challenge": "rwy&sid.ogg",
+      "response": ["set and checked"],
+      "label": "Runway and SID"
+    },
+    {
+      "challenge": "flap_settings.ogg",
+      "response": ["config one plus f", "config two", "config three", "set and checked"],
+      "label": "Flap Settings",
+      "simvar_check": {
+        "var_name": "(A:FLAPS HANDLE INDEX, number)",
+        "var_type": "simvar",
+        "validation_map": [
+          {
+            "sim_value": 1.0,
+            "expected_response": "config one plus f",
+            "copilot_confirmation": "config_1_plus_f.ogg"
+          },
+          {
+            "sim_value": 2.0,
+            "expected_response": "config two",
+            "copilot_confirmation": "config_2.ogg"
+          },
+          {
+            "sim_value": 3.0,
+            "expected_response": "config three",
+            "copilot_confirmation": "config_3.ogg"
+          }
+        ]
+      },
+      "store_check": {
+        "store": "takeoff.flaps",
+        "validation_map": [
+          { "store_value": "1", "expected_response": "config one plus f" },
+          { "store_value": "2", "expected_response": "config two" },
+          { "store_value": "3", "expected_response": "config three" }
+        ],
+        "incorrect": "are_you_sure.ogg"
+      }
+    },
+    {
+      "challenge": "takeoff_speeds_and_thrust.ogg",
+      "response": ["set and checked"],
+      "label": "Takeoff Speeds and Thrust"
+    },
+    {
+      "challenge": "fcualt.ogg",
+      "response": ["set and checked"],
+      "label": "FCU ALT"
+    }
+  ],
+  "completion": "departure_change_checklist_completed.ogg"
+}

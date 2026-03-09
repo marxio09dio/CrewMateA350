@@ -7,6 +7,8 @@ import approach from "@/data/checklists/6_approach.json"
 import landing from "@/data/checklists/7_landing.json"
 import parking from "@/data/checklists/8_parking.json"
 import secureAircraft from "@/data/checklists/9_secure_aircraft.json"
+import departureChange from "@/data/checklists/10_departure_change.json"
+
 import type { Checklist } from "@/types/checklist"
 
 export const allChecklists: Checklist[] = [
@@ -18,7 +20,8 @@ export const allChecklists: Checklist[] = [
   approach,
   landing,
   parking,
-  secureAircraft
+  secureAircraft,
+  departureChange
 ] as Checklist[]
 
 export function getChecklistById(id: string): Checklist | undefined {

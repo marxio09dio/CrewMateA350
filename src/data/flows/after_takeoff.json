@@ -6,7 +6,7 @@
       "label": "Ground Spoilers",
       "read": "(L:SPOILERS_ARM_SET)",
       "on": "1 (>K:SPOILERS_ARM_OFF)",
-      "expect": 0,
+      "expect": 1,
       "skip_verify": true
     },
     {
