@@ -12,9 +12,11 @@ import { setFlightDirector } from "./commands/flight_director"
 import { setGearHandle } from "./commands/gear"
 import { executeGoAround } from "./commands/goAround"
 import { setLandingLights } from "./commands/landing_lights"
+import { setSeatBelts } from "./commands/seat_belts"
 import { setStrobeLights } from "./commands/strobe_lights"
 import { setTaxiLights } from "./commands/taxi_lights"
 import { setWingAntiIce } from "./commands/wing_anti_ice"
+import { setWipers } from "./commands/wipers"
 
 interface VoiceCommand {
   phrases: string[]
@@ -176,6 +178,72 @@ export function createVoiceCommands(): VoiceCommand[] {
       },
       description: "Turns on strobe lights"
     },
+    // Seat Belts Commands
+    {
+      phrases: ["Seat belts on please", "Seat belts on"],
+      action: () => {
+        playSound("check.ogg")
+        setSeatBelts(0)
+      },
+      description: "Turns on seat belts"
+    },
+    {
+      phrases: ["Seat belts auto please", "Seat belts auto"],
+      action: () => {
+        playSound("check.ogg")
+        setSeatBelts(1)
+      },
+      description: "Seat belts to auto"
+    },
+    // Wipers Commands
+    {
+      phrases: ["Wipers off please", "Wipers off"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(3)
+      },
+      description: "Turns off wipers"
+    },
+    {
+      phrases: ["Wipers slow please", "Wipers slow"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(4)
+      },
+      description: "Sets wipers to slow speed"
+    },
+    {
+      phrases: ["Wipers fast please", "Wipers fast"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(5)
+      },
+      description: "Sets wipers to fast speed"
+    },
+    {
+      phrases: ["Wipers slow intermittent"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(0)
+      },
+      description: "Sets wipers to slow intermittent speed"
+    },
+    {
+      phrases: ["Wipers medium intermittent"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(1)
+      },
+      description: "Sets wipers to medium intermittent speed"
+    },
+    {
+      phrases: ["Wipers fast intermittent"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(2)
+      },
+      description: "Sets wipers to fast intermittent speed"
+    },
 
     // Flight Director & Bird Commands
     {
@@ -194,7 +262,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       },
       description: "Turns off flight director"
     },
-    
+
     // Autopilot Commands
     {
       phrases: [
