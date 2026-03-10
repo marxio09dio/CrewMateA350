@@ -17,6 +17,12 @@
       "expect": "{pack2_expect}"
     },
     {
+      "label": "APU Bleed",
+      "read": "(L:INI_AIR_BLEED_APU)",
+      "on": "{apu_bleed_cmd}",
+      "expect": "{apu_bleed_expect}"
+    },
+    {
       "label": "Landing Lights",
       "read": "(L:INI_LIGHTS_LANDING)",
       "on": "1 (>L:INI_LIGHTS_LANDING)",

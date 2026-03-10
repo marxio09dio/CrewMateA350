@@ -243,11 +243,54 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
         }
       }
 
-      // Both checks passed — play confirmation if present, then advance
+      // ── Also run lvar_plan_check if present (e.g. flap LVAR vs plan) ────
+      if (item.lvar_plan_check) {
+        const lvarVal = await readSimVar(item.lvar_plan_check.var_name)
+        checkAbort(signal)
+        const lvarEntry = item.lvar_plan_check.validation_map.find(
+          (e) => lvarVal !== null && Math.abs(e.lvar_value - lvarVal) < 0.5
+        )
+        const lvarExpected = lvarEntry?.expected_response ?? null
+        const lvarMatches = lvarExpected !== null && spoken !== null && spoken.includes(lvarExpected.toLowerCase())
+
+        if (!lvarMatches) {
+          await playSound(item.lvar_plan_check.incorrect)
+          await waitForSoundFinished()
+          if (hold()) continue
+          else break
+        }
+      }
+
+      // All checks passed — play confirmation if present, then advance
       if (mapEntry?.copilot_confirmation) {
         await playSound(mapEntry.copilot_confirmation)
         await waitForSoundFinished()
       }
+      break
+    }
+
+    // ── lvar_plan_check: validate response against live LVAR plan value ───
+    if (item.lvar_plan_check) {
+      const lvarVal = await readSimVar(item.lvar_plan_check.var_name)
+      checkAbort(signal)
+
+      const lvarEntry = item.lvar_plan_check.validation_map.find(
+        (e) => lvarVal !== null && Math.abs(e.lvar_value - lvarVal) < 0.5
+      )
+      const lvarExpected = lvarEntry?.expected_response ?? null
+
+      // If LVAR is unreadable (sim not connected) skip the cross-check and accept
+      if (lvarExpected !== null) {
+        const lvarMatches = spoken !== null && spoken.includes(lvarExpected.toLowerCase())
+
+        if (!lvarMatches) {
+          await playSound(item.lvar_plan_check.incorrect)
+          await waitForSoundFinished()
+          if (hold()) continue
+          else break
+        }
+      }
+
       break
     }
 

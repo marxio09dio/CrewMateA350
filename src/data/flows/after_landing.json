@@ -27,6 +27,26 @@
       "expect": 0
     },
     {
+      "label": "HUD Cover",
+      "read": "(L:INI_HUD_COVER_RIGHT)",
+      "on": "1 (>L:INI_HUD_COVER_RIGHT)",
+      "expect": 1,
+      "only_if": {
+        "read": "(L:INI_IS_HUD)",
+        "one_of": [1]
+      }
+    },
+    {
+      "label": "HUD Stow",
+      "read": "(L:INI_HUD_RIGHT_STATE)",
+      "on": "0 (>L:INI_HUD_RIGHT_STATE)",
+      "expect": 0,
+      "only_if": {
+        "read": "(L:INI_IS_HUD)",
+        "one_of": [1]
+      }
+    },
+    {
       "label": "APU",
       "read": "(L:INI_APU_MASTER_SWITCH)",
       "on": "1 (>L:INI_APU_MASTER_SWITCH)",

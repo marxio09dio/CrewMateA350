@@ -4,7 +4,6 @@ import { persist } from "zustand/middleware"
 
 interface TakeoffData {
   vr: number
-  flaps: string
   packs?: string
   antiIce?: string
 }
@@ -25,7 +24,6 @@ interface PerformanceStore {
 
 const defaultTakeoffData: TakeoffData = {
   vr: 100,
-  flaps: "1",
   packs: "on",
   antiIce: "off"
 }

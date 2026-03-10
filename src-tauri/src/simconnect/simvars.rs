@@ -194,6 +194,10 @@ impl SimVars {
 
     /// Transmit a key event (input event) with an integer payload.
     fn trigger_key_event(&mut self, event_name: &str, value: u32) -> Result<()> {
+        info!(
+            "SimVars: trigger key event '{}' with data {}",
+            event_name, value
+        );
         let event_id = if let Some(&id) = self.events.get(event_name) {
             id
         } else {
@@ -205,8 +209,8 @@ impl SimVars {
                     hr >= 0,
                     "MapClientEventToSimEvent({event_name}): HRESULT=0x{hr:08X}"
                 );
-                // Required before TransmitClientEvent: register event in group 0
-                // and set highest priority so it reaches the sim.
+                // Keep the client event in a notification group so it can participate
+                // in SimConnect's priority routing if needed.
                 sys::SimConnect_AddClientEventToNotificationGroup(self.handle, 0, id, 0);
                 sys::SimConnect_SetNotificationGroupPriority(
                     self.handle,
@@ -223,8 +227,8 @@ impl SimVars {
                 sys::SIMCONNECT_OBJECT_ID_USER,
                 event_id,
                 value,
-                0,
-                0,
+                sys::SIMCONNECT_GROUP_PRIORITY_HIGHEST,
+                sys::SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY,
             );
             anyhow::ensure!(
                 hr >= 0,

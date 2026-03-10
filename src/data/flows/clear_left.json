@@ -10,6 +10,13 @@
       "expect": 1
     },
     {
+      "label": "Autobrake RTO",
+      "read": "(L:INI_AUTOBRAKE_ARMED_CMD)",
+      "on": "1 (>L:INI_AUTOBRAKE_ARMED_CMD)",
+      "expect": 1,
+      "skip_verify": true
+    },
+    {
       "label": "ECAM TO CONFIG",
       "read": "(L:PUSH_ECAM_TOCONFIG)",
       "on": "1 (>L:PUSH_ECAM_TOCONFIG)",

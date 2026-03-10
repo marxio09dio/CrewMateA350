@@ -27,12 +27,12 @@
           }
         ]
       },
-      "store_check": {
-        "store": "takeoff.flaps",
+      "lvar_plan_check": {
+        "var_name": "(L:TO_FLAPS_CONF)",
         "validation_map": [
-          { "store_value": "1", "expected_response": "config one plus f" },
-          { "store_value": "2", "expected_response": "config two" },
-          { "store_value": "3", "expected_response": "config three" }
+          { "lvar_value": 2, "expected_response": "config one plus f" },
+          { "lvar_value": 3, "expected_response": "config two" },
+          { "lvar_value": 5, "expected_response": "config three" }
         ],
         "incorrect": "are_you_sure.ogg"
       }

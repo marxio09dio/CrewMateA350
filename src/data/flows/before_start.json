@@ -45,7 +45,7 @@
       "expect": 1
     },
     {
-      "label": "FPLAN",
+      "label": "SURV MCDU",
       "read": "(L:INI_MCDU2_SURV)",
       "on": "1 (>L:INI_MCDU2_SURV)",
       "expect": 1,

@@ -53,7 +53,7 @@ function getA350Variant(title?: string): A350Variant | null {
   return null
 }
 
-export async function setFlaps(setting: number) {
+export async function setFlaps(setting: number, skipAnnouncement = false) {
   try {
     const { telemetry, aircraftTitle } = useTelemetryStore.getState()
     const currentSpeed = telemetry?.ias ?? 0
@@ -74,12 +74,13 @@ export async function setFlaps(setting: number) {
       return
     }
 
-    const commandExpression = `1 (>K:${keyEvent})`
+    const commandExpression = `(>K:${keyEvent})`
 
     if (!isOnGround) {
-      playSound("speed_checked.ogg")
-
-      await delay(1000)
+      if (!skipAnnouncement) {
+        playSound("speed_checked.ogg")
+        await delay(1000)
+      }
       await simvarSet(commandExpression)
 
       await delay(1000)

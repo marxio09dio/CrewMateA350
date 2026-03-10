@@ -38,6 +38,17 @@ export interface ChecklistStoreCheck {
   incorrect: string // audio filename to play on mismatch
 }
 
+export interface LvarPlanValidationEntry {
+  lvar_value: number
+  expected_response: string
+}
+
+export interface ChecklistLvarPlanCheck {
+  var_name: string // e.g. "(L:TO_FLAPS_CONF)"
+  validation_map: LvarPlanValidationEntry[]
+  incorrect: string // audio filename to play on mismatch
+}
+
 export interface ChecklistItem {
   label: string
 
@@ -55,6 +66,9 @@ export interface ChecklistItem {
 
   // Performance store check (e.g. packs, anti-ice, landing flaps)
   store_check?: ChecklistStoreCheck
+
+  // Live LVAR plan check (e.g. TO_FLAPS_CONF vs spoken config)
+  lvar_plan_check?: ChecklistLvarPlanCheck
 
   // Direct list of SimVar checks applied after the verbal response is accepted
   simvar_checks?: SimvarCheck[]

@@ -1,3 +1,8 @@
+export interface FlowStepCondition {
+  read: string
+  one_of: number[]
+}
+
 export interface FlowStep {
   label: string
   read: string
@@ -7,6 +12,8 @@ export interface FlowStep {
   wait_ms?: number
   skip_verify?: boolean
   sound?: string
+  sound_on_execute?: string // played only when the step actually writes a value (not skipped)
+  only_if?: FlowStepCondition
 }
 
 export interface Flow {

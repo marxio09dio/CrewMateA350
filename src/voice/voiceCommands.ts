@@ -3,16 +3,20 @@ import { executeFlow } from "@/services/flowRunner"
 import { playSound } from "@/services/playSounds"
 import { usePreflightTimerStore } from "@/store/preflightTimerStore"
 
+import { setStartAPU } from "./commands/apu"
 import { setAutoPilot } from "./commands/autoPilot"
 import { setEngAntiIce } from "./commands/eng_anti_ice"
 import { setFlaps } from "./commands/flaps"
 import { flightControlsCheck } from "./commands/flight_controls_check"
 import { setFlightDirector } from "./commands/flight_director"
 import { setGearHandle } from "./commands/gear"
+import { executeGoAround } from "./commands/goAround"
 import { setLandingLights } from "./commands/landing_lights"
+import { setSeatBelts } from "./commands/seat_belts"
 import { setStrobeLights } from "./commands/strobe_lights"
 import { setTaxiLights } from "./commands/taxi_lights"
 import { setWingAntiIce } from "./commands/wing_anti_ice"
+import { setWipers } from "./commands/wipers"
 
 interface VoiceCommand {
   phrases: string[]
@@ -60,6 +64,22 @@ export function createVoiceCommands(): VoiceCommand[] {
       action: () => setFlaps(4),
       description: "Set flaps to 4/full"
     },
+    {
+      phrases: ["go around flaps"],
+      action: () => executeGoAround(),
+      description: "Go around: retract flaps one step, rearm positive-climb callout and after-takeoff flow"
+    },
+
+    // APU Commands
+    {
+      phrases: ["start the apu please", "start the apu", "start apu", "start apu please"],
+      action: () => {
+        playSound("check.ogg")
+        setStartAPU(1)
+      },
+      description: "Start the APU"
+    },
+
     // anti ice commands
     {
       phrases: ["Engine anti ice on", "Engine anti-ice on", "Engine anti ice please", "Engine anti-ice please"],
@@ -127,6 +147,14 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Turns on taxi lights"
     },
     {
+      phrases: ["Takeoff Light On please", "Takeoff Light On"],
+      action: () => {
+        playSound("check.ogg")
+        setTaxiLights(0)
+      },
+      description: "Turns on takeoff lights"
+    },
+    {
       phrases: ["Strobe Lights Off please", "Strobe Lights Off"],
       action: () => {
         playSound("check.ogg")
@@ -135,12 +163,94 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Turns off strobe lights"
     },
     {
+      phrases: ["Strobe Lights Auto please", "Strobe Lights Auto"],
+      action: () => {
+        playSound("check.ogg")
+        setStrobeLights(1)
+      },
+      description: "Turns strobe lights to auto"
+    },
+    {
       phrases: ["Strobe Lights On please", "Strobe Lights On"],
       action: () => {
         playSound("check.ogg")
         setStrobeLights(0)
       },
       description: "Turns on strobe lights"
+    },
+    // Seat Belts Commands
+    {
+      phrases: ["Seat belts off please", "Seat belts off"],
+      action: () => {
+        playSound("check.ogg")
+        setSeatBelts(2)
+      },
+      description: "Turns off seat belts"
+    },
+    {
+      phrases: ["Seat belts on please", "Seat belts on"],
+      action: () => {
+        playSound("check.ogg")
+        setSeatBelts(0)
+      },
+      description: "Turns on seat belts"
+    },
+    {
+      phrases: ["Seat belts auto please", "Seat belts auto"],
+      action: () => {
+        playSound("check.ogg")
+        setSeatBelts(1)
+      },
+      description: "Seat belts to auto"
+    },
+    // Wipers Commands
+    {
+      phrases: ["Wipers off please", "Wipers off"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(3)
+      },
+      description: "Turns off wipers"
+    },
+    {
+      phrases: ["Wipers slow please", "Wipers slow"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(4)
+      },
+      description: "Sets wipers to slow speed"
+    },
+    {
+      phrases: ["Wipers fast please", "Wipers fast"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(5)
+      },
+      description: "Sets wipers to fast speed"
+    },
+    {
+      phrases: ["Wipers slow intermittent"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(0)
+      },
+      description: "Sets wipers to slow intermittent speed"
+    },
+    {
+      phrases: ["Wipers medium intermittent"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(1)
+      },
+      description: "Sets wipers to medium intermittent speed"
+    },
+    {
+      phrases: ["Wipers fast intermittent"],
+      action: () => {
+        playSound("check.ogg")
+        setWipers(2)
+      },
+      description: "Sets wipers to fast intermittent speed"
     },
 
     // Flight Director & Bird Commands
@@ -160,6 +270,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       },
       description: "Turns off flight director"
     },
+
     // Autopilot Commands
     {
       phrases: [
@@ -256,6 +367,16 @@ export function createVoiceCommands(): VoiceCommand[] {
       phrases: ["secure aircraft checklist", "securing the aircraft checklist"],
       action: () => executeChecklist("secure_aircraft"),
       description: "Start secure aircraft checklist"
+    },
+    {
+      phrases: ["secure aircraft checklist", "securing the aircraft checklist"],
+      action: () => executeChecklist("secure_aircraft"),
+      description: "Start secure aircraft checklist"
+    },
+    {
+      phrases: ["departure change checklist"],
+      action: () => executeChecklist("departure_change"),
+      description: "Start departure change checklist"
     },
     {
       phrases: ["stop checklist", "abort checklist", "cancel checklist"],

@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback } from "react"
 
 import { executeFlow } from "@/services/flowRunner"
 import { useFlowStore } from "@/store/flowStore"
+import { useGoAroundStore } from "@/store/goAroundStore"
 import { useTelemetryStore } from "@/store/telemetryStore"
 
 /**
@@ -49,6 +50,17 @@ export function useAutoFlows() {
 
   const phase = useRef<"ground" | "airborne">("ground")
   const primed = useRef(false)
+
+  // Re-arm after-takeoff flow on go-around
+  const goAroundCount = useRef(useGoAroundStore.getState().count)
+  useEffect(() => {
+    return useGoAroundStore.subscribe((s) => {
+      if (s.count !== goAroundCount.current) {
+        goAroundCount.current = s.count
+        triggered.current.afterTakeoff = false
+      }
+    })
+  }, [])
 
   const tick = useCallback(() => {
     const t = useTelemetryStore.getState().telemetry

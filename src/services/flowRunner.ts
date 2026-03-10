@@ -3,6 +3,7 @@ import { getFlowById, resolveFlow } from "@/services/flowLoader"
 import { playSound, isSoundPlaying } from "@/services/playSounds"
 import { useFlowStore } from "@/store/flowStore"
 import type { Flow } from "@/types/flow"
+import type { FlowStep } from "@/types/flow"
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -54,6 +55,29 @@ async function writeValue(expression: string): Promise<void> {
   }
 }
 
+function toNumber(value: number | string): number {
+  return typeof value === "string" ? parseFloat(value) : value
+}
+
+function matchesValue(actual: number | null, expected: number | string): boolean {
+  return actual !== null && Math.abs(actual - toNumber(expected)) < 0.5
+}
+
+async function shouldExecuteStep(step: FlowStep): Promise<boolean> {
+  const condition = step.only_if
+  if (!condition) {
+    return true
+  }
+
+  const conditionValue = await readValue(condition.read)
+  if (conditionValue === null) {
+    console.warn(`[FlowRunner] Step "${step.label}" condition read failed for "${condition.read}"`)
+    return false
+  }
+
+  return condition.one_of.some((expected) => matchesValue(conditionValue, expected))
+}
+
 export async function executeFlow(flowId: string): Promise<void> {
   const store = useFlowStore.getState()
 
@@ -68,7 +92,7 @@ export async function executeFlow(flowId: string): Promise<void> {
     return
   }
 
-  const flow: Flow = resolveFlow(rawFlow)
+  const flow: Flow = await resolveFlow(rawFlow)
 
   store.setFlow(flow)
 
@@ -91,6 +115,11 @@ export async function executeFlow(flowId: string): Promise<void> {
       setStepIndex(i)
       setStepStatus(i, "executing")
 
+      if (!(await shouldExecuteStep(step))) {
+        setStepStatus(i, "skipped")
+        continue
+      }
+
       if (step.sound) {
         await waitForSoundFinished()
         await playSound(step.sound)
@@ -100,9 +129,9 @@ export async function executeFlow(flowId: string): Promise<void> {
       const currentValue = await readValue(step.read)
       checkAbort(signal)
 
-      const expectedValue = typeof step.expect === "string" ? parseFloat(step.expect) : step.expect
+      const expectedValue = toNumber(step.expect)
       console.log(`[FlowRunner] Step "${step.label}": read=${currentValue}, expect=${expectedValue}`)
-      if (currentValue !== null && Math.abs(currentValue - expectedValue) < 0.5) {
+      if (matchesValue(currentValue, expectedValue)) {
         // Already in correct state — skip but still honour wait_ms
         if (step.wait_ms) {
           await abortableSleep(step.wait_ms, signal)
@@ -125,6 +154,13 @@ export async function executeFlow(flowId: string): Promise<void> {
         await abortableSleep(step.wait_ms, signal)
       }
 
+      if (step.sound_on_execute) {
+        await waitForSoundFinished()
+        await playSound(step.sound_on_execute)
+        await waitForSoundFinished()
+        checkAbort(signal)
+      }
+
       if (step.skip_verify) {
         setStepStatus(i, "done")
       } else {
@@ -134,7 +170,7 @@ export async function executeFlow(flowId: string): Promise<void> {
           checkAbort(signal)
           await sleep(300)
           const newValue = await readValue(step.read)
-          if (newValue !== null && Math.abs(newValue - expectedValue) < 0.5) {
+          if (matchesValue(newValue, expectedValue)) {
             verified = true
             break
           }

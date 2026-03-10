@@ -1,9 +1,9 @@
 {
-  "id": "open_table",
+  "id": "table_open",
   "name": "Open FO Table",
   "steps": [
     {
-      "label": "table",
+      "label": "Table",
       "read": "(L:INI_FO_TRAY_COVER_TGT)",
       "on": "1 (>L:INI_FO_TRAY_COVER_TGT)",
       "expect": 1

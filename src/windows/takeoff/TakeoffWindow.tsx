@@ -42,25 +42,11 @@ export function TakeoffWindow() {
             />
           </div>
 
-          {/* Flaps */}
+          {/* Packs */}
           <div className="space-y-1">
-            <Label className="text-sm text-slate-300">Flaps</Label>
-
-            <select
-              id="flaps"
-              name="flaps"
-              value={takeoff.flaps}
-              onChange={handleInputChange}
-              className="w-full h-9 bg-slate-900/50 border border-slate-600 text-white text-sm rounded-md px-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
-          <div className="space-y-1">
-            <Label className="text-sm text-slate-300">Packs</Label>
-
+            <Label htmlFor="packs" className="text-sm text-slate-300">
+              Packs
+            </Label>
             <select
               id="packs"
               name="packs"
@@ -70,11 +56,14 @@ export function TakeoffWindow() {
             >
               <option value="on">ON</option>
               <option value="off">OFF</option>
+              <option value="apu">APU TO PACK</option>
             </select>
           </div>
 
           <div className="space-y-1">
-            <Label className="text-sm text-slate-300">Anti Ice</Label>
+            <Label htmlFor="antiIce" className="text-sm text-slate-300">
+              Anti Ice
+            </Label>
 
             <select
               id="antiIce"

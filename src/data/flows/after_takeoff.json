@@ -4,9 +4,9 @@
   "steps": [
     {
       "label": "Ground Spoilers",
-      "read": "(L:SPOILERS_ARM_SET)",
+      "read": "(L:INI_SPOILERS_ARMED)",
       "on": "1 (>K:SPOILERS_ARM_OFF)",
-      "expect": 0,
+      "expect": 1,
       "skip_verify": true
     },
     {
@@ -31,10 +31,11 @@
       "label": "pack 2",
       "read": "(L:INI_AIR_PACK2_BUTTON)",
       "on": "1 (>L:INI_AIR_PACK2_BUTTON)",
-      "expect": 1
+      "expect": 1,
+      "sound_on_execute": "packs_1_and_2_on.ogg"
     },
     {
-      "label": "Nose Wheel Light",
+      "label": "Takeoff Wheel Light",
       "read": "(L:INI_LIGHTS_NOSE)",
       "on": "2 (>L:INI_LIGHTS_NOSE)",
       "expect": 2

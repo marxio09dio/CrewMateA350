@@ -13,6 +13,7 @@ import electricPowerUp from "@/data/flows/electric_power_up.json"
 import shutdown from "@/data/flows/shutdown.json"
 import table_close from "@/data/flows/table_close.json"
 import table_open from "@/data/flows/table_open.json"
+import { simvarGet } from "@/API/simvarApi"
 import { usePerformanceStore } from "@/store/performanceStore"
 import type { Flow, FlowStep } from "@/types/flow"
 
@@ -38,22 +39,27 @@ export function getFlowById(id: string): Flow | undefined {
   return allFlows.find((f) => f.id === id)
 }
 
-function getTemplateVars(): Record<string, string> {
+async function getTemplateVars(): Promise<Record<string, string>> {
   const { takeoff, landing } = usePerformanceStore.getState()
   const vars: Record<string, string> = {}
 
-  const flapsMap: Record<string, string> = {
-    "1": "1",
-    "2": "2",
-    "3": "3"
+  // TO_FLAPS_CONF mapping: 2 → flaps 1, 3 → flaps 2, 5 → flaps 3
+  const TO_FLAPS_MAP: Record<number, string> = { 2: "1", 3: "2", 5: "3" }
+  try {
+    const toFlapsConf = await simvarGet("(L:TO_FLAPS_CONF)")
+    vars["flaps"] = toFlapsConf !== null ? (TO_FLAPS_MAP[toFlapsConf] ?? "") : ""
+  } catch {
+    vars["flaps"] = ""
   }
-  vars["flaps"] = flapsMap[takeoff.flaps] ?? "1"
 
-  const packsOn = takeoff.packs !== "off"
+  const packsOn = takeoff.packs === "on"
+  const apuPacks = takeoff.packs === "apu"
   vars["pack1_cmd"] = packsOn ? "1 (>L:INI_AIR_PACK1_BUTTON)" : "0 (>L:INI_AIR_PACK1_BUTTON)"
   vars["pack2_cmd"] = packsOn ? "1 (>L:INI_AIR_PACK2_BUTTON)" : "0 (>L:INI_AIR_PACK2_BUTTON)"
   vars["pack1_expect"] = packsOn ? "1" : "0"
   vars["pack2_expect"] = packsOn ? "1" : "0"
+  vars["apu_bleed_cmd"] = apuPacks ? "1 (>L:INI_AIR_BLEED_APU)" : "0 (>L:INI_AIR_BLEED_APU)"
+  vars["apu_bleed_expect"] = apuPacks ? "1" : "0"
 
   const antiIce = takeoff.antiIce ?? "off"
   const engAntiIce = antiIce === "oneng" || antiIce === "onengwing"
@@ -79,8 +85,8 @@ function resolveString(str: string, vars: Record<string, string>): string {
   return str.replace(/\{(\w+)\}/g, (match, key: string) => vars[key] ?? match)
 }
 
-export function resolveStep(step: FlowStep, vars?: Record<string, string>): FlowStep {
-  const templateVars = vars ?? getTemplateVars()
+export async function resolveStep(step: FlowStep, vars?: Record<string, string>): Promise<FlowStep> {
+  const templateVars = vars ?? (await getTemplateVars())
   return {
     ...step,
     label: resolveString(step.label, templateVars),
@@ -90,10 +96,10 @@ export function resolveStep(step: FlowStep, vars?: Record<string, string>): Flow
   }
 }
 
-export function resolveFlow(flow: Flow): Flow {
-  const vars = getTemplateVars()
+export async function resolveFlow(flow: Flow): Promise<Flow> {
+  const vars = await getTemplateVars()
   return {
     ...flow,
-    steps: flow.steps.map((s) => resolveStep(s, vars))
+    steps: await Promise.all(flow.steps.map((s) => resolveStep(s, vars)))
   }
 }
