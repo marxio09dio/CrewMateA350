@@ -31,12 +31,18 @@
   {
     "minuteMark": 30,
     "label": "PM back from walkaround",
-    "type": "reminder",
-    "sound": "walkaround_completed.ogg"
+    "type": "flow",
+    "sound": "walkaround_completed.ogg",
+    "flowId": "table_open"
   },
   {
     "minuteMark": 25,
     "label": "Briefing",
+    "type": "reminder"
+  },
+  {
+    "minuteMark": 10,
+    "label": "Cockpit preparation checklist",
     "type": "reminder"
   },
   {

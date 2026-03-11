@@ -15,7 +15,13 @@ import { executeGoAround } from "./commands/goAround"
 import { setHeadingDial } from "./commands/heading"
 import { setLandingLights } from "./commands/landing_lights"
 import { setSeatBelts } from "./commands/seat_belts"
+import { setSelHeading } from "./commands/heading"
+import { setManagedHeading } from "./commands/heading"
 import { setAirspeedDial } from "./commands/speed"
+import { setSelSpeed } from "./commands/speed"
+import { setSelAlt } from "./commands/altitude"
+import { setManagedAlt } from "./commands/altitude"
+import { setManagedSpeed } from "./commands/speed"
 import { setStrobeLights } from "./commands/strobe_lights"
 import { setTaxiLights } from "./commands/taxi_lights"
 import { setWingAntiIce } from "./commands/wing_anti_ice"
@@ -300,7 +306,54 @@ export function createVoiceCommands(): VoiceCommand[] {
       },
       description: "Turns on auto pilot"
     },
-
+    {
+      phrases: ["pull speed"],
+      action: () => {
+        playSound("check.ogg")
+        setSelSpeed(1)
+      },
+      description: "Pulls speed knob to selected mode"
+    },
+        {
+      phrases: ["manage speed"],
+      action: () => {
+        playSound("check.ogg")
+        setManagedSpeed(1)
+      },
+      description: "Pushes speed knob to managed mode"
+    },
+    {
+      phrases: ["pull heading"],
+      action: () => {
+        playSound("check.ogg")
+        setSelHeading(1)
+      },
+      description: "Pulls heading knob"
+    },
+    {
+      phrases: ["manage nav"],
+      action: () => {
+        playSound("check.ogg")
+        setManagedHeading(1)
+      },
+      description: "Pushes heading knob to managed mode"
+    },
+      {
+      phrases: ["pull altitude", "pull flight level"],
+      action: () => {
+        playSound("check.ogg")
+        setSelAlt(1)
+      },
+      description: "Pulls altitude knob"
+    },
+    {
+      phrases: ["manage altitude", "manage flight levl"],
+      action: () => {
+        playSound("check.ogg")
+        setManagedAlt(1)
+      },
+      description: "Pushes altitude knob to managed mode"
+    },
     // Flight Controls Check
     {
       phrases: ["Flight controls check", "Flight control check"],

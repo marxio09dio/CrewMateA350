@@ -663,5 +663,13 @@ class Program
             "set qnh",
             "set altimeter",
             "set missed approach altitude",
+            "pull speed",
+            "manage speed",
+            "pull heading",
+            "manage heading",
+            "pull altitude",
+            "pull flight level",
+            "manage altitude",
+            "manage flight level",
         };
 }
