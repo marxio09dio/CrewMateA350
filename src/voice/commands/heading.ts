@@ -10,3 +10,19 @@ export async function setHeadingDial(degrees: number) {
     console.error("Error setting heading dial:", error)
   }
 }
+export async function setSelHeading(position: number) {
+    try {
+      const expression = `${position} (>L:INI_FCU_SELECTED_HEADING_BUTTON)`
+      await simvarSet(expression)
+    } catch (error) {
+      console.error("Error selecting manual heading:" ,error)
+    }
+  }
+export async function setManagedHeading(position: number) {
+    try {
+      const expression = `${position} (>L:INI_FCU_MANAGED_HEADING_BUTTON)`
+      await simvarSet(expression)
+    } catch (error) {
+      console.error("Error selecting managed heading:" ,error)
+    }
+  }
