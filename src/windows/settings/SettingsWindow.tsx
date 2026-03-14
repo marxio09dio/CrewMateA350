@@ -41,6 +41,12 @@ export function SettingsWindow() {
     fetchSoundPacks()
   }, [])
 
+  useEffect(() => {
+    getCurrentWindow()
+      .show()
+      .catch(() => {})
+  }, [])
+
   const handleClose = () => {
     getCurrentWindow().close()
   }

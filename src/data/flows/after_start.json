@@ -42,7 +42,7 @@
       "label": "Dome off",
       "read": "(L:INI_CKPT_LT_DOME)",
       "on": "25 (>L:INI_CKPT_LT_DOME)",
-      "expect" : 25
+      "expect": 25
     }
   ]
 }

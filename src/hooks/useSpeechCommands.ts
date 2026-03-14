@@ -29,16 +29,17 @@ export function useSpeechCommands({ voiceEnabled }: UseSpeechCommandsOptions) {
       const spokenText = event.payload?.text?.trim().toLowerCase()
       if (!spokenText) return
 
-      // While a checklist challenge/response loop is active, the checklist
-      // runner handles speech directly — suppress regular command processing.
-      if (useChecklistStore.getState().executionState === "running") return
-
       const matchedCommand = commands.find((command) =>
         command.phrases.some((phrase) => {
           const normalizedPhrase = phrase.toLowerCase()
           return command.exactMatch ? spokenText === normalizedPhrase : spokenText.includes(normalizedPhrase)
         })
       )
+
+      // While a checklist challenge/response loop is active, the checklist
+      // runner handles speech directly — suppress regular command processing
+      // unless a command explicitly opts-in to run during checklist execution.
+      if (useChecklistStore.getState().executionState === "running" && !matchedCommand?.allowDuringChecklist) return
 
       setRecognizedText(spokenText)
       setIsValidCommand(!!matchedCommand)

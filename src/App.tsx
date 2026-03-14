@@ -1,3 +1,6 @@
+import { getCurrentWindow } from "@tauri-apps/api/window"
+import { useEffect } from "react"
+
 import { ChecklistPanel } from "@/components/ChecklistPanel"
 import { FlowPanel } from "@/components/FlowPanel"
 import { Footer } from "@/components/Footer"
@@ -37,13 +40,19 @@ function App() {
   const { recognizedText, isValidCommand } = useSpeechCommands({ voiceEnabled })
   useCloseConfirm()
 
+  useEffect(() => {
+    getCurrentWindow()
+      .show()
+      .catch(() => {})
+  }, [])
+
   const currentEvent = usePreflightTimerStore((s) => s.currentEvent)
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-1 bg-black text-white p-2">
+    <div className="flex  bg-black flex-col min-h-screen">
+      <main className="flex-1  text-white p-2">
         <div className="max-w-6xl mx-auto">
-          {!connected ? (
+          {connected ? (
             <div className="flex flex-col items-center justify-center mb-6 py-5">
               <div className="relative flex items-center justify-center mb-4">
                 <div className="w-10 h-10 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>

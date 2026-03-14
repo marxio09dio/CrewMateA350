@@ -4,6 +4,8 @@ use audio::audio_commands::{
     get_sound_packs, is_audio_playing, play_sound, play_sound_sequence, AudioPlayerState,
 };
 use audio::audio_player::AudioPlayer;
+use tauri_plugin_window_state::StateFlags;
+
 mod brigdes;
 use brigdes::speech_bridge::SpeechBridge;
 mod vosk_models;
@@ -82,6 +84,7 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(
             tauri_plugin_window_state::Builder::new()
+                .with_state_flags(StateFlags::all() & !StateFlags::VISIBLE)
                 .with_denylist(&["takeoff", "landing", "settings"])
                 .build(),
         )

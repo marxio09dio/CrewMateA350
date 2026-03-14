@@ -36,6 +36,7 @@ interface VoiceCommand {
   action: () => void | Promise<void>
   description: string
   exactMatch?: boolean
+  allowDuringChecklist?: boolean
 }
 
 /**
@@ -541,6 +542,7 @@ export function createVoiceCommands(): VoiceCommand[] {
     {
       phrases: ["stop checklist", "abort checklist", "cancel checklist"],
       action: () => abortChecklist(),
+      allowDuringChecklist: true,
       description: "Stop current checklist"
     }
   ]

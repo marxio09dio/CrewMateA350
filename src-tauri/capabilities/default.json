@@ -11,6 +11,7 @@
     "log:default",
     "dialog:default",
     "core:window:allow-close",
+    "core:window:allow-show",
     "window-state:default"
   ]
 }

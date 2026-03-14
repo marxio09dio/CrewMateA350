@@ -1,5 +1,6 @@
 import { emit } from "@tauri-apps/api/event"
 import { getCurrentWindow } from "@tauri-apps/api/window"
+import { useEffect } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,6 +9,12 @@ import { usePerformanceStore } from "@/store/performanceStore"
 
 export function LandingWindow() {
   const { landing, setLandingData } = usePerformanceStore()
+
+  useEffect(() => {
+    getCurrentWindow()
+      .show()
+      .catch(() => {})
+  }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target

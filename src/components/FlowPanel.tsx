@@ -36,16 +36,16 @@ export function FlowPanel() {
   }, [currentFlow])
 
   return (
-    <div className="mt-4 space-y-3">
+    <div className="mt-1 space-y-1">
       {/* Flow selector + play/stop */}
-      <div className="flex items-center gap-2">
-        <span className="text-cyan-400 text-xs">Flow</span>
+      <div className="flex items-center gap-1.5">
+        <span className="text-amber-400 text-[10px] font-mono shrink-0">Flow</span>
         <select
           aria-label="Select flow"
           value={selectedFlowId ?? ""}
           onChange={(e) => setSelectedFlowId(e.target.value || null)}
           disabled={isRunning && currentFlow?.id !== selectedFlowId}
-          className="h-8 px-3 text-xs bg-transparent border border-slate-700/50 text-slate-200 rounded"
+          className="flex-1 min-w-0 h-6 px-1.5 text-[10px] bg-transparent border border-slate-700/50 text-slate-200 rounded"
         >
           {allFlows.map((flow) => (
             <option key={flow.id} value={flow.id} className="bg-slate-900 text-slate-200">
@@ -63,16 +63,15 @@ export function FlowPanel() {
             }
           }}
           disabled={isRunning && currentFlow?.id !== selectedFlowId}
-          className={`h-8 px-3 text-xs bg-transparent border border-slate-700/50 hover:bg-cyan-400/10 transition ${
-            isRunning && currentFlow?.id === selectedFlowId ? "border-cyan-400 bg-cyan-400/10" : ""
+          className={`h-6 px-2 text-[10px] bg-transparent border border-slate-700/50 hover:bg-amber-400/10 transition shrink-0 ${
+            isRunning && currentFlow?.id === selectedFlowId ? "border-amber-400 bg-amber-400/10" : ""
           } ${isRunning && currentFlow?.id !== selectedFlowId ? "opacity-40" : ""}`}
         >
           {isRunning && currentFlow?.id === selectedFlowId ? (
-            <Square className="w-3 h-3 mr-1.5 text-red-400" />
+            <Square className="w-2.5 h-2.5 text-red-400" />
           ) : (
-            <Play className="w-3 h-3 mr-1.5 text-cyan-300" />
+            <Play className="w-2.5 h-2.5 text-amber-300" />
           )}
-          <span className="text-slate-200">{isRunning && currentFlow?.id === selectedFlowId ? "Stop" : "Run"}</span>
         </Button>
       </div>
 

@@ -8,7 +8,7 @@
       "on": "0 (>L:INI_BATT_VOLTAGE_SELECTOR)",
       "expect": 0
     },
-      {
+    {
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": " 1 (>L:INI_BATT_VOLTAGE_SELECTOR)",
@@ -26,7 +26,7 @@
       "on": "4 (>L:INI_BATT_VOLTAGE_SELECTOR)",
       "expect": 4
     },
-      {
+    {
       "label": "Battery volts check complete",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": "2 (>L:INI_BATT_VOLTAGE_SELECTOR)",
@@ -123,10 +123,10 @@
       "label": "Dome on",
       "read": "(L:INI_CKPT_LT_DOME)",
       "on": "85 (>L:INI_CKPT_LT_DOME)",
-      "expect" : 85,
+      "expect": 85,
       "only_if": {
         "read": "(E:TIME OF DAY)",
-        "one_of": [0,3]
+        "one_of": [0, 3]
       }
     }
   ]

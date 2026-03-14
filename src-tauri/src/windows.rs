@@ -27,6 +27,7 @@ fn create_modal_window(
         .inner_size(width, height)
         .maximizable(false)
         .resizable(resizable)
+        .visible(false)
         .minimizable(false)
         .always_on_top(true);
 
