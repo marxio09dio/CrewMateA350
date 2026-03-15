@@ -37,9 +37,16 @@ export function useSpeechCommands({ voiceEnabled }: UseSpeechCommandsOptions) {
       )
 
       // While a checklist challenge/response loop is active, the checklist
-      // runner handles speech directly — suppress regular command processing
-      // unless a command explicitly opts-in to run during checklist execution.
-      if (useChecklistStore.getState().executionState === "running" && !matchedCommand?.allowDuringChecklist) return
+      // runner handles speech directly — do not run regular commands unless
+      // a command explicitly opts-in to run during checklist execution.
+      // However, we still want to display the recognized text on the UI so
+      // the user sees their response while the checklist is running.
+      const checklistRunning = useChecklistStore.getState().executionState === "running"
+      if (checklistRunning && !matchedCommand?.allowDuringChecklist) {
+        setRecognizedText(spokenText)
+        setIsValidCommand(false)
+        return
+      }
 
       setRecognizedText(spokenText)
       setIsValidCommand(!!matchedCommand)
