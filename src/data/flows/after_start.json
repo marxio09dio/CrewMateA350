@@ -14,6 +14,13 @@
       "on": "(>K:FLAPS_{flaps})",
       "expect": "{flaps}"
     },
+     {
+      "label": "Reset Rudder Trim",
+      "read": "(L:RUDDER_TRIM_RESET_REQ)",
+      "on": "1 (>L:RUDDER_TRIM_RESET_REQ)",
+      "expect": 1,
+      "skip_verify": true
+    },
     {
       "label": "Engine 1 Anti Ice",
       "read": "(L:INI_ENG_ANTI_ICE1_STATE)",
@@ -41,8 +48,8 @@
     {
       "label": "Dome off",
       "read": "(L:INI_CKPT_LT_DOME)",
-      "on": "25 (>L:INI_CKPT_LT_DOME)",
-      "expect": 25
+      "on": "0 (>L:INI_CKPT_LT_DOME)",
+      "expect": 0
     }
   ]
 }
