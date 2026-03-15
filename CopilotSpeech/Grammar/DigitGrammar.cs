@@ -10,7 +10,8 @@ partial class Program
 
         // "[digits] set"  e.g. "one zero two three set"
         // "[digits] tons" e.g. "nine tons"
-        var suffixes = new[] { "set", "tons" };
+        // "[digits] feet" e.g. "one zero zero feet"
+        var suffixes = new[] { "set", "tons", "feet" };
         foreach (var seq in seqs4)
         foreach (var suffix in suffixes)
             yield return $"{seq} {suffix}";
