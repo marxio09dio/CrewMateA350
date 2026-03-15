@@ -1,10 +1,12 @@
 import { emit } from "@tauri-apps/api/event"
 import { getCurrentWindow } from "@tauri-apps/api/window"
+import { Info } from "lucide-react"
 import { useEffect } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { usePerformanceStore } from "@/store/performanceStore"
 
 const selectCls =
@@ -31,6 +33,8 @@ export function TakeoffWindow() {
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     handleChange(e.target.name, e.target.value)
   }
+
+  const labelRow = "flex items-center gap-1 h-4"
 
   return (
     <div className="h-screen bg-black text-white p-3 flex flex-col gap-3">
@@ -59,9 +63,12 @@ export function TakeoffWindow() {
       {/* Thrust + Packs + Anti Ice */}
       <div className="grid grid-cols-3 gap-2">
         <div className="space-y-1">
-          <Label htmlFor="thrustSetting" className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
-            Thrust
-          </Label>
+          <div className={labelRow}>
+            <Label htmlFor="thrustSetting" className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
+              Thrust
+            </Label>
+          </div>
+
           <select
             id="thrustSetting"
             name="thrustSetting"
@@ -75,9 +82,12 @@ export function TakeoffWindow() {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="packs" className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
-            Packs
-          </Label>
+          <div className={labelRow}>
+            <Label htmlFor="packs" className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
+              Packs
+            </Label>
+          </div>
+
           <select id="packs" name="packs" value={takeoff.packs} onChange={handleSelectChange} className={selectCls}>
             <option value="on">ON</option>
             <option value="off">OFF</option>
@@ -86,9 +96,23 @@ export function TakeoffWindow() {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="antiIce" className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
-            Anti Ice
-          </Label>
+          <div className={labelRow}>
+            <Label htmlFor="antiIce" className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
+              Anti Ice
+            </Label>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="w-3 h-3 text-slate-400 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="text-xs max-w-[200px]">
+                  Other than OFF will not set the flaps automatically on after start flow.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
           <select
             id="antiIce"
             name="antiIce"
@@ -105,7 +129,7 @@ export function TakeoffWindow() {
 
       <Button
         onClick={() => getCurrentWindow().close()}
-        className="w-full h-8 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-sm mt-auto"
+        className="w-full h-8 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-sm mt-3"
       >
         Ok
       </Button>
