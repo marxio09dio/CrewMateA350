@@ -4,18 +4,20 @@
   "sound_start": "clear_right.ogg",
   "steps": [
     {
-      "label": "Nose Wheel Light",
-      "read": "(L:INI_LIGHTS_NOSE)",
-      "on": "1 (>L:INI_LIGHTS_NOSE)",
+      "label": "ND SET",
+      "read": "(L:INI_MAP_MODE_RANGE_FO_SWITCH)",
+      "on": "1 (>L:INI_MAP_MODE_RANGE_FO_SWITCH)",
       "expect": 1
     },
     {
-      "label": "ECAM TO CONFIG",
-      "read": "(L:PUSH_ECAM_TOCONFIG)",
-      "on": "1 (>L:PUSH_ECAM_TOCONFIG)",
-      "hold_ms": 2000,
+      "label": "Nose Wheel Light",
+      "read": "(L:INI_LIGHTS_NOSE)",
+      "on": "1 (>L:INI_LIGHTS_NOSE)",
       "expect": 1,
-      "skip_verify": true
+      "only_if": {
+        "option": "settings.lightsControlMode",
+        "one_of": ["virtual"]
+      }
     }
   ]
 }

@@ -21,6 +21,12 @@
       "expect": 1
     },
     {
+      "label": "Seat belts",
+      "read": "(L:INI_SEATBELTS_SWITCH)",
+      "on": "2 (>L:INI_SEATBELTS_SWITCH)",
+      "expect": 2
+    },
+    {
       "label": "Terrain Display",
       "read": "(L:INI_TERR_ON_FO)",
       "on": "1 (>L:INI_TERR_ON_FO)",

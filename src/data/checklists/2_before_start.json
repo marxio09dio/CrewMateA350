@@ -7,14 +7,16 @@
       "var": "(A:BRAKE PARKING INDICATOR, Bool)",
       "expected": true,
       "incorrect": "are_you_sure.ogg",
-      "response": ["on"],
+      "response": ["set, released"],
       "label": "Parking Brake"
     },
     {
       "challenge": "takeoff_speeds_and_thrust.ogg",
       "response": ["set and checked"],
-      "label": "Takeoff Speeds and Thrust"
+      "label": "Takeoff Speeds and Thrust",
+      "copilot_confirmation": "checked.ogg"
     },
+
     {
       "challenge": "slides.ogg",
       "response": ["armed"],
@@ -36,8 +38,14 @@
       ]
     },
     {
+      "label": "Beacon On",
+      "var": "(L:INI_LIGHTS_BEACON, Bool)",
+      "expected": true,
+      "incorrect": "check_beacon.ogg"
+    },
+    {
       "challenge": "nws_disc_memo.ogg",
-      "response": ["on"],
+      "response": ["checked"],
       "label": "Nose Wheel disconnect Memo"
     }
   ],

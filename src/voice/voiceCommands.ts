@@ -442,7 +442,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Pulls altitude knob"
     },
     {
-      phrases: ["manage altitude", "manage flight levl"],
+      phrases: ["manage altitude", "manage flight level"],
       action: () => {
         playSound("check.ogg")
         setManagedAlt(1)
@@ -475,7 +475,11 @@ export function createVoiceCommands(): VoiceCommand[] {
       action: () => executeFlow("before_takeoff"),
       description: "Start before takeoff procedure/flow"
     },
-
+    {
+      phrases: ["takeoff"],
+      action: () => executeFlow("takeoff"),
+      description: "Start takeoff flow"
+    },
     // Preflight Timer Commands
     {
       phrases: ["lets prepare the aircraft", "lets prepare the flight", "lets set up the aircraft"],

@@ -9,6 +9,13 @@
       "expect": 1
     },
     {
+      "label": "Reset Rudder Trim",
+      "read": "(L:RUDDER_TRIM_RESET_REQ)",
+      "on": "1 (>L:RUDDER_TRIM_RESET_REQ)",
+      "expect": 1,
+      "skip_verify": true
+    },
+    {
       "label": "Flaps {flaps}",
       "read": "(A:FLAPS HANDLE INDEX,Number)",
       "on": "(>K:FLAPS_{flaps})",
@@ -17,37 +24,6 @@
         "option": "takeoff.antiIce",
         "one_of": ["off"]
       }
-    },
-    {
-      "label": "Reset Rudder Trim",
-      "read": "(L:RUDDER_TRIM_RESET_REQ)",
-      "on": "1 (>L:RUDDER_TRIM_RESET_REQ)",
-      "expect": 1,
-      "skip_verify": true
-    },
-    {
-      "label": "Engine 1 Anti Ice",
-      "read": "(L:INI_ENG_ANTI_ICE1_STATE)",
-      "on": "{anti_ice_eng1_cmd}",
-      "expect": "{anti_ice_eng1_expect}"
-    },
-    {
-      "label": "Engine 2 Anti Ice",
-      "read": "(L:INI_ENG_ANTI_ICE2_STATE)",
-      "on": "{anti_ice_eng2_cmd}",
-      "expect": "{anti_ice_eng2_expect}"
-    },
-    {
-      "label": "Wing Anti Ice",
-      "read": "(L:INI_WING_ANTI_ICE1_STATE)",
-      "on": "{anti_ice_wing_cmd}",
-      "expect": "{anti_ice_wing_expect}"
-    },
-    {
-      "label": "Terrain Display",
-      "read": "(L:INI_TERR_ON_FO)",
-      "on": "1 (>L:INI_TERR_ON_FO)",
-      "expect": 1
     },
     {
       "label": "Dome off",

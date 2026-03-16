@@ -136,6 +136,8 @@ $phrases = @{
     "one_to_go"                                 = "One thousand to go"
     "standard_set"                              = "Standard Set"
     "missed_approach_alt_set"                   = "Missed approach altitude set"
+    "check_beacon"                              = "Beacon is not on"
+    "check_belts"                               = "Seat belt sign is not on"
 }
 
 # Derive folder name from voice: "en-US-JennyNeural" -> "Jenny"

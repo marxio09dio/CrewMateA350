@@ -39,7 +39,7 @@
     },
     {
       "challenge": "radar.ogg",
-      "response": ["on", "off", "set and checked"],
+      "response": ["on", "set and checked"],
       "label": "Radar"
     }
   ],
