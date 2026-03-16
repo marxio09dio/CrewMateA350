@@ -9,7 +9,7 @@
     },
     {
       "challenge": "takeoff_runway.ogg",
-      "response": ["confirmed"],
+      "response": [" confirmed"],
       "label": "Take off Runway",
       "copilot_confirmation": "confirmed.ogg"
     },

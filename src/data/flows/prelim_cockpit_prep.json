@@ -72,19 +72,19 @@
     {
       "label": "IRS 1 NAV",
       "read": "(L:INI_IRS1_STATE)",
-      "on": "1 (>L:INI_IRS1_STATE",
+      "on": "1 (>L:INI_IRS1_STATE)",
       "expect": 1
     },
     {
       "label": "IRS 2 NAV",
       "read": "(L:INI_IRS2_STATE)",
-      "on": "1 (>L:INI_IRS2_STATE",
+      "on": "1 (>L:INI_IRS2_STATE)",
       "expect": 1
     },
     {
       "label": "IRS 3 NAV",
       "read": "(L:INI_IRS3_STATE)",
-      "on": "1 (>L:INI_IRS3_STATE",
+      "on": "1 (>L:INI_IRS3_STATE)",
       "expect": 1
     },
     {

@@ -19,6 +19,12 @@
       "expect": "{landing_apu_master_expect}"
     },
     {
+      "label": "APU Start",
+      "read": "(L:INI_APU_START_BUTTON)",
+      "on": "{landing_apu_start_cmd}",
+      "expect": "{landing_apu_start_expect}"
+    },
+    {
       "label": "Engine 1 Anti Ice",
       "read": "(L:INI_ENG_ANTI_ICE1_STATE)",
       "on": "{landing_anti_ice_eng1_cmd}",
@@ -29,12 +35,6 @@
       "read": "(L:INI_ENG_ANTI_ICE2_STATE)",
       "on": "{landing_anti_ice_eng2_cmd}",
       "expect": "{landing_anti_ice_eng2_expect}"
-    },
-    {
-      "label": "APU Start",
-      "read": "(L:INI_APU_START_BUTTON)",
-      "on": "{landing_apu_start_cmd}",
-      "expect": "{landing_apu_start_expect}"
     },
     {
       "label": "Landing Lights",

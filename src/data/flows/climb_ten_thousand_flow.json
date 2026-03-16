@@ -10,7 +10,7 @@
     },
     {
       "label": "Seat belts",
-      "read": "(L:INI_SEATBELTS_SWITCH",
+      "read": "(L:INI_SEATBELTS_SWITCH)",
       "on": "1 (>L:INI_SEATBELTS_SWITCH)",
       "expect": 1
     },

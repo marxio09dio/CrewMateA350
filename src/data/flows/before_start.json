@@ -36,7 +36,7 @@
     },
     {
       "label": "HUD Bright on",
-      "read": "(L:INI_HUD_BRIGHTNESS_RIGHT",
+      "read": "(L:INI_HUD_BRIGHTNESS_RIGHT)",
       "on": "100 (>L:INI_HUD_BRIGHTNESS_RIGHT)",
       "expect": 100,
       "only_if": {
