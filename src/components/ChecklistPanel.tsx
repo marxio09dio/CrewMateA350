@@ -35,6 +35,13 @@ export function ChecklistPanel() {
     isRunning && currentChecklist ? (currentChecklist.items[currentStepIndex] ?? null) : null
   const activeResponses = activeItem ? getDisplayResponses(activeItem) : []
 
+  function renderResponseToken(r: string) {
+    if (r === "tons") return "xxx.x tons"
+    if (r === "set") return "xxxx set"
+    if (r === "feet") return "xxxx feet"
+    return r
+  }
+
   return (
     <div className="mt-1 space-y-1">
       {/* Selector row */}
@@ -119,7 +126,7 @@ export function ChecklistPanel() {
                       key={r}
                       className="px-1.5 py-px rounded text-xs font-mono bg-slate-800 text-slate-400 border border-slate-700"
                     >
-                      {r}
+                      {renderResponseToken(r)}
                     </span>
                   ))}
                 </div>

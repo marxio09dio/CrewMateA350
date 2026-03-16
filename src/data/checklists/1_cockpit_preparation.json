@@ -20,7 +20,7 @@
     },
     {
       "challenge": "baro_ref.ogg",
-      "response": ["set" ,"set and checked"],
+      "response": ["set", "set and checked"],
       "baro_confirmation": true,
       "label": "Barometric Reference"
     }
