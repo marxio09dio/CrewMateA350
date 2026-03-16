@@ -23,22 +23,20 @@
       "expect": "{apu_bleed_expect}"
     },
     {
-      "label": "Landing Lights",
-      "read": "(L:INI_LIGHTS_LANDING)",
-      "on": "1 (>L:INI_LIGHTS_LANDING)",
-      "expect": 1
+      "label": "ND SET",
+      "read": "(L:INI_MAP_MODE_RANGE_FO_SWITCH)",
+      "on": "8 (>L:INI_MAP_MODE_RANGE_FO_SWITCH)",
+      "expect": 8
     },
     {
       "label": "Strobes",
       "read": "(L:INI_LIGHTS_STROBE)",
       "on": "0 (>L:INI_LIGHTS_STROBE)",
-      "expect": 0
-    },
-    {
-      "label": "Nose Wheel Light",
-      "read": "(L:INI_LIGHTS_NOSE)",
-      "on": "0 (>L:INI_LIGHTS_NOSE)",
-      "expect": 0
+      "expect": 0,
+      "only_if": {
+        "option": "settings.lightsControlMode",
+        "one_of": ["virtual"]
+      }
     }
   ]
 }

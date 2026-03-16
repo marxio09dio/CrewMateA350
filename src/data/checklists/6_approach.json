@@ -4,13 +4,13 @@
   "items": [
     {
       "challenge": "baro_ref.ogg",
-      "response": ["#3", "#4", "set and checked"],
+      "response": ["set", "set and checked"],
       "baro_confirmation": true,
       "label": "Barometric Reference"
     },
     {
       "challenge": "minimum.ogg",
-      "response": ["#3", "#4", "set and checked"],
+      "response": ["set", "set and checked"],
       "label": "Minimums Reference"
     },
     {

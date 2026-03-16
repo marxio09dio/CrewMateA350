@@ -75,6 +75,7 @@ partial class Program
             "shutdown",
             "flight controls check",
             "set",
+            "released",
             "on",
             "off",
             "armed",

@@ -3,6 +3,7 @@ import { getFlowById, resolveFlow } from "@/services/flowLoader"
 import { playSound, isSoundPlaying } from "@/services/playSounds"
 import { useFlowStore } from "@/store/flowStore"
 import { usePerformanceStore } from "@/store/performanceStore"
+import { useSettingsStore } from "@/store/settingsStore"
 import type { Flow } from "@/types/flow"
 import type { FlowStep } from "@/types/flow"
 import type { FlowConditionValue } from "@/types/flow"
@@ -70,7 +71,12 @@ function matchesValue(actual: number | null, expected: FlowConditionValue): bool
 
 function resolveFlowOption(path: string): unknown {
   const { takeoff, landing } = usePerformanceStore.getState()
-  const root: Record<string, unknown> = { takeoff, landing }
+  const { lightsControlMode } = useSettingsStore.getState()
+  const root: Record<string, unknown> = {
+    takeoff,
+    landing,
+    settings: { lightsControlMode }
+  }
   return path.split(".").reduce<unknown>((acc, key) => {
     if (!acc || typeof acc !== "object") {
       return undefined

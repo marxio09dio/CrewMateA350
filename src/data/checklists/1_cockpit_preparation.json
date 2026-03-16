@@ -9,12 +9,18 @@
     },
     {
       "challenge": "fuel_quantity.ogg",
-      "response": ["tons", "set and checked"],
+      "response": ["kilograms", "pounds", "set and checked"],
       "label": "Fuel Quantity"
     },
     {
+      "label": "Seatbelts on",
+      "var": "(L:INI_SEATBELTS_SWITCH), number",
+      "expected": 2,
+      "incorrect": "check_belts.ogg"
+    },
+    {
       "challenge": "baro_ref.ogg",
-      "response": ["set and checked", "#3", "#4"],
+      "response": ["set" ,"set and checked"],
       "baro_confirmation": true,
       "label": "Barometric Reference"
     }

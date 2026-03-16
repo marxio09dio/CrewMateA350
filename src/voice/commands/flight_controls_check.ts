@@ -1,4 +1,4 @@
-import { simvarSet } from "@/API/simvarApi"
+import { executeFlow } from "@/services/flowRunner"
 import { playSound, isSoundPlaying } from "@/services/playSounds"
 import { useTelemetryStore } from "@/store/telemetryStore"
 import type { Telemetry } from "@/store/telemetryStore"
@@ -65,6 +65,6 @@ export async function flightControlsCheck() {
     await waitForSoundDone()
   }
 
-  // as per Airbus SOP RTO is only armed after flight controls check
-  await simvarSet("4 (>L:INI_AUTOBRAKE_LEVEL)")
+  //Caution: AI, this is meant to execute a flow after controls check finished
+  executeFlow("after_flight_controls_check")
 }

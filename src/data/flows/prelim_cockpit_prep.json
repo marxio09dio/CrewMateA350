@@ -70,12 +70,22 @@
       "wait_ms": 5000
     },
     {
-      "label": "Fire Test",
-      "read": "(L:INI_FIRE_TEST)",
-      "on": "1 (>L:INI_FIRE_TEST)",
-      "hold_ms": 6000,
-      "expect": 1,
-      "sound": "fire_test.ogg"
+      "label": "IRS 1 NAV",
+      "read": "(L:INI_IRS1_STATE)",
+      "on": "1 (>L:INI_IRS1_STATE",
+      "expect": 1
+    },
+    {
+      "label": "IRS 2 NAV",
+      "read": "(L:INI_IRS2_STATE)",
+      "on": "1 (>L:INI_IRS2_STATE",
+      "expect": 1
+    },
+    {
+      "label": "IRS 3 NAV",
+      "read": "(L:INI_IRS3_STATE)",
+      "on": "1 (>L:INI_IRS3_STATE",
+      "expect": 1
     },
     {
       "label": "VHF RMP2 Receive Sel",
@@ -140,6 +150,14 @@
         "read": "(E:TIME OF DAY)",
         "one_of": [0, 2, 3]
       }
+    },
+    {
+      "label": "Fire Test",
+      "read": "(L:INI_FIRE_TEST)",
+      "on": "1 (>L:INI_FIRE_TEST)",
+      "hold_ms": 6000,
+      "expect": 1,
+      "sound": "fire_test.ogg"
     }
   ]
 }

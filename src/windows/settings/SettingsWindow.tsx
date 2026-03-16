@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core"
 import { getCurrentWindow } from "@tauri-apps/api/window"
-import { FolderOpen, Volume2, ClipboardList } from "lucide-react"
+import { FolderOpen, Volume2, ClipboardList, Sun } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider"
 import { VoiceModelSettings } from "@/components/VoiceModelSettings"
 import { useChecklistStore } from "@/store/checklistStore"
+import { useSettingsStore } from "@/store/settingsStore"
 import { useVoiceStore } from "@/store/voiceStore"
 
 export function SettingsWindow() {
@@ -24,6 +25,9 @@ export function SettingsWindow() {
 
   const holdOnIncorrect = useChecklistStore((s) => s.holdOnIncorrect)
   const setHoldOnIncorrect = useChecklistStore((s) => s.setHoldOnIncorrect)
+
+  const lightsControlMode = useSettingsStore((s) => s.lightsControlMode)
+  const setLightsControlMode = useSettingsStore((s) => s.setLightsControlMode)
 
   useEffect(() => {
     const fetchSoundPacks = async () => {
@@ -85,6 +89,21 @@ export function SettingsWindow() {
             checked={holdOnIncorrect}
             onCheckedChange={(checked) => setHoldOnIncorrect(checked === true)}
           />
+        </div>
+
+        <SectionHeader icon={<Sun className="h-3 w-3 text-cyan-400 shrink-0" />} label="Lights" />
+
+        <div className="grid grid-cols-[120px_1fr] items-center gap-3">
+          <Label className="text-sm text-slate-300">Ground lights control</Label>
+          <Select value={lightsControlMode} onValueChange={setLightsControlMode}>
+            <SelectTrigger className="bg-slate-900/50 border-slate-600 text-white text-sm focus:ring-cyan-500">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-900 border-slate-600 text-white">
+              <SelectItem value="virtual">Crewmate</SelectItem>
+              <SelectItem value="user">You</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <Button

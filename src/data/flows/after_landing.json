@@ -13,6 +13,12 @@
       }
     },
     {
+      "label": "APU",
+      "read": "(L:INI_APU_MASTER_SWITCH)",
+      "on": "{landing_apu_master_cmd}",
+      "expect": "{landing_apu_master_expect}"
+    },
+    {
       "label": "Engine 1 Anti Ice",
       "read": "(L:INI_ENG_ANTI_ICE1_STATE)",
       "on": "{landing_anti_ice_eng1_cmd}",
@@ -25,12 +31,6 @@
       "expect": "{landing_anti_ice_eng2_expect}"
     },
     {
-      "label": "APU",
-      "read": "(L:INI_APU_MASTER_SWITCH)",
-      "on": "{landing_apu_master_cmd}",
-      "expect": "{landing_apu_master_expect}"
-    },
-    {
       "label": "APU Start",
       "read": "(L:INI_APU_START_BUTTON)",
       "on": "{landing_apu_start_cmd}",
@@ -40,19 +40,31 @@
       "label": "Landing Lights",
       "read": "(L:INI_LIGHTS_LANDING)",
       "on": "0 (>L:INI_LIGHTS_LANDING)",
-      "expect": 0
+      "expect": 0,
+      "only_if": {
+        "option": "settings.lightsControlMode",
+        "one_of": ["virtual"]
+      }
     },
     {
       "label": "Strobes",
       "read": "(L:INI_LIGHTS_STROBE)",
       "on": "1 (>L:INI_LIGHTS_STROBE)",
-      "expect": 1
+      "expect": 1,
+      "only_if": {
+        "option": "settings.lightsControlMode",
+        "one_of": ["virtual"]
+      }
     },
     {
       "label": "Nose Wheel Light",
       "read": "(L:INI_LIGHTS_NOSE)",
       "on": "1 (>L:INI_LIGHTS_NOSE)",
-      "expect": 1
+      "expect": 1,
+      "only_if": {
+        "option": "settings.lightsControlMode",
+        "one_of": ["virtual"]
+      }
     },
     {
       "label": "Weather Radar",
