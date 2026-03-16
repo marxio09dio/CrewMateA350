@@ -21,18 +21,6 @@
       "expect": 1
     },
     {
-      "label": "Engine 1 Anti Ice",
-      "read": "(L:INI_ENG_ANTI_ICE1_STATE)",
-      "on": "{landing_anti_ice_eng1_cmd}",
-      "expect": "{landing_anti_ice_eng1_expect}"
-    },
-    {
-      "label": "Engine 2 Anti Ice",
-      "read": "(L:INI_ENG_ANTI_ICE2_STATE)",
-      "on": "{landing_anti_ice_eng2_cmd}",
-      "expect": "{landing_anti_ice_eng2_expect}"
-    },
-    {
       "label": "Seat belts",
       "read": "(L:INI_SEATBELTS_SWITCH)",
       "on": "2 (>L:INI_SEATBELTS_SWITCH)",
