@@ -80,6 +80,14 @@ export const numericPrefixCommands: Record<string, (value: number) => void | Pro
 
 export function createVoiceCommands(): VoiceCommand[] {
   return [
+    // misc
+    {
+      phrases: ["brake check"],
+      action: () => {
+        playSound("pressure_zero.ogg")
+      },
+      description: "Brake check"
+    },
     // Doors / Slides Commands
     {
       phrases: ["cabin crew arm slides and cross check", "cabin crew arm slides"],

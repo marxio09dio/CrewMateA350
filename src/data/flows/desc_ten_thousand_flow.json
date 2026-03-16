@@ -15,16 +15,10 @@
       "expect": 1
     },
     {
-      "label": "Nose Wheel Light",
-      "read": "(L:INI_LIGHTS_NOSE)",
-      "on": "1 (>L:INI_LIGHTS_NOSE)",
-      "expect": 1
-    },
-    {
       "label": "Seat belts",
       "read": "(L:INI_SEATBELTS_SWITCH)",
-      "on": "2 (>L:INI_SEATBELTS_SWITCH)",
-      "expect": 2
+      "on": "0 (>L:INI_SEATBELTS_SWITCH)",
+      "expect": 0
     },
     {
       "label": "Terrain Display",
