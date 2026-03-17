@@ -35,7 +35,7 @@ function waitFor(condition: (t: Telemetry) => boolean): Promise<void> {
     }
 
     // Subscribe — fires on every telemetry push from the backend
-    const unsub = useTelemetryStore.subscribe((state) => {
+    const unsub = useTelemetryStore.subscribe((state: { telemetry: Telemetry }) => {
       if (state.telemetry && condition(state.telemetry)) {
         unsub()
         resolve()

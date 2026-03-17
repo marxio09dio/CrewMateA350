@@ -139,7 +139,7 @@ The FO will confirm the speed is checked before moving the flaps while airborne.
 | ----------------------------------------------------------------------------------- | ------------------- |
 | `"Before start procedure"` or `"Before start flow"`                                 | Before Start flow   |
 | `"Clear left"` or `"Left side clear"`                                               | Clear Left flow     |
-| `"Runway entry procedure"` or `"Clear for takeoff"` or `"Before takeoff procedure"` | Before Takeoff flow |
+| `"Runway entry procedure"` or `"Clear to line up"` or `"Before takeoff procedure"` | Before Takeoff flow |
 
 ### Launching Checklists by Voice
 
@@ -185,11 +185,9 @@ The FO performs the oxygen test procedure on the FO side.
 
 ### Before Start
 
-**When:** Just before requesting pushback or engine start.
+**When:** Just before requesting pushback or engine start. Triggered by voice: `"Before start flow or Before start procedure"`
 
 FO locks cockpit door and sets DEFAULT SETTINGS in MFD SURV.
-
-> Also triggerable by voice: `"Before start flow or Before start procedure"`
 
 ---
 
@@ -203,11 +201,9 @@ The FO arms the ground spoilers, resets rudder trim and sets the correct flap se
 
 ### Clear Left _(Taxi)_
 
-**When:** Start of taxi.
+**When:** Start of taxi. Triggered by voice: `"Clear left"`
 
 The FO announces clearance on the right side, and sets NAV RANGE to ZOOM to enable his ANF.
-
-> Also triggerable by voice: `"Clear left"`
 
 ---
 
@@ -221,7 +217,7 @@ After you do flight controls check, FO sets autobrake to RTO, checks TO CONFIG a
 
 ### Before Takeoff
 
-**When:** Entering the runway / lining up. Triggerable by voice: `"Runway entry procedure"`
+**When:** Entering the runway / lining up. Triggered by voice: `"Runway entry procedure or Clear to line up or Before takeoff procedure"`
 
 The FO configures the packs for takeoff and APU BLEED. You will hear the cabin takeoff announcement, and the FO will say **"Ready"** when complete.
 
@@ -245,7 +241,7 @@ The FO disarms the ground spoilers, shuts down the APU bleed and APU (if APU use
 
 ### Climb — Passing 10,000 ft
 
-**When:** Climbing through 10,000 ft.
+**When:** Climbing through 10,000 ft/FL100.
 
 The FO turns off the landing lights and turns on WXR his side.
 
@@ -253,7 +249,7 @@ The FO turns off the landing lights and turns on WXR his side.
 
 ### Descend — Passing 10,000 ft
 
-**When:** Descending through 10,000 ft on approach.
+**When:** Descending through 10,000 ft/FL100 on approach.
 
 The FO turns on the landing lights, sets the SEAT BELTS ON and activates the FO's LS indicator.
 

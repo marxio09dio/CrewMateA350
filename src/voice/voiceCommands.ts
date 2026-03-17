@@ -78,7 +78,7 @@ export const numericPrefixCommands: Record<string, (value: number) => void | Pro
   "flight level  manage": async (v) => {
     setManagedAlt(1)
     await new Promise((r) => setTimeout(r, 500))
-    setHeadingDial(v * 100)
+    setAltitudeDial(v * 100)
   },
   "flight level  pull": async (v) => {
     setSelAlt(1)
@@ -88,7 +88,7 @@ export const numericPrefixCommands: Record<string, (value: number) => void | Pro
   "altitude  manage": async (v) => {
     setManagedAlt(1)
     await new Promise((r) => setTimeout(r, 500))
-    setHeadingDial(v)
+    setAltitudeDial(v)
   },
   "altitude  pull": async (v) => {
     setSelAlt(1)
