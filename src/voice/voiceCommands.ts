@@ -70,12 +70,31 @@ export const numericPrefixCommands: Record<string, (value: number) => void | Pro
     await new Promise((r) => setTimeout(r, 500))
     setHeadingDial(v)
   },
-
   "pull speed ": async (v) => {
     setSelSpeed(1)
     await new Promise((r) => setTimeout(r, 500))
     setAirspeedDial(v)
-  }
+  },
+  "flight level  manage": async (v) => {
+    setManagedAlt(1)
+    await new Promise((r) => setTimeout(r, 500))
+    setHeadingDial(v * 100)
+  },
+  "flight level  pull": async (v) => {
+    setSelAlt(1)
+    await new Promise((r) => setTimeout(r, 500))
+    setAltitudeDial(v * 100)
+  },
+  "altitude  manage": async (v) => {
+    setManagedAlt(1)
+    await new Promise((r) => setTimeout(r, 500))
+    setHeadingDial(v)
+  },
+  "altitude  pull": async (v) => {
+    setSelAlt(1)
+    await new Promise((r) => setTimeout(r, 500))
+    setAltitudeDial(v)
+  },
 }
 
 export function createVoiceCommands(): VoiceCommand[] {
@@ -442,7 +461,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Pushes heading knob to managed mode"
     },
     {
-      phrases: ["pull altitude", "pull flight level"],
+      phrases: ["altitude pull", "flight level pull"],
       action: () => {
         playSound("check.ogg")
         setSelAlt(1)
@@ -450,7 +469,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Pulls altitude knob"
     },
     {
-      phrases: ["manage altitude", "manage flight level"],
+      phrases: ["altitude manage", "flight level manage"],
       action: () => {
         playSound("check.ogg")
         setManagedAlt(1)

@@ -39,6 +39,13 @@
       "read": "(L:INI_LIGHTS_NOSE)",
       "on": "2 (>L:INI_LIGHTS_NOSE)",
       "expect": 2
+    },
+    {
+      "label": "Chrono",
+      "read": "(L:INI_FO_CHRONO_BUTTON)",
+      "on": "1 (>L:INI_FO_CHRONO_BUTTON)",
+      "expect": 0,
+      "skip_verify": true
     }
   ]
 }

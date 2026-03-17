@@ -76,38 +76,56 @@ The FO will confirm the speed is checked before moving the flaps while airborne.
 | `"Landing lights on"`  | Turns on landing lights.  |
 | `"Landing lights off"` | Turns off landing lights. |
 
-### Taxi Lights
+### Nose Wheel Lights
 
-| Say                 | What happens               |
-| ------------------- | -------------------------- |
-| `"Taxi lights on"`  | Turns on nose taxi light.  |
-| `"Taxi lights off"` | Turns off nose taxi light. |
+| Say                  | What happens                 |
+|----------------------|------------------------------|
+| `"Takeoff light on"` | Turns on nose takeoff light. |
+| `"Taxi lights on"`   | Turns on nose taxi light.    |
+| `"Taxi lights off"`  | Turns off nose taxi light.   |
 
 ### Strobe Lights
 
-| Say                   | What happens       |
-| --------------------- | ------------------ |
-| `"Strobe lights on"`  | Turns on strobes.  |
-| `"Strobe lights off"` | Turns off strobes. |
+| Say                    | What happens       |
+|------------------------|--------------------|
+| `"Strobe lights on"`   | Turns on strobes.  |
+| `"Strobe lights auto"` | Sets strobes auto. |
+| `"Strobe lights off"`  | Turns off strobes. |
 
 ### Flight Director
 
-| Say                     | What happens                     |
-| ----------------------- | -------------------------------- |
-| `"Flight Director on"`  | Activates the Flight Director.   |
-| `"Flight Director off"` | Deactivates the Flight Director. |
+| Say                             | What happens                                               |
+|---------------------------------|------------------------------------------------------------|
+| `"Flight Director on"`          | Activates the Flight Director.                             |
+| `"Flight Director off"`         | Deactivates the Flight Director.                           |
+| `"Flight Director off bird on"` | Deactivates the Flight Director and selects TRK/FPA on AP. |
+| `"Bird on"`                     | Selects TRK/FPA on AP.                                     |
+| `"Bird off"`                    | Deselects TRK/FPA on AP.                                   |
 
 ### Autopilot
 
-| Say                                   | What happens         |
-| ------------------------------------- | -------------------- |
-| `"Autopilot on"` or `"Auto Pilot on"` | Engages Autopilot 1. |
+| Say                                                                                                 | What happens                                                                  |
+|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| `"Autopilot on"` or `"Auto Pilot on"`                                                               | Engages Autopilot 1.                                                          |
+| `"Set speed ___ or speed select ___"`                                                               | Sets commanded speed.                                                         |
+| `"Set heading ___ or heading select ____"`                                                          | Sets commanded heading.                                                       |
+| `" Set altitude _____ or altitude select _____ or set flight level ___ or flight level select ___"` | Sets commanded altitude                                                       |
+| `"Pull speed"`                                                                                      | Pulls speed knob to select selected speed.                                    |
+| `"Pull speed ___"`                                                                                  | Pulls speed knob to select selected speed and sets the commanded speed.       |
+| `"Manage speed"`                                                                                    | Pushes speed knob to select managed speed                                     |
+| `"Pull heading"`                                                                                    | Pulls heading knob to select selected heading.                                |
+| `"Pull heading ___"`                                                                                | Pulls heading knob to select selected heading and sets the commanded heading. |
+| `"Manage nav"`                                                                                      | Pushes heading knob to select LNAV.                                           |
+| `" Altitude _____ pull or Flight level ___ pull"`                                                   | Sets commanded altitude and pulls altitude knob.                              |
+| `" Altitude _____ manage or Flight level ___ manage"`                                               | Sets commanded altitude and pushes altitude knob.                             |
+| `" Altitude pull or Flight level pull"`                                                             | Pulls altitude knob.                                                          |
+| `" Altitude manage or Flight level manage"`                                                         | Pushes altitude knob.                                                         |
 
 ### Flight Controls Check
 
-| Say                       | What happens                                                                     |
-| ------------------------- | -------------------------------------------------------------------------------- |
-| `"Flight controls check"` | Starts the Fligt controls flow: Up, Down, Left, Right, Rudder Left, Rudder Right |
+| Say                       | What happens                                                                      |
+|---------------------------|-----------------------------------------------------------------------------------|
+| `"Flight controls check"` | Starts the Flight controls flow: Up, Down, Left, Right, Rudder Left, Rudder Right |
 
 ### Preflight Timer
 
@@ -136,6 +154,7 @@ The FO will confirm the speed is checked before moving the flaps while airborne.
 | `"Landing checklist"`                                             | Landing                     |
 | `"Parking checklist"`                                             | Parking                     |
 | `"Secure aircraft checklist"`                                     | Secure Aircraft             |
+| `"Departure change checklist"`                                    | Departure Change Checklist  |
 | `"Stop checklist"` or `"Abort checklist"` or `"Cancel checklist"` | Aborts the active checklist |
 
 ---
@@ -148,19 +167,19 @@ Flows are listed in approximate flight-phase order:
 
 ---
 
-### Electric Power Up
+### Preliminary Cockpit Preparation
 
 **When:** Cold and dark, before anything else.
 
-The FO powers up the aircraft — activating batteries, connecting external power, and running the fire test. Also configures the RMP audio panel for the FO side.
+The FO powers up the aircraft — activating batteries, connecting external power, runs the fire test, sets IRS and configures his RMP. Shortly after he does the walkaround
 
 ---
 
-### Before Walkaround
+### Cockpit Preparation (CM2 side)
 
-**When:** After initial power-up, before the walkaround.
+**When:** After walkaround.
 
-The FO performs the oxygen test procedure on the FO side, then announces when it's time to do the exterior walkaround.
+The FO performs the oxygen test procedure on the FO side.
 
 ---
 
@@ -168,35 +187,59 @@ The FO performs the oxygen test procedure on the FO side, then announces when it
 
 **When:** Just before requesting pushback or engine start.
 
-The FO turns on all fuel pumps and the Beacon light.
+FO locks cockpit door and sets DEFAULT SETTINGS in MFD SURV.
 
-> Also triggerable by voice: `"Before start flow"`
+> Also triggerable by voice: `"Before start flow or Before start procedure"`
 
 ---
 
 ### After Start
 
-**When:** After both engines are running and ingtion changed from start to normal.
+**When:** After both engines are running and ignition knob set to NORM.
 
-The FO arms the ground spoilers, sets the correct flap setting for takeoff, configures engine and wing anti-ice based on the conditions entered in the performance panel, and enables the terrain display.
+The FO arms the ground spoilers, resets rudder trim and sets the correct flap setting for takeoff. Do note when icing conditions present (set in takeoff window), flaps will be left up, remember to command flap setting when near holding point of runway.
 
 ---
 
-### Clear Left _(Before Takeoff)_
+### Clear Left _(Taxi)_
 
-**When:** Just before rolling onto the runway.
+**When:** Start of taxi.
 
-The FO turns on the nose wheel light, announces clearance on the right side, and presses the ECAM TO CONFIG button for you.
+The FO announces clearance on the right side, and sets NAV RANGE to ZOOM to enable his ANF.
 
 > Also triggerable by voice: `"Clear left"`
 
 ---
 
+### Flight Controls Check _(Taxi)_
+
+**When:** During taxi.
+
+After you do flight controls check, FO sets autobrake to RTO, checks TO CONFIG and turns on TERR display.
+
+---
+
 ### Before Takeoff
 
-**When:** Entering the runway / lining up. Triggerable by voice: `"Clear for takeoff"`
+**When:** Entering the runway / lining up. Triggerable by voice: `"Runway entry procedure"`
 
-The FO configures the packs for takeoff, turns on the landing lights, activates strobes, and turns off the nose wheel light. You will hear the cabin takeoff announcement, and the FO will say **"Ready"** when complete.
+The FO configures the packs for takeoff and APU BLEED. You will hear the cabin takeoff announcement, and the FO will say **"Ready"** when complete.
+
+---
+
+### Takeoff
+
+**When:** You announced to Crewmate that you are taking off via the voice command: `"Takeoff"`.
+
+FO Starts chrono.
+
+---
+
+### After Takeoff
+
+**When:** When flaps are 0.
+
+The FO disarms the ground spoilers, shuts down the APU bleed and APU (if APU used), turns on both packs (if OFF), and turns off the nose wheel light.
 
 ---
 
@@ -204,15 +247,7 @@ The FO configures the packs for takeoff, turns on the landing lights, activates 
 
 **When:** Climbing through 10,000 ft.
 
-The FO turns off the landing lights and logo lights.
-
----
-
-### After Takeoff
-
-**When:** Shortly after takeoff, positive climb confirmed.
-
-The FO disarms the ground spoilers, shuts down the APU bleed and APU, turns on both packs, and turns off the nose wheel light.
+The FO turns off the landing lights and turns on WXR his side.
 
 ---
 
@@ -220,15 +255,15 @@ The FO disarms the ground spoilers, shuts down the APU bleed and APU, turns on b
 
 **When:** Descending through 10,000 ft on approach.
 
-The FO turns on the landing lights and logo lights, turns on the nose wheel light, and activates the FO's ILS/LS.
+The FO turns on the landing lights, sets the SEAT BELTS ON and activates the FO's LS indicator.
 
 ---
 
 ### After Landing
 
-**When:** Once clear of the runway after landing.
+**When:** When you disarm spoilers.
 
-The FO turns off the landing lights, changes strobes to standby, turns on the nose wheel light, retracts the flaps, and starts the APU.
+The FO retracts the flaps, starts the APU, configures anti ice, and turns off WXR/TERR.
 
 ---
 
@@ -236,7 +271,7 @@ The FO turns off the landing lights, changes strobes to standby, turns on the no
 
 **When:** Engines off, parked at gate.
 
-The FO turns off all fuel pumps.
+The FO turns off all fuel pumps and anti ice systems.
 
 ---
 
@@ -260,6 +295,8 @@ Start by saying: **`"Cockpit preparation checklist"`**
 | Fuel quantity        | `"Set and checked"`                                                 |
 | Barometric reference | `"Set and checked"` or your QNH setting (e.g. `"1013"` or `"2992"`) |
 
+Seat belts item is auto sensed in ECL but FO will check if it's on.
+
 ---
 
 ### Before Start
@@ -270,8 +307,10 @@ Start by saying: **`"Before start checklist"`**
 | -------------------------- | ------------------- | ------------------------------------------------------------------ |
 | Parking brake              | `"Set"`             | The FO will verify the parking brake is physically set in the sim. |
 | Takeoff speeds and thrust  | `"Set and checked"` | —                                                                  |
-| Slides                     | `"Armed"`           | —                                                                  |
-| Nose wheel disconnect memo | `"On"`              | —                                                                  |
+| Slides                     | `"Armed"`           | FO will check if slides are armed                                  |
+| Nose wheel disconnect memo | `"Checked"`         | —                                                                  |
+
+Beacon item is auto sensed in ECL but FO will check if it's on.
 
 ---
 
@@ -294,7 +333,7 @@ Start by saying: **`"Taxi checklist"`**
 | FO Challenge  | Say                                                           | Notes                                                            |
 | ------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- |
 | Flap settings | `"Config one plus F"`, `"Config two"`, or `"Set and checked"` | The FO verifies flapselection matches your performance settings. |
-| Radar         | `"On"`, `"Off"`, or `"Set and checked"`                       | —                                                                |
+| Radar         | `"On"`, or `"Set and checked"`                                | —                                                                |
 
 ---
 
@@ -314,12 +353,12 @@ Start by saying: **`"Lineup checklist"`**
 
 Start by saying: **`"Approach checklist"`**
 
-| FO Challenge         | Say                                             |
-| -------------------- | ----------------------------------------------- |
-| Barometric reference | `"Set and checked"` or your QNH (e.g. `"1013"`) |
-| Minimums reference   | `"Set and checked"` or your minimums value      |
-| Runway condition     | `"Set and checked"`                             |
-| Auto brake           | `"Set and checked"`, `"Medium"`, or `"BTV"`     |
+| FO Challenge         | Say                                                               |
+|----------------------|-------------------------------------------------------------------|
+| Barometric reference | `"Set and checked"` or your QNH (e.g. `"1013"`)                   |
+| Minimums reference   | `"Set and checked"` or your minimums value (e.g `"277 feet set"`) |
+| Runway condition     | `"Set and checked"`                                               |
+| Auto brake           | `"Set and checked"`, `"Medium"`, or `"BTV"`                       |
 
 ---
 
@@ -359,6 +398,19 @@ Start by saying: **`"Secure aircraft checklist"`**
 | External power   | `"Off"`, `"On"`, `"Set"`, or `"Set and checked"` |
 | EFBs             | `"Off"` or `"Set and checked"`                   |
 | Batteries        | `"Off"` or `"Set and checked"`                   |
+
+---
+
+### Departure Change Checklist
+
+Start by saying: **`"Departure Change checklist"`**
+
+| FO Challenge              | Say                                                           | Notes                                                            |
+|---------------------------|---------------------------------------------------------------|------------------------------------------------------------------|
+| Runway and SID            | `"Set and checked"`                                           | -                                                                |
+| Flap settings             | `"Config one plus F"`, `"Config two"`, or `"Set and checked"` | The FO verifies flapselection matches your performance settings. |
+| Takeoff speeds and thrust | `"Set and checked"`                                           | —                                                                |
+| FCU ALT                   | `"Set and checked"`                                           | -                                                                |
 
 ---
 
