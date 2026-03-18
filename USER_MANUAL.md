@@ -186,7 +186,7 @@ The FO performs the oxygen test procedure on the FO side.
 
 ### Before Start
 
-**When:** Just before requesting pushback or engine start. Triggered by voice: `"Before start flow or Before start procedure"`
+**When:** Just before requesting pushback or engine start. 
 
 FO locks cockpit door and sets DEFAULT SETTINGS in MFD SURV.
 

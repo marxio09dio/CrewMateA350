@@ -37,7 +37,7 @@
     "type": "reminder"
   },
   {
-    "minuteMark": 10,
+    "minuteMark": 20,
     "label": "Cockpit preparation checklist",
     "type": "reminder"
   },
@@ -49,7 +49,8 @@
   },
   {
     "minuteMark": 1,
-    "label": "Before start checklist",
-    "type": "reminder"
+    "label": "Before start procedure and checklist",
+    "type": "flow",
+    "flowId": "before_start"
   }
 ]
