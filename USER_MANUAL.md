@@ -135,10 +135,10 @@ The FO will confirm the speed is checked before moving the flaps while airborne.
 
 ### Launching Flows by Voice
 
-| Say                                                                                 | Flow launched       |
-| ----------------------------------------------------------------------------------- | ------------------- |
-| `"Before start procedure"` or `"Before start flow"`                                 | Before Start flow   |
-| `"Clear left"` or `"Left side clear"`                                               | Clear Left flow     |
+| Say                                                                                | Flow launched       |
+| ---------------------------------------------------------------------------------- | ------------------- |
+| `"Before start procedure"` or `"Before start flow"`                                | Before Start flow   |
+| `"Clear left"` or `"Left side clear"`                                              | Clear Left flow     |
 | `"Runway entry procedure"` or `"Clear to line up"` or `"Before takeoff procedure"` | Before Takeoff flow |
 
 ### Launching Checklists by Voice

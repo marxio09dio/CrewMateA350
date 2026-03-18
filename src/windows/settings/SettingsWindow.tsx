@@ -8,7 +8,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
-import { VoiceModelSettings } from "@/components/VoiceModelSettings"
 import { useChecklistStore } from "@/store/checklistStore"
 import { useSettingsStore } from "@/store/settingsStore"
 
@@ -19,10 +18,8 @@ export function SettingsWindow() {
   const setSoundPack = useSettingsStore((s) => s.setSoundPack)
   const soundVolume = useSettingsStore((s) => s.soundVolume)
   const setSoundVolume = useSettingsStore((s) => s.setSoundVolume)
-  const micGain = useSettingsStore((s) => s.micGain)
-  const setMicGain = useSettingsStore((s) => s.setMicGain)
-  const vadThreshold = useSettingsStore((s) => s.vadThreshold)
-  const setVadThreshold = useSettingsStore((s) => s.setVadThreshold)
+  const confidenceThreshold = useSettingsStore((s) => s.confidenceThreshold)
+  const setConfidenceThreshold = useSettingsStore((s) => s.setConfidenceThreshold)
 
   const holdOnIncorrect = useChecklistStore((s) => s.holdOnIncorrect)
   const setHoldOnIncorrect = useChecklistStore((s) => s.setHoldOnIncorrect)
@@ -75,17 +72,14 @@ export function SettingsWindow() {
         </div>
 
         <SliderRow label="Sound Volume" value={soundVolume} onChange={setSoundVolume} min={0} max={200} step={1} />
-        <SliderRow label="Mic Gain" value={micGain} onChange={setMicGain} min={50} max={400} step={10} />
         <SliderRow
           label="Voice Sensitivity"
-          value={vadThreshold}
-          onChange={setVadThreshold}
-          min={1}
-          max={50}
+          value={confidenceThreshold}
+          onChange={setConfidenceThreshold}
+          min={50}
+          max={100}
           step={1}
         />
-
-        <VoiceModelSettings />
 
         <SectionHeader icon={<Option className="h-3 w-3 text-cyan-400 shrink-0" />} label="Options" />
 

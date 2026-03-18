@@ -12,57 +12,21 @@ pub struct SpeechBridge {
 
 impl SpeechBridge {
     pub fn new(app_handle: tauri::AppHandle) -> Self {
-        let app_data_dir = app_handle
+        // Resolve grammar.xml from the Tauri resource directory.
+        // In dev mode this is src-tauri/bin/grammar.xml; in production it is the
+        // bundled resource path — either way the sidecar receives an absolute path.
+        let grammar_path = app_handle
             .path()
-            .app_data_dir()
-            .expect("Failed to get app data directory");
-        let models_dir = app_data_dir.join("vosk-models");
-
-        // Resolve selected model ID from settings file
-        let selected_id = app_data_dir
-            .join("vosk_settings.json")
-            .exists()
-            .then(|| std::fs::read_to_string(app_data_dir.join("vosk_settings.json")).ok())
-            .flatten()
-            .and_then(|s| serde_json::from_str::<Value>(&s).ok())
-            .and_then(|v| v["selected_model"].as_str().map(String::from));
-
-        // Map model ID → folder name, then verify it exists
-        let model_path = selected_id
-            .as_deref()
-            .and_then(|id| match id {
-                "small-en-us" => Some("vosk-model-small-en-us-0.15"),
-                "large-en-us" => Some("vosk-model-en-us-0.22-lgraph"),
-                "big-en-us" => Some("vosk-model-en-us-0.22"),
-                _ => None,
-            })
-            .map(|name| models_dir.join(name))
-            .filter(|p| p.is_dir())
-            // Fall back to any downloaded vosk-model directory
-            .or_else(|| {
-                std::fs::read_dir(&models_dir)
-                    .ok()?
-                    .flatten()
-                    .find(|e| {
-                        e.file_type().map(|t| t.is_dir()).unwrap_or(false)
-                            && e.file_name().to_string_lossy().starts_with("vosk-model")
-                    })
-                    .map(|e| e.path())
-            });
-
-        let Some(model_path) = model_path else {
-            let _ = app_handle.emit("vosk-no-model-found", ());
-            return Self {
-                _handle: app_handle,
-                child: Arc::new(Mutex::new(None)),
-            };
-        };
+            .resource_dir()
+            .expect("Failed to get resource dir")
+            .join("bin")
+            .join("grammar.xml");
 
         let (mut rx, child) = app_handle
             .shell()
             .sidecar("copilot_speech")
             .expect("Missing copilot_speech sidecar")
-            .args([model_path.to_string_lossy().to_string()])
+            .args([grammar_path.to_string_lossy().to_string()])
             .spawn()
             .expect("Failed to spawn speech recognition sidecar");
 
@@ -74,14 +38,34 @@ impl SpeechBridge {
                 match event {
                     CommandEvent::Stdout(line) => {
                         if let Ok(value) = serde_json::from_slice::<Value>(&line) {
-                            let event_type = value["type"].as_str().unwrap_or("");
-                            if event_type == "speech" || event_type == "speech_unrecognized" {
-                                println!("[Speech] Recognized: {}", value);
-                                let _ = app_cb.emit("speech_recognized", value);
+                            match value["type"].as_str().unwrap_or("") {
+                                "speech" | "speech_unrecognized" => {
+                                    let _ = app_cb.emit("speech_recognized", value);
+                                }
+                                "status" => {
+                                    log::info!("[Speech] Engine status: {}", value);
+                                    let _ = app_cb.emit("speech_engine_status", value);
+                                }
+                                "error" => {
+                                    log::error!("[Speech] Engine error: {}", value);
+                                    let _ = app_cb.emit("speech_engine_error", value);
+                                }
+                                _ => {}
                             }
+                        } else {
+                            log::warn!(
+                                "[Speech] Non-JSON stdout: {}",
+                                String::from_utf8_lossy(&line)
+                            );
                         }
                     }
-                    CommandEvent::Terminated(_) => break,
+                    CommandEvent::Stderr(line) => {
+                        log::error!("[Speech] Stderr: {}", String::from_utf8_lossy(&line));
+                    }
+                    CommandEvent::Terminated(status) => {
+                        log::error!("[Speech] Sidecar terminated: code={:?}", status.code);
+                        break;
+                    }
                     _ => {}
                 }
             }
