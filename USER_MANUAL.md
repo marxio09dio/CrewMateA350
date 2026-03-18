@@ -8,9 +8,10 @@
 
 1. [Getting Started](#getting-started)
 2. [Voice Commands](#voice-commands)
-3. [Flows](#flows)
-4. [Checklists](#checklists)
-5. [Tips & Troubleshooting](#tips--troubleshooting)
+3. [Flows (Crewmate)](#flows-crewmate)
+4. [Flows (user)](#flows-user)
+5. [Checklists](#checklists)
+6. [Tips & Troubleshooting](#tips--troubleshooting)
 
 ---
 
@@ -159,7 +160,7 @@ The FO will confirm the speed is checked before moving the flaps while airborne.
 
 ---
 
-## Flows
+## Flows (Crewmate)
 
 Flows are automated sequences where the FO sets cockpit controls on your behalf. You can trigger them by voice (see above) or from the **Flows panel** in the app. The FO will announce the start/end of flows that have significant phases.
 
@@ -268,6 +269,125 @@ The FO retracts the flaps, starts the APU, configures anti ice, and turns off WX
 **When:** Engines off, parked at gate.
 
 The FO turns off all fuel pumps and anti ice systems.
+
+---
+
+## Flows (user)
+
+In this addon, you stil need to do some flows by yourself.
+
+Flows are listed in tables:
+
+| Preliminary Cockpit Preparation                           |
+|-----------------------------------------------------------|
+| `Set interior lights`                                     |
+| `Initialize FMS (callsign/and flight plan) and check ANF` |
+| `Preliminary performance calculation`                     |
+
+| Cockpit Preparation (CM2 outside) |
+|-----------------------------------|
+| `Set all white buttons off`       |
+| `CAPT&PURS switch set`            |
+| `RCDR GND CTL on`                 |
+| `Set exterior lights`             |
+| `Set signs`                       |
+| `Set air panel`                   |
+| `Test CVR`                        |
+| `Check RMP`                       |
+| `Check parking brake`             |
+| `Set EFIS options`                |
+| `Set AFS/FCU`                     |
+| `Test OXY mask`                   |
+| `Departure briefing`              |
+
+> When both done, do the Cockpit preparation checklist
+
+| Before Start                   |
+|--------------------------------|
+| `Performance calculation`      |
+| `Deploy HUD`                   |
+| `Beacon light on`              |
+| `Select SURV DEFAULT SETTINGS` |
+
+> When both done, do the Before start checklist
+
+| After Start                |
+|----------------------------|
+| `Engine start NORM`        |
+| `APU BLEED off`            |
+| `Set anti ice as required` |
+| `APU off if not required`  |
+
+> When both done, do the After start checklist
+
+| Taxi                    |
+|-------------------------|
+| `Set ND to ZOOM`        |
+| `Set exterior lights`   |
+| `Brake check`           |
+| `Flight controls check` |
+| `Set FMS PERF page`     |
+
+> When both done, but before reaching runway holding point, do the Taxi checklist
+
+| Before takeoff                            |
+|-------------------------------------------|
+| `Check if approach path clear of traffic` |
+| `Set exterior lights`                     |
+| `Set EFIS`                                |
+
+> When both done, do the Line up checklist
+
+| Takeoff procedure                        |
+|------------------------------------------|
+| `Set exterior lights`                    |
+| `Announce "Takeoff"`                     |
+| `Set 25% THR then FLX/TOGA`              |
+| `Order "gear up" after "positive climb"` |
+| `Clean up flaps after ACCEL ALT reached` |
+
+> For climb through 10,000/FL100, it's automatic.
+
+> Cruise you just check SD pages and step climb/descend the aircraft.
+
+Descent preparation:
+
+![alt text](image.png)
+
+| Descent below 10,000/FL100             |
+|----------------------------------------|
+| `LS button on if doing a xLS approach` |
+
+> When below TL, do the Approach checklist
+
+| Aircraft config for landing                                     |
+|-----------------------------------------------------------------|
+| `Extend flaps and gear on schedule (1->2->L/G DOWN->3(->FULL))` |
+| `If shooting an ILS, AP1+2 on`                                  |
+
+> When fully configured, do the Landing checklist
+
+| Rollout and after landing                                  |
+|------------------------------------------------------------|
+| `70 kt reverser idle, at taxi speed stow`                  |
+| `Disengage autobrake when convenient`                      |
+| `Clear of runway, disarm spoilers and set exterior lights` |
+| `Set ND to ZOOM`                                           |
+
+| Parking                                                           |
+|-------------------------------------------------------------------|
+| `Set parking brakes, check power source, then shut down engines`  |
+| `Beacon and wing lights off, set other exterior lights as needed` |
+| `Disarm slides and belts sign off`                                |
+| `Stow HUD `                                                       |
+
+> When both done, do the Parking Checklist
+
+| Go Around                                                           |
+|---------------------------------------------------------------------|
+| `Set TOGA then MCT, rotate aircraft and announce "go around flaps"` |
+| `Order "gear up" after "positive climb"`                            |
+| `Follow after takeoff procedure after go around`                    |
 
 ---
 
