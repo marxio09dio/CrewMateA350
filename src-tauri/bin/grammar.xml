@@ -53,21 +53,19 @@
   ════════════════════════════════════════════════════════════════════════════ -->
   <rule id="FO_COMMANDS">
     <one-of>
-      <!-- 1: Heading -->
+      <!-- Heading -->
       <item>
         <item repeat="0-1">
           <ruleref uri="#VERB" />
         </item>
         <one-of>
           <item>heading</item>
-          <item>fly heading</item>
-          <item>turn heading</item>
         </one-of>
         <ruleref uri="#HDG_SPD_FL_VALUE" />
         <tag>out.pid="1"; out.cval=rules.HDG_SPD_FL_VALUE;</tag>
       </item>
 
-      <!-- 2: Flight level -->
+      <!-- Flight level -->
       <item>
         <item repeat="0-1">
           <ruleref uri="#VERB" />
@@ -77,23 +75,20 @@
         <tag>out.pid="2"; out.cval=rules.HDG_SPD_FL_VALUE;</tag>
       </item>
 
-      <!-- 3: Altitude feet -->
+      <!-- Altitude feet -->
       <item>
         <one-of>
           <item>
             <ruleref uri="#VERB" />
             <item>altitude</item>
           </item>
-          <item>climb to</item>
-          <item>descend to</item>
-          <item>maintain</item>
         </one-of>
         <ruleref uri="#ALTITUDE_VALUE" />
         <item repeat="0-1">feet</item>
         <tag>out.pid="3"; out.cval=rules.ALTITUDE_VALUE;</tag>
       </item>
 
-      <!-- 4: Speed -->
+      <!-- Speed -->
       <item>
         <item repeat="0-1">
           <ruleref uri="#VERB" />
@@ -104,26 +99,17 @@
         <tag>out.pid="4"; out.cval=rules.HDG_SPD_FL_VALUE;</tag>
       </item>
 
-      <!-- 5: COM frequency -->
+      <!-- COM frequency -->
       <item>
         <one-of>
           <item>tune</item>
-          <item>contact</item>
-          <item>frequency</item>
           <item>set frequency</item>
         </one-of>
         <ruleref uri="#COM_FREQ_VALUE" />
         <tag>out.pid="5"; out.cval=rules.COM_FREQ_VALUE;</tag>
       </item>
 
-      <!-- 6: Transponder -->
-      <item>
-        <item>squawk</item>
-        <ruleref uri="#FOUR_DIGIT_VALUE" />
-        <tag>out.pid="6"; out.cval=rules.FOUR_DIGIT_VALUE;</tag>
-      </item>
-
-      <!-- 7: Altimeter — prefixed "altimeter XXXX [set]" -->
+      <!-- Altimeter — prefixed "altimeter XXXX [set]" -->
       <item>
         <item repeat="0-1">
           <ruleref uri="#VERB" />
@@ -134,7 +120,7 @@
         <tag>out.pid="7"; out.cval=rules.ALTIMETER_VALUE;</tag>
       </item>
 
-      <!-- 7: Altimeter — prefixed "qnh XXXX [set]" -->
+      <!-- Altimeter — prefixed "qnh XXXX [set]" -->
       <item>
         <item repeat="0-1">
           <ruleref uri="#VERB" />
@@ -145,14 +131,14 @@
         <tag>out.pid="7"; out.cval=rules.ALTIMETER_VALUE;</tag>
       </item>
 
-      <!-- 7: Altimeter — bare "XXX[X] set" -->
+      <!-- Altimeter — bare "XXX[X] set" -->
       <item>
         <ruleref uri="#ALTIMETER_VALUE" />
         <item>set</item>
         <tag>out.pid="7"; out.cval=rules.ALTIMETER_VALUE;</tag>
       </item>
 
-      <!-- 8/9: Fuel kilograms [balanced] -->
+      <!-- Fuel kilograms [balanced] -->
       <item>
         <item repeat="0-1">
           <one-of>
@@ -174,7 +160,7 @@
         </one-of>
       </item>
 
-      <!-- 10/11: Fuel pounds [balanced] -->
+      <!-- Fuel pounds [balanced] -->
       <item>
         <item repeat="0-1">
           <one-of>
@@ -193,7 +179,7 @@
         </one-of>
       </item>
 
-      <!-- 12/13: Fuel tons [balanced] -->
+      <!-- Fuel tons [balanced] -->
       <item>
         <item repeat="0-1">
           <one-of>
@@ -215,7 +201,7 @@
         </one-of>
       </item>
 
-      <!-- 14: Takeoff data — flex "V1 NNN VR NNN V2 NNN flex XX" -->
+      <!-- Takeoff data — flex "V1 NNN VR NNN V2 NNN flex XX" -->
       <item>
         <item>V1</item>
         <ruleref uri="#HDG_SPD_FL_VALUE" />
@@ -232,7 +218,7 @@
         <tag>out.pid="14"; out.cval=out.v1+"|"+out.vr+"|"+out.v2+"|FLX|"+out.ft;</tag>
       </item>
 
-      <!-- 15: Takeoff data — toga "V1 NNN VR NNN V2 NNN toga" -->
+      <!-- Takeoff data — toga "V1 NNN VR NNN V2 NNN toga" -->
       <item>
         <item>V1</item>
         <ruleref uri="#HDG_SPD_FL_VALUE" />
@@ -247,7 +233,7 @@
         <tag>out.pid="15"; out.cval=out.v1+"|"+out.vr+"|"+out.v2+"|TOGA|";</tag>
       </item>
 
-      <!-- 16: Missed approach altitude — auto -->
+      <!-- Missed approach altitude — auto -->
       <item>
         <one-of>
           <item>set missed approach altitude</item>
@@ -258,7 +244,7 @@
         <tag>out.pid="16"; out.cval="AUTO";</tag>
       </item>
 
-      <!-- 17: Missed approach altitude — explicit feet -->
+      <!-- Missed approach altitude — explicit feet -->
       <item>
         <one-of>
           <item>set missed approach altitude</item>
@@ -271,7 +257,7 @@
         <tag>out.pid="17"; out.cval=rules.ALTITUDE_VALUE;</tag>
       </item>
 
-      <!-- 18: Missed approach altitude — explicit flight level -->
+      <!-- Missed approach altitude — explicit flight level -->
       <item>
         <one-of>
           <item>set missed approach altitude</item>
@@ -284,7 +270,7 @@
         <tag>out.pid="18"; out.cval=rules.HDG_SPD_FL_VALUE;</tag>
       </item>
 
-      <!-- 19: BARO minimums — "baro four hundred fifty [feet]" → "450" -->
+      <!-- BARO minimums — "baro four hundred fifty [feet]" → "450" -->
       <item>
         <item>baro</item>
         <ruleref uri="#MINIMUMS_VALUE" />
@@ -292,7 +278,7 @@
         <tag>out.pid="19"; out.cval=rules.MINIMUMS_VALUE;</tag>
       </item>
 
-      <!-- 20: RADIO minimums — "radio one hundred sixty [feet]" → "160" -->
+      <!-- RADIO minimums — "radio one hundred sixty [feet]" → "160" -->
       <item>
         <item>radio</item>
         <ruleref uri="#MINIMUMS_VALUE" />
@@ -484,12 +470,9 @@
       <item>auto pilot on<tag>out.pid="8";</tag></item>
       <item>auto pilot one on<tag>out.pid="8";</tag></item>
       <item>autopilot disconnect<tag>out.pid="9";</tag></item>
-      <!-- Autothrottle -->
-      <item>autothrottle engage<tag>out.pid="10";</tag></item>
-      <item>autothrottle disconnect<tag>out.pid="11";</tag></item>
       <!-- Lights -->
       <item>landing lights on<tag>out.pid="12";</tag></item>
-      <item>takeoff lights on<tag>out.pid="12";</tag></item>
+      <item>takeoff lights on<tag>out.pid="69";</tag></item>
       <item>landing lights off<tag>out.pid="13";</tag></item>
       <item>strobe lights on<tag>out.pid="14";</tag></item>
       <item>strobe lights auto<tag>out.pid="15";</tag></item>
@@ -498,9 +481,9 @@
       <item>taxi lights off<tag>out.pid="18";</tag></item>
       <!-- Flight director -->
       <item>flight director on<tag>out.pid="19";</tag></item>
-      <item>bird on<tag>out.pid="19";</tag></item>
+      <item>bird on<tag>out.pid="67";</tag></item>
       <item>flight director off<tag>out.pid="20";</tag></item>
-      <item>bird off<tag>out.pid="20";</tag></item>
+      <item>bird off<tag>out.pid="68";</tag></item>
       <item>flight director off bird on<tag>out.pid="21";</tag></item>
       <!-- Checklists -->
       <item>cockpit preparation checklist<tag>out.pid="22";</tag></item>
@@ -908,7 +891,7 @@
          "radio six hundred thirty four feet"          → pid 20, cval "634"
          "baro one thousand two hundred thirty four"   → pid 19, cval "1234"
          "baro one thousand feet"                      → pid 19, cval "1000"
-         "radio fifty feet"                            → pid 20, cval "50"  (CAT III DH)
+         "radio fifty feet"                            → pid 20, cval "50"
 
        Value structure:
          sub-hundred   : MIN_BELOW_100          → "50", "53", "13"

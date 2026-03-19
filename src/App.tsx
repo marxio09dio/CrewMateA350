@@ -35,7 +35,7 @@ function App() {
   useCallouts(takeoffVr)
   useAutoFlows()
   usePreflightTimer()
-  const { recognizedText, isValidCommand, isUnrecognized } = useSpeechCommands({ voiceEnabled })
+  const { recognizedText, isValidCommand, isUnrecognized, speechKey } = useSpeechCommands({ voiceEnabled })
   useCloseConfirm()
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function App() {
     <div className="flex  bg-black flex-col min-h-screen">
       <main className="flex-1 text-white p-2">
         <div className="max-w-6xl mx-auto">
-          {connected ? (
+          {!connected ? (
             <ConnectionError />
           ) : (
             <>
@@ -59,7 +59,12 @@ function App() {
                 onToggleVoice={() => setVoiceEnabled(!voiceEnabled)}
                 voiceDisabled={false}
               />
-              <TextBar text={recognizedText} isValidCommand={isValidCommand} isUnrecognized={isUnrecognized} />
+              <TextBar
+                text={recognizedText}
+                isValidCommand={isValidCommand}
+                isUnrecognized={isUnrecognized}
+                speechKey={speechKey}
+              />
               {currentEvent && (
                 <span className="text-xs text-cyan-300/80 font-mono animate-pulse truncate max-w-[140px]">
                   {currentEvent}

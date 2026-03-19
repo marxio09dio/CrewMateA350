@@ -6,9 +6,10 @@ interface TextBarProps {
   text: string | null
   isValidCommand: boolean
   isUnrecognized?: boolean
+  speechKey?: number
 }
 
-export function TextBar({ text, isValidCommand, isUnrecognized }: TextBarProps) {
+export function TextBar({ text, isValidCommand, isUnrecognized, speechKey }: TextBarProps) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export function TextBar({ text, isValidCommand, isUnrecognized }: TextBarProps) 
     setVisible(true)
     const timer = setTimeout(() => setVisible(false), CLEAR_DELAY_MS)
     return () => clearTimeout(timer)
-  }, [text])
+  }, [speechKey, text])
 
   return (
     <div className="mt-2 flex items-center gap-1.5 font-mono tracking-wide">

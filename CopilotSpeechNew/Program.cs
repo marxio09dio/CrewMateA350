@@ -107,8 +107,7 @@ engine.SpeechRecognized += (sender, e) =>
 };
 
 engine.SpeechRecognitionRejected += (sender, e) => {
-    // Heard something but confidence was too low even for a hypothesis
-    // Emit nothing — avoids flooding Tauri with noise events
+    // Heard something but confidence was too low even
 };
 
 engine.RecognizeCompleted += (sender, e) =>
@@ -151,28 +150,46 @@ Thread.Sleep(Timeout.Infinite);
 
 static void EmitSpeech(VoiceCommand command, float confidence)
 {
-    // Reconstruct normalized text from semantic payload so the frontend
-    // receives the same format as the old Vosk engine ("set heading 238" etc.)
+    // Detect pull vs set from the raw spoken text
+    var isPull = command.Raw.StartsWith("pull ", StringComparison.OrdinalIgnoreCase);
+    var verb = isPull ? "pull" : "set";
+
+    // Reconstruct normalized text with correct verb so checklistRunner.ts still works
     var text = command.Type switch
     {
-        "heading" when command.Payload.TryGetValue("value", out var v) => $"set heading {v}",
+        "heading" when command.Payload.TryGetValue("value", out var v) => $"{verb} heading {v}",
         "altitude" when command.Payload.TryGetValue("flightLevel", out var fl) =>
-            $"set flight level {fl}",
-        "altitude" when command.Payload.TryGetValue("value", out var v) => $"set altitude {v}",
-        "speed" when command.Payload.TryGetValue("value", out var v) => $"set speed {v}",
-        // discrete, fma_callout, and new types (fuel, frequency, etc.):
-        // forward the raw spoken text — discrete commands match existing phrases,
-        // fma_callout matches FMA_PREFIXES, new types show in UI as unhandled.
+            $"{verb} flight level {fl}",
+        "altitude" when command.Payload.TryGetValue("value", out var v) => $"{verb} altitude {v}",
+        "speed" when command.Payload.TryGetValue("value", out var v) => $"{verb} speed {v}",
         _ => command.Raw,
     };
 
+    // Build enriched payload: original payload + verb for parametric commands
+    Dictionary<string, object>? outPayload =
+        command.Type is "heading" or "altitude" or "speed"
+            ? new Dictionary<string, object>(command.Payload) { ["verb"] = verb }
+        : command.Payload.Count > 0 ? command.Payload
+        : null;
+
     WriteLine(
-        new
-        {
-            type = "speech",
-            text,
-            confidence = Math.Round(confidence, 3),
-        }
+        outPayload is not null
+            ? (object)
+                new
+                {
+                    type = "speech",
+                    commandType = command.Type,
+                    payload = outPayload,
+                    text,
+                    confidence = Math.Round(confidence, 3),
+                }
+            : new
+            {
+                type = "speech",
+                commandType = command.Type,
+                text,
+                confidence = Math.Round(confidence, 3),
+            }
     );
 }
 

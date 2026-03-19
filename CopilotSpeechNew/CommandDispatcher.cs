@@ -2,11 +2,7 @@ namespace VoiceSidecar
 {
     public record VoiceCommand(string Type, string Raw, Dictionary<string, object> Payload);
 
-    /// <summary>
     /// Dispatches a recognized grammar result to a structured VoiceCommand.
-    /// The grammar has already built all values via semantic tags — no parsing here,
-    /// just type conversion and semantic validation (range checks).
-    /// </summary>
     public static class CommandDispatcher
     {
         public static VoiceCommand? Dispatch(
@@ -28,8 +24,7 @@ namespace VoiceSidecar
             };
         }
 
-        // ─── FO_COMMANDS ──────────────────────────────────────────────────────────
-
+        // FO_COMMANDS
         private static VoiceCommand? DispatchFo(int pid, string cval, string raw)
         {
             return pid switch
@@ -116,7 +111,7 @@ namespace VoiceSidecar
             if (cval.Length != 4 || !int.TryParse(cval, out _))
                 return null;
             if (cval.Any((c) => c == '8' || c == '9'))
-                return null; // octal only
+                return null;
             return Cmd("transponder", raw, new() { ["code"] = cval });
         }
 
@@ -125,7 +120,7 @@ namespace VoiceSidecar
             if (!int.TryParse(cval, out var v))
                 return null;
 
-            // inHg: 2700–3100 → divide by 100
+            // inHg
             if (v is >= 2700 and <= 3100)
             {
                 return Cmd(
@@ -140,7 +135,7 @@ namespace VoiceSidecar
                 );
             }
 
-            // hPa: 900–1100 → use as-is
+            // hPa
             if (v is >= 900 and <= 1100)
                 return Cmd(
                     "altimeter",
@@ -153,7 +148,7 @@ namespace VoiceSidecar
                     }
                 );
 
-            return null; // out of range — reject
+            return null;
         }
 
         private static VoiceCommand? Fuel(string cval, string unit, bool balanced, string raw)
@@ -345,9 +340,6 @@ namespace VoiceSidecar
             // Autopilot
             [8] = "autopilot_engage",
             [9] = "autopilot_disconnect",
-            // Autothrottle
-            [10] = "autothrottle_engage",
-            [11] = "autothrottle_disconnect",
             // Lights
             [12] = "landing_lights_on",
             [13] = "landing_lights_off",
@@ -468,6 +460,9 @@ namespace VoiceSidecar
             [110] = "push_to_level_off",
             [111] = "arm_approach",
             [112] = "arm_localizer",
+            [67] = "bird_on",
+            [68] = "bird_off",
+            [69] = "takeoff_lights_on",
         };
 
         private static VoiceCommand? DispatchDiscrete(int pid, string raw)

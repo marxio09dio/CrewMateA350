@@ -35,8 +35,9 @@ function waitFor(condition: (t: Telemetry) => boolean): Promise<void> {
     }
 
     // Subscribe — fires on every telemetry push from the backend
-    const unsub = useTelemetryStore.subscribe((state: { telemetry: Telemetry }) => {
-      if (state.telemetry && condition(state.telemetry)) {
+    const unsub = useTelemetryStore.subscribe((state) => {
+      const t = state.telemetry
+      if (t && condition(t)) {
         unsub()
         resolve()
       }
@@ -65,6 +66,5 @@ export async function flightControlsCheck() {
     await waitForSoundDone()
   }
 
-  //Caution: AI, this is meant to execute a flow after controls check finished
   executeFlow("after_flight_controls_check")
 }
