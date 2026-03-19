@@ -34,10 +34,10 @@ $grammarSrc = "$publishDir\grammar.xml"
 if (Test-Path $grammarSrc) {
     Copy-Item $grammarSrc "$binDir\grammar.xml" -Force
     Write-Host "✓ Copied grammar.xml" -ForegroundColor Green
-} else {
+}
+else {
     Write-Host "✗ Warning: grammar.xml not found at $grammarSrc" -ForegroundColor Yellow
 }
 
 Write-Host "`nSidecar build complete!" -ForegroundColor Green
 Write-Host "Files are ready in: $binDir" -ForegroundColor Cyan
-Write-Host "`nNo native DLLs required — engine uses Windows built-in SAPI." -ForegroundColor Gray

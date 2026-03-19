@@ -9,14 +9,14 @@
     },
     {
       "challenge": "takeoff_runway.ogg",
-      "response": [" confirmed"],
+      "response": ["confirmed"],
       "label": "Take off Runway",
       "copilot_confirmation": "confirmed.ogg"
     },
     {
       "label": "Packs Settings",
       "challenge": "packs_one_and_two.ogg",
-      "response": ["on", "off", "set and checked"],
+      "response": ["on", "on supplied by apu", "off", "set and checked"],
       "store_check": {
         "store": "takeoff.packs",
         "validation_map": [
@@ -30,7 +30,7 @@
           },
           {
             "store_value": "off",
-            "expected_response": "off",
+            "expected_response": "off, on supplied by apu",
             "simvar_checks": [
               { "var": "(L:INI_AIR_PACK1_BUTTON)", "expected": 0 },
               { "var": "(L:INI_AIR_PACK2_BUTTON)", "expected": 0 }

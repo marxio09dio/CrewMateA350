@@ -39,7 +39,16 @@ impl SpeechBridge {
                     CommandEvent::Stdout(line) => {
                         if let Ok(value) = serde_json::from_slice::<Value>(&line) {
                             match value["type"].as_str().unwrap_or("") {
-                                "speech" | "speech_unrecognized" => {
+                                "speech" => {
+                                    log::info!(
+                                        "[Speech] Recognized: \"{}\" (confidence: {:.2})",
+                                        value["text"].as_str().unwrap_or("?"),
+                                        value["confidence"].as_f64().unwrap_or(0.0)
+                                    );
+                                    let _ = app_cb.emit("speech_recognized", value);
+                                }
+                                "speech_unrecognized" => {
+                                    log::debug!("[Speech] Unrecognized utterance");
                                     let _ = app_cb.emit("speech_recognized", value);
                                 }
                                 "status" => {

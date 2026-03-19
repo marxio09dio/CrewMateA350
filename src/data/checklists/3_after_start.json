@@ -5,7 +5,7 @@
     {
       "label": "Anti Ice",
       "challenge": "anti_ice.ogg",
-      "response": ["on", "off", "set and checked"],
+      "response": ["engines on", "engines on wings on", "off", "set and checked"],
       "store_check": {
         "store": "takeoff.antiIce",
         "validation_map": [
@@ -20,7 +20,7 @@
           },
           {
             "store_value": "oneng",
-            "expected_response": "on",
+            "expected_response": "engines on",
             "simvar_checks": [
               { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
               { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
@@ -29,7 +29,7 @@
           },
           {
             "store_value": "onengwing",
-            "expected_response": "on",
+            "expected_response": "engines on wings on",
             "simvar_checks": [
               { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
               { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },

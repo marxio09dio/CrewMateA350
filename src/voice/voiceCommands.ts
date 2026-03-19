@@ -45,52 +45,53 @@ interface VoiceCommand {
  * Value = handler receiving the parsed integer value.
  */
 export const numericPrefixCommands: Record<string, (value: number) => void | Promise<void>> = {
-  "set heading ": (v) => setHeadingDial(v),
-  "heading select ": (v) => setHeadingDial(v),
-  "set altitude ": (v) => {
-    playSound("check.ogg")
-    setAltitudeDial(v)
-  },
-  "altitude select ": (v) => {
-    playSound("check.ogg")
-    setAltitudeDial(v)
-  },
-  "set flight level ": (v) => {
-    playSound("check.ogg")
-    setAltitudeDial(v * 100)
-  },
-  "flight level select ": (v) => {
-    playSound("check.ogg")
-    setAltitudeDial(v * 100)
-  },
-  "set speed ": (v) => setAirspeedDial(v),
-  "speed select ": (v) => setAirspeedDial(v),
-  "pull heading ": async (v) => {
+  "set heading": (v) => setHeadingDial(v),
+   "pull heading": async (v) => {
     setSelHeading(1)
     await new Promise((r) => setTimeout(r, 500))
     setHeadingDial(v)
   },
-  "pull speed ": async (v) => {
+  
+  "set altitude": (v) => {
+    playSound("check.ogg")
+    setAltitudeDial(v)
+  },
+  "altitude select": (v) => {
+    playSound("check.ogg")
+    setAltitudeDial(v)
+  },
+  "set flight level": (v) => {
+    playSound("check.ogg")
+    setAltitudeDial(v * 100)
+  },
+  "flight level select": (v) => {
+    playSound("check.ogg")
+    setAltitudeDial(v * 100)
+  },
+  "set speed": (v) => setAirspeedDial(v),
+  "speed select": (v) => setAirspeedDial(v),
+ 
+  "pull speed": async (v) => {
     setSelSpeed(1)
     await new Promise((r) => setTimeout(r, 500))
     setAirspeedDial(v)
   },
-  "flight level  manage": async (v) => {
+  "flight level manage": async (v) => {
     setManagedAlt(1)
     await new Promise((r) => setTimeout(r, 500))
     setAltitudeDial(v * 100)
   },
-  "flight level  pull": async (v) => {
+  "flight level pull": async (v) => {
     setSelAlt(1)
     await new Promise((r) => setTimeout(r, 500))
     setAltitudeDial(v * 100)
   },
-  "altitude  manage": async (v) => {
+  "altitude manage": async (v) => {
     setManagedAlt(1)
     await new Promise((r) => setTimeout(r, 500))
     setAltitudeDial(v)
   },
-  "altitude  pull": async (v) => {
+  "pull altitude": async (v) => {
     setSelAlt(1)
     await new Promise((r) => setTimeout(r, 500))
     setAltitudeDial(v)
@@ -106,6 +107,27 @@ export function createVoiceCommands(): VoiceCommand[] {
         playSound("pressure_zero.ogg")
       },
       description: "Brake check"
+    },
+    {
+      phrases: ["continue"],
+      action: () => {
+        playSound("check.ogg")
+      },
+      description: "Continues approach on minimums"
+    },
+    {
+      phrases: ["land"],
+      action: () => {
+        playSound("check.ogg")
+      },
+      description: "Calls LAND FMA on autoland"
+    },
+    {
+      phrases: ["flare"],
+      action: () => {
+        playSound("check.ogg")
+      },
+      description: "Calls FLARE FMA on autoland"
     },
     // Doors / Slides Commands
     {
@@ -461,7 +483,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Pushes heading knob to managed mode"
     },
     {
-      phrases: ["altitude pull", "flight level pull"],
+      phrases: ["pull altitude", "flight level pull"],
       action: () => {
         playSound("check.ogg")
         setSelAlt(1)
@@ -469,7 +491,7 @@ export function createVoiceCommands(): VoiceCommand[] {
       description: "Pulls altitude knob"
     },
     {
-      phrases: ["altitude manage", "flight level manage"],
+      phrases: ["manage altitude", "manage flight level"],
       action: () => {
         playSound("check.ogg")
         setManagedAlt(1)

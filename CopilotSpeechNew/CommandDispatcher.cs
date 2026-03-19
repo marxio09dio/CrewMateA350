@@ -52,6 +52,8 @@ namespace VoiceSidecar
                 16 => MissedApproachAuto(raw),
                 17 => MissedApproachFeet(cval, raw),
                 18 => MissedApproachFL(cval, raw),
+                19 => Minimums(cval, "baro", raw),
+                20 => Minimums(cval, "radio", raw),
                 _ => null,
             };
         }
@@ -241,6 +243,26 @@ namespace VoiceSidecar
             );
         }
 
+        private static VoiceCommand? Minimums(string cval, string type, string raw)
+        {
+            // cval = plain integer string: "450", "160", "1000", "50"
+            // type = "baro" | "radio"
+            // Realistic range: 0–10000 ft. Grammar only generates values that SAPI
+            // actually heard, so we just sanity-check the bounds.
+            if (!int.TryParse(cval, out var v) || v < 0 || v > 10000)
+                return null;
+            return Cmd(
+                "minimums",
+                raw,
+                new()
+                {
+                    ["type"] = type,
+                    ["value"] = v,
+                    ["unit"] = "feet",
+                }
+            );
+        }
+
         private static VoiceCommand? TakeoffData(string cval, string raw)
         {
             // cval = "V1|VR|V2|thrustMode|flexTemp"
@@ -409,7 +431,7 @@ namespace VoiceSidecar
             [76] = "armed",
             [77] = "auto",
             [78] = "normal",
-            [79] = "up",
+            [79] = "retracted",
             [80] = "down",
             [81] = "secured",
             [82] = "removed",
@@ -422,14 +444,30 @@ namespace VoiceSidecar
             [89] = "stop",
             [90] = "medium",
             [91] = "btv",
+            [92] = "engines_on",
+            [93] = "engines_on_wings_on",
+            [94] = "on_supplied_by_apu",
             // Config
-            [92] = "config_1",
-            [93] = "config_1f",
-            [94] = "config_2",
-            [95] = "config_3",
+            [95] = "config_1",
+            [96] = "config_1f",
+            [97] = "config_2",
+            [98] = "config_3",
             // Go around / abort
-            [96] = "go_around_flaps",
-            [97] = "abort_takeoff",
+            [99] = "go_around_flaps",
+            [100] = "abort_takeoff",
+            [101] = "continue",
+            // autopilot commands
+            [102] = "pull_altitude",
+            [103] = "manage_altitude",
+            [104] = "pull_speed",
+            [105] = "manage_speed",
+            [106] = "pull_heading",
+            [107] = "manage_nav",
+            [108] = "pull_altitude",
+            [109] = "manage_altitude",
+            [110] = "push_to_level_off",
+            [111] = "arm_approach",
+            [112] = "arm_localizer",
         };
 
         private static VoiceCommand? DispatchDiscrete(int pid, string raw)

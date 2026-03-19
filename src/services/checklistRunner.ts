@@ -193,7 +193,34 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       spoken = await waitForSpeechResponse(signal)
       if (spoken === null) return // aborted
 
-      if (responseList.length === 0 || matchesAnyResponse(spoken, responseList)) break
+      if (responseList.length === 0 || matchesAnyResponse(spoken, responseList)) {
+        // If this item expects a feet-style response (minimums) or is a
+        // baro_confirmation we require the pilot to speak an actual numeric
+        // value (digits or spelled-out number words). Accept phrasing such as:
+        //  - "altimeter 2992 set"
+        //  - "qnh 1013 set"
+        //  - "baro four hundred fifty feet"
+        //  - "radio one hundred sixty feet"
+        const s = spoken.toLowerCase().trim()
+
+        const expectsFeet = responseList.some((r) => r.toLowerCase().includes("feet"))
+        if (item.baro_confirmation || expectsFeet) {
+          const hasDigits = /\b\d{2,4}\b/.test(s)
+
+          // Match spelled-out numbers like "four hundred fifty", "one thousand two hundred"
+          const numberWord = `(?:zero|one|two|three|four|five|six|seven|eight|nine|niner|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand)`
+          // Allow single-word numbers ("fifty") or multi-word numbers
+          const numberWordsRegex = new RegExp(`\\b${numberWord}(?:[\\s-]+${numberWord}){0,3}\\b`, "i")
+          const hasNumberWords = numberWordsRegex.test(s)
+
+          if (!(hasDigits || hasNumberWords)) {
+            // Not a proper numeric response — keep listening
+            continue
+          }
+        }
+
+        break
+      }
       // Unrecognised input — keep waiting, don't re-challenge
     }
     checkAbort(signal)

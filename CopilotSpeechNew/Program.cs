@@ -136,7 +136,9 @@ var stdinThread = new Thread(() =>
             if (doc.RootElement.TryGetProperty("confidenceThreshold", out var ct))
                 confidenceThreshold = ct.GetSingle();
         }
-        catch { /* ignore malformed input */ }
+        catch
+        { /* ignore malformed input */
+        }
     }
 });
 stdinThread.IsBackground = true;
