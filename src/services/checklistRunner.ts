@@ -194,6 +194,23 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       if (spoken === null) return // aborted
 
       if (responseList.length === 0 || matchesAnyResponse(spoken, responseList)) {
+        // If this is a takeoff_confirmation item, require the pilot to mention
+        // V1, VR, V2 (with any 3-digit number) and either FLEX or TOGA.
+        if (item.takeoff_confirmation) {
+          const s = spoken.toLowerCase().trim()
+          // "set and checked" is always accepted as a safeword bypass
+          if (!s.includes("set and checked")) {
+            const { thrustSetting } = usePerformanceStore.getState().takeoff
+            // Speeds are spoken as digit words ("one two five"), not numerals, so
+            // we only validate the V-speed labels and thrust setting are present.
+            const hasV1 = /\bv\s*1\b/.test(s) || /\bv\s*one\b/i.test(s)
+            const hasVR = /\bv\s*r\b/.test(s) || /\bv\s*rotate\b/i.test(s)
+            const hasV2 = /\bv\s*2\b/.test(s) || /\bv\s*two\b/i.test(s)
+            const hasThrust = thrustSetting === "flex" ? /\bflex\b/i.test(s) : /\btoga\b/i.test(s)
+            if (!(hasV1 && hasVR && hasV2 && hasThrust)) continue
+          }
+        }
+
         // If this item expects a feet-style response (minimums) or is a
         // baro_confirmation we require the pilot to speak an actual numeric
         // value (digits or spelled-out number words). Accept phrasing such as:
@@ -432,6 +449,27 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
         ]
         await playSoundSequence(filenames)
       }
+    }
+
+    // ── takeoff_confirmation: copilot reads back V1/VR/V2 + FLEX/TOGA ────
+    if (item.takeoff_confirmation) {
+      const { v1, vr, v2, thrustSetting } = usePerformanceStore.getState().takeoff
+      const t = useTelemetryStore.getState().telemetry
+      const digits = (n: number) =>
+        String(Math.round(n))
+          .split("")
+          .map((d) => `${d}.ogg`)
+
+      const filenames: string[] = ["v_one.ogg", ...digits(v1), "v_r.ogg", ...digits(vr), "v_2.ogg", ...digits(v2)]
+
+      if (thrustSetting === "flex") {
+        const flexTemp = t?.iniFlexTemperature ?? 0
+        filenames.push("flex.ogg", ...digits(flexTemp))
+      } else {
+        filenames.push("TOGA.ogg")
+      }
+
+      await playSoundSequence(filenames)
     }
 
     // No extra validation — accept the matched response

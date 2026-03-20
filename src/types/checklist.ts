@@ -47,6 +47,10 @@ export interface ChecklistItem {
   // Baro confirmation: after the pilot's response, the copilot reads back the live
   // baro value digit-by-digit (inHg as "29.92", hPa as "1013") from telemetry.
   baro_confirmation?: true
+
+  // Takeoff confirmation: copilot reads back V1/VR/V2 and FLEX temp (or TOGA)
+  // from the performance store and live iniFlexTemperature LVAR.
+  takeoff_confirmation?: true
 }
 
 export interface Checklist {

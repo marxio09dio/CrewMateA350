@@ -12,9 +12,9 @@
     },
     {
       "challenge": "takeoff_speeds_and_thrust.ogg",
-      "response": ["set and checked"],
+      "response": ["*"],
       "label": "Takeoff Speeds and Thrust",
-      "copilot_confirmation": "checked.ogg"
+      "takeoff_confirmation": true
     },
 
     {

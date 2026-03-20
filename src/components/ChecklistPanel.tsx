@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { allChecklists } from "@/services/checklistLoader"
 import { abortChecklist, executeChecklist } from "@/services/checklistRunner"
 import { useChecklistStore } from "@/store/checklistStore"
+import { usePerformanceStore } from "@/store/performanceStore"
+import { useTelemetryStore } from "@/store/telemetryStore"
 import type { ChecklistItem } from "@/types/checklist"
 
 const WEIGHT_UNITS = new Set(["tons", "kilograms", "pounds", "kilograms balanced", "pounds balanced"])
@@ -25,6 +27,15 @@ function getDisplayResponses(item: ChecklistItem): string[] {
   // Baro confirmation: show clear examples the pilot can say
   if (item.baro_confirmation) {
     extras.push("qnh #4 set", "altimeter #4 set", "#4 set")
+  }
+
+  // Takeoff confirmation: show only the currently-configured thrust variant + safeword
+  if (item.takeoff_confirmation) {
+    const { v1, vr, v2, thrustSetting } = usePerformanceStore.getState().takeoff
+    const flexTemp = useTelemetryStore.getState().telemetry?.iniFlexTemperature
+    const thrust = thrustSetting === "flex" ? `flex ${flexTemp !== undefined ? Math.round(flexTemp) : "??"}` : "toga"
+    extras.push(`v1 ${v1} vr ${vr} v2 ${v2} ${thrust}`, "set and checked")
+    return extras
   }
 
   // If an item expects feet (minimums), show BARO/RADIO examples
@@ -85,7 +96,6 @@ export function ChecklistPanel() {
 
   function renderResponseToken(r: string) {
     if (WEIGHT_UNITS.has(r)) return `xxx.x ${r}`
-    if (r === "set") return "xxxx set"
     if (r === "feet") return "xxxx feet"
     return r
   }
