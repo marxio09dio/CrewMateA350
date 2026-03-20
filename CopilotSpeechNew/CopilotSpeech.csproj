@@ -6,7 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>CopilotSpeech</AssemblyName>
     <RootNamespace>CopilotSpeech</RootNamespace>
-    <UseWindowsForms>false</UseWindowsForms>
+    <AssemblyTitle>CopilotSpeech</AssemblyTitle>
+    <Description>Voice Engine for CrewMate</Description>
+    <Product>CrewMate</Product>
+    <Company>CrewMate</Company>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>

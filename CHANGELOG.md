@@ -64,20 +64,19 @@
 
 ## [0.1.5] - 2026-03-08
 
-- [Added] "start APU" voice commands
-- [Added] "speed checked" callout when lowering the gear
-- [Added] "go around flaps" command and go around flows
-- [Added] open and close all curtains
-- [Added] option to hold or skip on wrong checklists items
-- [Added] "slides" checklist item on before start will now check if the slides are all armed
-
-- [Fixed] vars reads on checklists
-- [Fixed] improved connection to sim logic
+- Added start APU" voice commands
+- Added "speed checked" callout when lowering the gear
+- Added "go around flaps" command and go around flows
+- Added open and close all curtains
+- Added option to hold or skip on wrong checklists items
+- Added "slides" checklist item on before start will now check if the slides are all armed
+- Fixed improved connection to sim logic
+- Fixed vars reads on checklists
 
 ## [0.1.4] - 2026-03-06
 
-- Appdata shortcut added
-- Fix simconnection status logic
+- Added Appdata shortcut
+- Fixed simconnection status logic
 
 ## [0.1.3] - 2026-03-03
 
