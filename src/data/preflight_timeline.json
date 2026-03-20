@@ -43,13 +43,14 @@
   },
   {
     "minuteMark": 5,
-    "label": "FO closes table",
+    "label": "FO closes table and APU start reminder",
     "type": "flow",
     "flowId": "table_close"
   },
   {
     "minuteMark": 1,
-    "label": "Before start checklist",
-    "type": "reminder"
+    "label": "Before start flow and checklist",
+    "type": "flow",
+    "flowId": "before_start"
   }
 ]

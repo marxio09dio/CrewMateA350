@@ -340,6 +340,18 @@ namespace VoiceSidecar
             // Autopilot
             [8] = "autopilot_engage",
             [9] = "autopilot_disconnect",
+            [65] = "set_runway_track",
+            [102] = "pull_altitude",
+            [103] = "manage_altitude",
+            [104] = "pull_speed",
+            [105] = "manage_speed",
+            [106] = "pull_heading",
+            [107] = "manage_nav",
+            [108] = "pull_altitude",
+            [109] = "manage_altitude",
+            [110] = "push_to_level_off",
+            [111] = "arm_approach",
+            [112] = "arm_localizer",
             // Lights
             [12] = "landing_lights_on",
             [13] = "landing_lights_off",
@@ -348,10 +360,13 @@ namespace VoiceSidecar
             [16] = "strobe_lights_off",
             [17] = "taxi_lights_on",
             [18] = "taxi_lights_off",
+            [69] = "takeoff_lights_on",
             // Flight director
             [19] = "flight_director_on",
             [20] = "flight_director_off",
             [21] = "flight_director_off_bird_on",
+            [67] = "bird_on",
+            [68] = "bird_off",
             // Checklists
             [22] = "checklist_cockpit_preparation",
             [23] = "checklist_departure_change",
@@ -364,20 +379,16 @@ namespace VoiceSidecar
             [30] = "checklist_parking",
             [31] = "checklist_secure_aircraft",
             [32] = "checklist_cancel",
-            // Prepare
+            // Start preflight
             [33] = "prepare_aircraft",
-            // Engine start
+            // Engine/apu start
             [34] = "engine_start_1",
             [35] = "engine_start_2",
             [36] = "apu_start",
-            // Clear checks
+            // Flows
             [37] = "clear_left",
-            // ATC / clearance
             [38] = "runway_entry_procedure",
-            [39] = "clear_to_line_up",
             [40] = "clear_for_takeoff",
-            [41] = "takeoff",
-            [42] = "approach",
             // Shutdown
             [43] = "shutdown",
             // Flight controls
@@ -405,12 +416,8 @@ namespace VoiceSidecar
             [60] = "cabin_crew_arm_slides",
             // Brake
             [61] = "brake_check",
-            // TCAS
-            [62] = "tcas_ta_ra",
-            [63] = "tcas_ta_only",
-            // Navigation
+            // Altimeter
             [64] = "set_standard",
-            [65] = "set_runway_track",
             // Transponder
             [66] = "transponder_auto",
             // Generic checklist responses
@@ -439,7 +446,6 @@ namespace VoiceSidecar
             [92] = "engines_on",
             [93] = "engines_on_wings_on",
             [94] = "on_supplied_by_apu",
-            // Config
             [95] = "config_1",
             [96] = "config_1f",
             [97] = "config_2",
@@ -447,22 +453,8 @@ namespace VoiceSidecar
             // Go around / abort
             [99] = "go_around_flaps",
             [100] = "abort_takeoff",
-            [101] = "continue",
-            // autopilot commands
-            [102] = "pull_altitude",
-            [103] = "manage_altitude",
-            [104] = "pull_speed",
-            [105] = "manage_speed",
-            [106] = "pull_heading",
-            [107] = "manage_nav",
-            [108] = "pull_altitude",
-            [109] = "manage_altitude",
-            [110] = "push_to_level_off",
-            [111] = "arm_approach",
-            [112] = "arm_localizer",
-            [67] = "bird_on",
-            [68] = "bird_off",
-            [69] = "takeoff_lights_on",
+            [101] = "continue"
+
         };
 
         private static VoiceCommand? DispatchDiscrete(int pid, string raw)
