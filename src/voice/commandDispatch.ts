@@ -10,10 +10,13 @@ import { setStartAPU } from "./commands/apu"
 import {
   setAirspeedDial,
   setAltitudeDial,
+  setAPPR,
   setAutoPilot,
   setBird,
   setFlightDirector,
   setHeadingDial,
+  setLOC,
+  setLevelOff,
   setManagedAlt,
   setManagedHeading,
   setManagedSpeed,
@@ -144,10 +147,16 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   },
   push_to_level_off: () => {
     playSound("check.ogg")
-    setManagedAlt(1)
+    setLevelOff(1)
   },
-  arm_approach: () => playSound("check.ogg"), // need to implement
-  arm_localizer: () => playSound("check.ogg"), // need to implement
+  arm_approach: () => {
+    playSound("check.ogg")
+    setAPPR(1)
+  },
+  arm_localizer: () => {
+    playSound("check.ogg")
+    setLOC(1)
+  },
   set_runway_track: () => {
     const hdg = useTelemetryStore.getState().telemetry?.["landingtrk"]
     if (hdg != null) {
@@ -230,9 +239,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   // ── Flows ─────────────────────────────────────────────────────────────────
   clear_left: () => executeFlow("clear_left"),
   runway_entry_procedure: () => executeFlow("before_takeoff"),
-  clear_to_line_up: () => executeFlow("before_takeoff"),
   clear_for_takeoff: () => executeFlow("takeoff"),
-  takeoff: () => executeFlow("takeoff"),
 
   // ── Checklists ────────────────────────────────────────────────────────────
   checklist_cockpit_preparation: () => executeChecklist("cockpit_preparation"),

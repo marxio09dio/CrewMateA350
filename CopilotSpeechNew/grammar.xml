@@ -236,10 +236,10 @@
       <!-- Missed approach altitude — auto -->
       <item>
         <one-of>
-          <item>set missed approach altitude</item>
-          <item>set missed approach</item>
-          <item>missed approach altitude</item>
-          <item>missed approach</item>
+          <item>set go around altitude</item>
+          <item>set go around</item>
+          <item>go aruond altitude</item>
+          <item>go aruond</item>
         </one-of>
         <tag>out.pid="16"; out.cval="AUTO";</tag>
       </item>
@@ -247,10 +247,10 @@
       <!-- Missed approach altitude — explicit feet -->
       <item>
         <one-of>
-          <item>set missed approach altitude</item>
-          <item>set missed approach</item>
-          <item>missed approach altitude</item>
-          <item>missed approach</item>
+          <item>set go around altitude</item>
+          <item>set go around</item>
+          <item>go aruond altitude</item>
+          <item>go aruond</item>
         </one-of>
         <ruleref uri="#ALTITUDE_VALUE" />
         <item repeat="0-1">feet</item>
@@ -260,10 +260,10 @@
       <!-- Missed approach altitude — explicit flight level -->
       <item>
         <one-of>
-          <item>set missed approach altitude</item>
-          <item>set missed approach</item>
-          <item>missed approach altitude</item>
-          <item>missed approach</item>
+          <item>set go around altitude</item>
+          <item>set go around</item>
+          <item>go around altitude</item>
+          <item>go around</item>
         </one-of>
         <item>flight level</item>
         <ruleref uri="#HDG_SPD_FL_VALUE" />
@@ -356,11 +356,15 @@
       <item>thrust climb<tag>out="THR CLB";</tag></item>
       <item>thrust idle<tag>out="THR IDLE";</tag></item>
       <item>thrust max continuous<tag>out="THR MCT";</tag></item>
+      <item>thrust dee climb<tag>THR DCLB</tag></item>
+      <item>thrust descend<tag>THR DES</tag></item>
       <item>speed<tag>out="SPEED";</tag></item>
       <item>mach<tag>out="MACH";</tag></item>
       <item>lever climb<tag>out="LVR CLB";</tag></item>
       <item>lever max continuous<tag>out="LVR MCT";</tag></item>
       <item>lever asymmetric<tag>out="LVR ASYM";</tag></item>
+      <item>man go around soft<tag>out="MAN GA SOFT"</tag></item>
+      <item>manual go around soft<tag>out="MAN GA SOFT"</tag></item>
       <item>man toga<tag>out="MAN TOGA";</tag></item>
       <item>manual toga<tag>out="MAN TOGA";</tag></item>
       <item>man max continuous<tag>out="MAN MCT";</tag></item>
@@ -380,7 +384,6 @@
   <rule id="FMA_VERTICAL_MODE">
     <one-of>
       <item>srs<tag>out="SRS";</tag></item>
-      <item>speed reference system<tag>out="SRS";</tag></item>
       <item>alt hold<tag>out="ALT";</tag></item>
       <item>altitude hold<tag>out="ALT";</tag></item>
       <item>alt star<tag>out="ALT*";</tag></item>
@@ -392,6 +395,7 @@
       <item>altitude constraint<tag>out="ALT CST";</tag></item>
       <item>climb<tag>out="CLB";</tag></item>
       <item>descent<tag>out="DES";</tag></item>
+      <item>emergency descent<tag>out="EMER DES";</tag></item>
       <item>open climb<tag>out="OP CLB";</tag></item>
       <item>open descent<tag>out="OP DES";</tag></item>
       <item>expedite climb<tag>out="EXP CLB";</tag></item>
@@ -399,7 +403,10 @@
       <item>glideslope<tag>out="G/S";</tag></item>
       <item>glideslope star<tag>out="G/S*";</tag></item>
       <item>glideslope capture<tag>out="G/S*";</tag></item>
-      <item>final<tag>out="FINAL";</tag></item>
+      <item>fls glideslope<tag>out="F-G/S";</tag></item>
+      <item>fls glideslope star<tag>out="F-G/S*";</tag></item>
+      <item>fls glideslope capture<tag>out="F-G/S*";</tag></item>
+      <item>approach descend<tag>out="APP DES";</tag></item>
       <item>vertical speed<tag>out="V/S";</tag></item>
       <item>flight path angle<tag>out="FPA";</tag></item>
     </one-of>
@@ -411,16 +418,21 @@
       <item>runway<tag>out="RWY";</tag></item>
       <item>runway track<tag>out="RWY TRK";</tag></item>
       <item>go around track<tag>out="GA TRK";</tag></item>
-      <item>hdg<tag>out="HDG";</tag></item>
       <item>heading<tag>out="HDG";</tag></item>
       <item>track<tag>out="TRACK";</tag></item>
       <item>nav<tag>out="NAV";</tag></item>
       <item>loc<tag>out="LOC";</tag></item>
       <item>loc star<tag>out="LOC*";</tag></item>
+      <item>loc capture<tag>out="LOC*";</tag></item>
       <item>localizer<tag>out="LOC";</tag></item>
       <item>localizer star<tag>out="LOC*";</tag></item>
       <item>localizer capture<tag>out="LOC*";</tag></item>
-      <item>approach nav<tag>out="APP NAV";</tag></item>
+      <item>fls loc<tag>out="F-LOC";</tag></item>
+      <item>fls loc star<tag>out="F-LOC*";</tag></item>
+      <item>fls loc capture<tag>out="F-LOC*";</tag></item>
+      <item>fls localizer<tag>out="F-LOC";</tag></item>
+      <item>fls localizer star<tag>out="F-LOC*";</tag></item>
+      <item>fls localizer capture<tag>out="F-LOC*";</tag></item>
     </one-of>
   </rule>
 
@@ -430,17 +442,17 @@
       <item>land<tag>out="LAND";</tag></item>
       <item>flare<tag>out="FLARE";</tag></item>
       <item>roll out<tag>out="ROLL OUT";</tag></item>
-      <item>final app<tag>out="FINAL APP";</tag></item>
     </one-of>
   </rule>
 
   <!-- FMA column 4: approach category -->
   <rule id="FMA_APPROACH_CAT">
     <one-of>
-      <item>cat one<tag>out="CAT 1";</tag></item>
-      <item>cat two<tag>out="CAT 2";</tag></item>
-      <item>cat three single<tag>out="CAT 3 SINGLE";</tag></item>
-      <item>cat three dual<tag>out="CAT 3 DUAL";</tag></item>
+      <item>approach one<tag>out="APPR1";</tag></item>
+      <item>land ONE<tag>out="LAND1";</tag></item>
+      <item>land two<tag>out="LAND2";</tag></item>
+      <item>land three single<tag>out="LAND3 SINGLE";</tag></item>
+      <item>land three dual<tag>out="LAND3 DUAL";</tag></item>
     </one-of>
   </rule>
 
@@ -469,16 +481,29 @@
       <item>autopilot engage<tag>out.pid="8";</tag></item>
       <item>auto pilot on<tag>out.pid="8";</tag></item>
       <item>auto pilot one on<tag>out.pid="8";</tag></item>
-      <item>autopilot disconnect<tag>out.pid="9";</tag></item>
+      <item>autopilot off<tag>out.pid="9";</tag></item>
+      <item>auto pilot off<tag>out.pid="9";</tag></item>
+      <item>set runway track<tag>out.pid="65";</tag></item>
+      <item>pull altitude<tag>out.pid="102";</tag></item>
+      <item>manage altitude<tag>out.pid="103";</tag></item>
+      <item>pull speed<tag>out.pid="104";</tag></item>
+      <item>manage speed<tag>out.pid="105";</tag></item>
+      <item>pull heading<tag>out.pid="106";</tag></item>
+      <item>manage nav<tag>out.pid="107";</tag></item>
+      <item>pull altitude<tag>out.pid="108";</tag></item>
+      <item>manage altitude<tag>out.pid="109";</tag></item>
+      <item>press alt<tag>out.pid="110";</tag></item>
+      <item>arm approach<tag>out.pid="111";</tag></item>
+      <item>arm localizer<tag>out.pid="112";</tag></item>
       <!-- Lights -->
-      <item>landing lights on<tag>out.pid="12";</tag></item>
-      <item>takeoff lights on<tag>out.pid="69";</tag></item>
-      <item>landing lights off<tag>out.pid="13";</tag></item>
-      <item>strobe lights on<tag>out.pid="14";</tag></item>
-      <item>strobe lights auto<tag>out.pid="15";</tag></item>
-      <item>strobe lights off<tag>out.pid="16";</tag></item>
-      <item>taxi lights on<tag>out.pid="17";</tag></item>
-      <item>taxi lights off<tag>out.pid="18";</tag></item>
+      <item>landing light on<tag>out.pid="12";</tag></item>
+      <item>takeoff light on<tag>out.pid="69";</tag></item>
+      <item>landing light off<tag>out.pid="13";</tag></item>
+      <item>strobe light on<tag>out.pid="14";</tag></item>
+      <item>strobe light auto<tag>out.pid="15";</tag></item>
+      <item>strobe light off<tag>out.pid="16";</tag></item>
+      <item>taxi light on<tag>out.pid="17";</tag></item>
+      <item>taxi light off<tag>out.pid="18";</tag></item>
       <!-- Flight director -->
       <item>flight director on<tag>out.pid="19";</tag></item>
       <item>bird on<tag>out.pid="67";</tag></item>
@@ -489,12 +514,9 @@
       <item>cockpit preparation checklist<tag>out.pid="22";</tag></item>
       <item>departure change checklist<tag>out.pid="23";</tag></item>
       <item>before start checklist<tag>out.pid="24";</tag></item>
-      <item>before start procedure<tag>out.pid="24";</tag></item>
-      <item>before start flow<tag>out.pid="24";</tag></item>
       <item>after start checklist<tag>out.pid="25";</tag></item>
       <item>taxi checklist<tag>out.pid="26";</tag></item>
       <item>lineup checklist<tag>out.pid="27";</tag></item>
-      <item>before takeoff procedure<tag>out.pid="27";</tag></item>
       <item>approach checklist<tag>out.pid="28";</tag></item>
       <item>landing checklist<tag>out.pid="29";</tag></item>
       <item>parking checklist<tag>out.pid="30";</tag></item>
@@ -502,11 +524,20 @@
       <item>cancel checklist<tag>out.pid="32";</tag></item>
       <item>stop checklist<tag>out.pid="32";</tag></item>
       <item>abort checklist<tag>out.pid="32";</tag></item>
+      <!-- Flows -->
+      <item>clear left<tag>out.pid="37";</tag></item>
+      <item>clear on the left<tag>out.pid="37";</tag></item>
+      <item>left side clear<tag>out.pid="37";</tag></item>
+      <item>clear left side<tag>out.pid="37";</tag></item>
+      <item>runway entry procedure<tag>out.pid="38";</tag></item>
+      <item>clear to line up<tag>out.pid="38";</tag></item>
+      <item>clear for takeoff<tag>out.pid="40";</tag></item>
+      <item>takeoff<tag>out.pid="40";</tag></item>
       <!-- Prepare / setup -->
       <item>lets prepare the aircraft<tag>out.pid="33";</tag></item>
       <item>lets prepare the flight<tag>out.pid="33";</tag></item>
       <item>lets set up the aircraft<tag>out.pid="33";</tag></item>
-      <!-- Engine start -->
+      <!-- Engine and apu start -->
       <item>starting engine one<tag>out.pid="34";</tag></item>
       <item>starting engine number one<tag>out.pid="34";</tag></item>
       <item>starting one<tag>out.pid="34";</tag></item>
@@ -517,17 +548,6 @@
       <item>starting number two<tag>out.pid="35";</tag></item>
       <item>start the apu<tag>out.pid="36";</tag></item>
       <item>start apu<tag>out.pid="36";</tag></item>
-      <!-- Clear / side checks -->
-      <item>clear left<tag>out.pid="37";</tag></item>
-      <item>clear on the left<tag>out.pid="37";</tag></item>
-      <item>left side clear<tag>out.pid="37";</tag></item>
-      <item>clear left side<tag>out.pid="37";</tag></item>
-      <!-- ATC / clearance -->
-      <item>runway entry procedure<tag>out.pid="38";</tag></item>
-      <item>clear to line up<tag>out.pid="39";</tag></item>
-      <item>clear for takeoff<tag>out.pid="40";</tag></item>
-      <item>takeoff<tag>out.pid="41";</tag></item>
-      <item>approach<tag>out.pid="42";</tag></item>
       <!-- Shutdown -->
       <item>shutdown procedure<tag>out.pid="43";</tag></item>
       <item>shutdown<tag>out.pid="43";</tag></item>
@@ -557,14 +577,8 @@
       <item>cabin crew arm slides<tag>out.pid="60";</tag></item>
       <!-- Brake -->
       <item>brake check<tag>out.pid="61";</tag></item>
-      <!-- TCAS -->
-      <item>tara<tag>out.pid="62";</tag></item>
-      <item>ta ra<tag>out.pid="62";</tag></item>
-      <item>t a r a<tag>out.pid="62";</tag></item>
-      <item>ta only<tag>out.pid="63";</tag></item>
-      <!-- Navigation -->
+      <!-- Altimeter -->
       <item>set standard<tag>out.pid="64";</tag></item>
-      <item>set runway track<tag>out.pid="65";</tag></item>
       <!-- Transponder -->
       <item>set transponder auto<tag>out.pid="66";</tag></item>
       <!-- Generic responses / checklist replies -->
@@ -598,7 +612,6 @@
       <item>engines on<tag>out.pid="92";</tag></item>
       <item>engines on wings on<tag>out.pid="93";</tag></item>
       <item>on supplied by apu<tag>out.pid="94";</tag></item>
-      <!-- Config -->
       <item>config one<tag>out.pid="95";</tag></item>
       <item>config one plus f<tag>out.pid="96";</tag></item>
       <item>config two<tag>out.pid="97";</tag></item>
@@ -607,18 +620,6 @@
       <item>go around flaps<tag>out.pid="99";</tag></item>
       <item>abort takeoff<tag>out.pid="100";</tag></item>
       <item>continue<tag>out.pid="101";</tag></item>
-      <!-- autopilot commands -->
-      <item>pull altitude<tag>out.pid="102";</tag></item>
-      <item>manage altitude<tag>out.pid="103";</tag></item>
-      <item>pull speed<tag>out.pid="104";</tag></item>
-      <item>manage speed<tag>out.pid="105";</tag></item>
-      <item>pull heading<tag>out.pid="106";</tag></item>
-      <item>manage nav<tag>out.pid="107";</tag></item>
-      <item>pull altitude<tag>out.pid="108";</tag></item>
-      <item>manage altitude<tag>out.pid="109";</tag></item>
-      <item>push to level off<tag>out.pid="110";</tag></item>
-      <item>arm approach<tag>out.pid="111";</tag></item>
-      <item>arm localizer<tag>out.pid="112";</tag></item>
     </one-of>
   </rule>
 

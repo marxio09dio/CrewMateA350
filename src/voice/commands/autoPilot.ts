@@ -11,6 +11,33 @@ export async function setAutoPilot(position: number) {
   }
 }
 
+export async function setLevelOff(position: number) {
+  try {
+    const expression = `${position} (>L:INI_FCU_LEVEL_OFF_COMMAND)`
+    await simvarSet(expression)
+  } catch (error) {
+    console.error("Error leveling off (LVAR):", error)
+  }
+}
+
+export async function setLOC(position: number) {
+  try {
+    const expression = `${position} (>L:INI_LOCALIZER_BUTTON)`
+    await simvarSet(expression)
+  } catch (error) {
+    console.error("Error setting localizer (LVAR):", error)
+  }
+}
+
+export async function setAPPR(position: number) {
+  try {
+    const expression = `${position} (>L:INI_APPROACH_BUTTON)`
+    await simvarSet(expression)
+  } catch (error) {
+    console.error("Error setting approach (LVAR):", error)
+  }
+}
+
 // Flight director commands
 export async function setFlightDirector(position: number) {
   try {
