@@ -42,7 +42,9 @@ async function waitForSpeechResponse(signal: AbortSignal): Promise<string | null
 
     signal.addEventListener("abort", () => done(null), { once: true })
 
-    listen<{ text?: string }>("speech_recognized", (event) => {
+    listen<{ text?: string; type?: string }>("speech_recognized", (event) => {
+      // Ignore utterances that the sidecar flagged as unrecognized grammar
+      if (event.payload?.type === "speech_unrecognized") return
       const text = event.payload?.text?.trim().toLowerCase()
       if (text) done(text)
     }).then((fn) => {
@@ -51,6 +53,11 @@ async function waitForSpeechResponse(signal: AbortSignal): Promise<string | null
     })
   })
 }
+
+// Pre-compiled regex for spelled-out number words used in baro/feet confirmation.
+// Built once at module level — matched against the pilot's spoken response.
+const NUMBER_WORD = `(?:zero|one|two|three|four|five|six|seven|eight|nine|niner|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand)`
+const NUMBER_WORDS_RE = new RegExp(`\\b${NUMBER_WORD}(?:[\\s-]+${NUMBER_WORD}){0,3}\\b`, "i")
 
 /**
  * Match spoken text against a response token:
@@ -194,61 +201,40 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       if (spoken === null) return // aborted
 
       if (responseList.length === 0 || matchesAnyResponse(spoken, responseList)) {
-        // If this is a takeoff_confirmation item, require the pilot to mention
-        // V1, VR, V2 (with any 3-digit number) and either FLEX or TOGA.
-        if (item.takeoff_confirmation) {
-          const s = spoken.toLowerCase().trim()
-          // "set and checked" is always accepted as a safeword bypass
-          if (!s.includes("set and checked")) {
-            const { thrustSetting } = usePerformanceStore.getState().takeoff
-            // Speeds are spoken as digit words ("one two five"), not numerals, so
-            // we only validate the V-speed labels and thrust setting are present.
-            const hasV1 = /\bv\s*1\b/.test(s) || /\bv\s*one\b/i.test(s)
-            const hasVR = /\bv\s*r\b/.test(s) || /\bv\s*rotate\b/i.test(s)
-            const hasV2 = /\bv\s*2\b/.test(s) || /\bv\s*two\b/i.test(s)
-            const hasThrust = thrustSetting === "flex" ? /\bflex\b/i.test(s) : /\btoga\b/i.test(s)
-            if (!(hasV1 && hasVR && hasV2 && hasThrust)) continue
-          }
-        }
-
-        // If this item expects a feet-style response (minimums) or is a
-        // baro_confirmation we require the pilot to speak an actual numeric
-        // value (digits or spelled-out number words). Accept phrasing such as:
-        //  - "altimeter 2992 set"
-        //  - "qnh 1013 set"
-        //  - "baro four hundred fifty feet"
-        //  - "radio one hundred sixty feet"
         const s = spoken.toLowerCase().trim()
 
+        // Takeoff confirmation: require V1/VR/V2 labels + thrust type,
+        // or accept "set and checked" as a safeword bypass.
+        if (item.takeoff_confirmation && !s.includes("set and checked")) {
+          const { thrustSetting } = usePerformanceStore.getState().takeoff
+          const hasV1 = /\bv\s*1\b/.test(s) || /\bv\s*one\b/i.test(s)
+          const hasVR = /\bv\s*r\b/.test(s) || /\bv\s*rotate\b/i.test(s)
+          const hasV2 = /\bv\s*2\b/.test(s) || /\bv\s*two\b/i.test(s)
+          const hasThrust = thrustSetting === "flex" ? /\bflex\b/i.test(s) : /\btoga\b/i.test(s)
+          if (!(hasV1 && hasVR && hasV2 && hasThrust)) continue
+        }
+
+        // Baro/feet confirmation: require a numeric value (digits or word form).
         const expectsFeet = responseList.some((r) => r.toLowerCase().includes("feet"))
         if (item.baro_confirmation || expectsFeet) {
-          const hasDigits = /\b\d{2,4}\b/.test(s)
-
-          // Match spelled-out numbers like "four hundred fifty", "one thousand two hundred"
-          const numberWord = `(?:zero|one|two|three|four|five|six|seven|eight|nine|niner|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand)`
-          // Allow single-word numbers ("fifty") or multi-word numbers
-          const numberWordsRegex = new RegExp(`\\b${numberWord}(?:[\\s-]+${numberWord}){0,3}\\b`, "i")
-          const hasNumberWords = numberWordsRegex.test(s)
-
-          if (!(hasDigits || hasNumberWords)) {
-            // Not a proper numeric response — keep listening
-            continue
-          }
+          if (!(/\b\d{2,4}\b/.test(s) || NUMBER_WORDS_RE.test(s))) continue
         }
 
         break
       }
       // Unrecognised input — keep waiting, don't re-challenge
     }
+    // spoken is guaranteed non-null here — the inner loop returns on null
+    const s = spoken!
+
     checkAbort(signal)
 
     // ── simvar_check: validate response against live SimVar position ──────
     if (item.simvar_check) {
       // If the spoken text doesn't match any config-specific expected_response
-      // in the validation map (e.g. the pilot said "set and checked"), treat it
-      // as a universal acceptance and skip the validation map checks entirely.
-      const isConfigSpecific = item.simvar_check.validation_map.some(
-        (e) => spoken !== null && spoken.includes(e.expected_response.toLowerCase())
+      // (e.g. pilot said "set and checked"), treat it as a universal bypass.
+      const isConfigSpecific = item.simvar_check.validation_map.some((e) =>
+        s.includes(e.expected_response.toLowerCase())
       )
 
       if (!isConfigSpecific) {
@@ -263,28 +249,23 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       )
 
       const expectedResp = mapEntry?.expected_response ?? null
-      const responseMatches = expectedResp !== null && spoken !== null && spoken.includes(expectedResp.toLowerCase())
-
-      if (!responseMatches) {
-        const incorrectAudio = item.simvar_check.incorrect ?? item.incorrect ?? "are_you_sure.ogg"
-        await playSound(incorrectAudio)
+      if (!expectedResp || !s.includes(expectedResp.toLowerCase())) {
+        await playSound(item.simvar_check.incorrect ?? item.incorrect ?? "are_you_sure.ogg")
         await waitForSoundFinished()
         if (hold()) continue
-        else break // re-challenge or advance
+        else break
       }
 
       // ── Also run store_check if present (e.g. flap position vs plan) ───
       if (item.store_check) {
         const storeVal = getStoreValue(item.store_check.store)
-        const storeEntry = item.store_check.validation_map.find((e) => e.store_value === storeVal)
-        const storeExpected = storeEntry?.expected_response ?? null
-        const storeMatches = storeExpected !== null && spoken !== null && spoken.includes(storeExpected.toLowerCase())
-
-        if (!storeMatches) {
+        const storeExpected =
+          item.store_check.validation_map.find((e) => e.store_value === storeVal)?.expected_response ?? null
+        if (!storeExpected || !s.includes(storeExpected.toLowerCase())) {
           await playSound(item.store_check.incorrect)
           await waitForSoundFinished()
           if (hold()) continue
-          else break // re-challenge or advance
+          else break
         }
       }
 
@@ -292,13 +273,10 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       if (item.lvar_plan_check) {
         const lvarVal = await readSimVar(item.lvar_plan_check.var_name)
         checkAbort(signal)
-        const lvarEntry = item.lvar_plan_check.validation_map.find(
-          (e) => lvarVal !== null && Math.abs(e.lvar_value - lvarVal) < 0.5
-        )
-        const lvarExpected = lvarEntry?.expected_response ?? null
-        const lvarMatches = lvarExpected !== null && spoken !== null && spoken.includes(lvarExpected.toLowerCase())
-
-        if (!lvarMatches) {
+        const lvarExpected =
+          item.lvar_plan_check.validation_map.find((e) => lvarVal !== null && Math.abs(e.lvar_value - lvarVal) < 0.5)
+            ?.expected_response ?? null
+        if (lvarExpected && !s.includes(lvarExpected.toLowerCase())) {
           await playSound(item.lvar_plan_check.incorrect)
           await waitForSoundFinished()
           if (hold()) continue
@@ -319,21 +297,16 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       const lvarVal = await readSimVar(item.lvar_plan_check.var_name)
       checkAbort(signal)
 
-      const lvarEntry = item.lvar_plan_check.validation_map.find(
-        (e) => lvarVal !== null && Math.abs(e.lvar_value - lvarVal) < 0.5
-      )
-      const lvarExpected = lvarEntry?.expected_response ?? null
+      const lvarExpected =
+        item.lvar_plan_check.validation_map.find((e) => lvarVal !== null && Math.abs(e.lvar_value - lvarVal) < 0.5)
+          ?.expected_response ?? null
 
       // If LVAR is unreadable (sim not connected) skip the cross-check and accept
-      if (lvarExpected !== null) {
-        const lvarMatches = spoken !== null && spoken.includes(lvarExpected.toLowerCase())
-
-        if (!lvarMatches) {
-          await playSound(item.lvar_plan_check.incorrect)
-          await waitForSoundFinished()
-          if (hold()) continue
-          else break
-        }
+      if (lvarExpected !== null && !s.includes(lvarExpected.toLowerCase())) {
+        await playSound(item.lvar_plan_check.incorrect)
+        await waitForSoundFinished()
+        if (hold()) continue
+        else break
       }
 
       break
@@ -343,19 +316,17 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
     if (item.store_check) {
       const storeVal = getStoreValue(item.store_check.store)
       const mapEntry = item.store_check.validation_map.find((e) => e.store_value === storeVal)
-
       const expectedResp = mapEntry?.expected_response ?? null
-      const responseMatches = expectedResp !== null && spoken !== null && spoken.includes(expectedResp.toLowerCase())
 
       console.log(
-        `[ChecklistRunner] store_check: store="${item.store_check.store}" storeVal="${storeVal}" expectedResp="${expectedResp}" spoken="${spoken}" responseMatches=${responseMatches}`
+        `[ChecklistRunner] store_check: store="${item.store_check.store}" storeVal="${storeVal}" expectedResp="${expectedResp}" spoken="${s}" responseMatches=${expectedResp !== null && s.includes(expectedResp.toLowerCase())}`
       )
 
-      if (!responseMatches) {
+      if (!expectedResp || !s.includes(expectedResp.toLowerCase())) {
         await playSound(item.store_check.incorrect)
         await waitForSoundFinished()
         if (hold()) continue
-        else break // re-challenge or advance
+        else break
       }
 
       // ── Verify actual aircraft SimVar state matches what the store expects ─
@@ -383,7 +354,7 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
           await playSound(item.store_check.incorrect)
           await waitForSoundFinished()
           if (hold()) continue
-          else break // re-challenge or advance
+          else break
         }
       }
 
@@ -396,13 +367,11 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
       checkAbort(signal)
 
       const expected = typeof item.expected === "boolean" ? (item.expected ? 1 : 0) : item.expected
-      const ok = raw !== null && Math.abs(raw - expected) < 0.5
-
-      if (!ok) {
+      if (raw === null || Math.abs(raw - expected) >= 0.5) {
         await playSound(item.incorrect ?? "are_you_sure.ogg")
         await waitForSoundFinished()
         if (hold()) continue
-        else break // re-challenge or advance
+        else break
       }
 
       break
@@ -428,7 +397,7 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
         await playSound(item.incorrect ?? "are_you_sure.ogg")
         await waitForSoundFinished()
         if (hold()) continue
-        else break // re-challenge or advance
+        else break
       }
     }
 
