@@ -22,20 +22,8 @@
       "response": ["armed"],
       "label": "Slides",
       "incorrect": "are_you_sure.ogg",
-      "simvar_checks": [
-        { "var": "(L:INI_DOOR0_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR1_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR2_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR3_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR4_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR5_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR6_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR7_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR8_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR9_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR10_ARMED)", "expected": 1 },
-        { "var": "(L:INI_DOOR11_ARMED)", "expected": 1 }
-      ]
+      "var": "(L:INI_DOOR0_ARMED)",
+      "expected": 1.0
     },
     {
       "label": "Beacon On",
