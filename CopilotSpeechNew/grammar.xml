@@ -531,7 +531,6 @@
       <item>clear left side<tag>out.pid="37";</tag></item>
       <item>runway entry procedure<tag>out.pid="38";</tag></item>
       <item>clear to line up<tag>out.pid="38";</tag></item>
-      <item>clear for takeoff<tag>out.pid="40";</tag></item>
       <item>takeoff<tag>out.pid="40";</tag></item>
       <!-- Prepare / setup -->
       <item>lets prepare the aircraft<tag>out.pid="33";</tag></item>

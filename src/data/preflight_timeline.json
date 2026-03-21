@@ -37,7 +37,7 @@
     "type": "reminder"
   },
   {
-    "minuteMark": 10,
+    "minuteMark": 20,
     "label": "Cockpit preparation checklist",
     "type": "reminder"
   },
