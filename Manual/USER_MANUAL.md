@@ -5,7 +5,7 @@
 ---
 
 <div style="text-align: center;">
-  <img src="crewmate.png" alt="Crewmate avatar" width="800">
+  <img src="../crewmate.png" alt="Crewmate avatar" width="800">
 </div>
 
 ## Table of Contents
@@ -57,7 +57,7 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 - 20 min: PF calls for the COCKPIT PREPARATION flow.
 - 1 min: CrewMate closes the cockpit door. PF calls for the BEFORE START checklist.
 
-![Before Start flow pattern](Manual/Images/BEFORE%20START%20FLOW%20PATTERN.png)
+![Before Start flow pattern](Images/BEFORE%20START%20FLOW%20PATTERN.png)
 
 ### Pushback and Engine Start
 
@@ -65,7 +65,7 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 - When ignition is set to NORMAL, PM will start the AFTER START flow pattern. If anti‑ice will be used, flaps may be left as required.
 - On hand signal from ground personnel, call for the AFTER START checklist.
 
-![After Start flow pattern](Manual/Images/AFTER%20START%20FLOW%20PATTERN.png)
+![After Start flow pattern](Images/AFTER%20START%20FLOW%20PATTERN.png)
 
 ### Taxi
 
@@ -75,7 +75,7 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 - After the controls check, PM performs the TAXI flow pattern.
 - After T.O. CONFIG pushbutton is pressed and a cabin report is received, PF calls for the TAXI checklist.
 
-![Taxi flow pattern](Manual/Images/TAXI%20FLOW%20PATTERN.png)
+![Taxi flow pattern](Images/TAXI%20FLOW%20PATTERN.png)
 
 ### Line‑up & Takeoff
 
@@ -83,17 +83,17 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 - When line‑up clearance is received and the Line‑up flow pattern is complete, PF calls for the LINE‑UP checklist.
 - When cleared for takeoff, announce “TAKEOFF.”
 
-![Line‑up flow pattern](Manual/Images/LINE-UP%20FLOW%20PATTERN.png)
+![Line‑up flow pattern](Images/LINE-UP%20FLOW%20PATTERN.png)
 
 ### Acceleration
 
 - The After‑Takeoff flow is triggered when flaps are retracted to zero.
 
-![Acceleration flow pattern](Manual/Images/ACCELERATION%20FLOW%20PATTERN.png)
+![Acceleration flow pattern](Images/ACCELERATION%20FLOW%20PATTERN.png)
 
 ### Climb to 10,000 ft
 
-![10,000 ft flow pattern](Manual/Images/AT%2010%20000%20FT%20AAL%20FLOW%20PATTERN.png)
+![10,000 ft flow pattern](Images/AT%2010%20000%20FT%20AAL%20FLOW%20PATTERN.png)
 
 ### Descent Preparation
 
@@ -101,7 +101,7 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 
 ### 10k Descent
 
-![10k descent flow pattern](Manual/Images/AT%2010K%20Descen.png)
+![10k descent flow pattern](Images/AT%2010K%20Descen.png)
 
 ### Approach
 
@@ -118,7 +118,7 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 - If anti‑ice is used, flaps may remain at LDG CONF per procedure.
 - After the Parking flow pattern completes, PM calls for the SHUTDOWN checklist.
 
-![After landing flow pattern](Manual/Images/AFTER%20LANDING%20FLOW%20PATTERN.png)
+![After landing flow pattern](Images/AFTER%20LANDING%20FLOW%20PATTERN.png)
 
 ### Securing the Aircraft
 
@@ -129,7 +129,7 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 - Turn off taxi lights when turning into the gate, or ask the PM to confirm.
 - Shutting down the engines will trigger the Parking flow.
 
-![Parking flow pattern](Manual/Images/PARKING%20FLOW%20PATTERN.png)
+![Parking flow pattern](Images/PARKING%20FLOW%20PATTERN.png)
 
 ---
 
