@@ -13,6 +13,8 @@ interface SettingsStore {
   pttShortcut: string
   soundPack: string
   soundVolume: number
+  outputDevice?: string | null
+  inputDevice?: string | null
   lightsControlMode: LightsControlMode
   confidenceThreshold: number
   setVoiceEnabled: (enabled: boolean) => void
@@ -20,6 +22,8 @@ interface SettingsStore {
   setPttShortcut: (shortcut: string) => void
   setSoundPack: (pack: string) => void
   setSoundVolume: (volume: number) => void
+  setOutputDevice: (device: string | null) => void
+  setInputDevice: (device: string | null) => void
   setLightsControlMode: (mode: LightsControlMode) => void
   setConfidenceThreshold: (threshold: number) => void
 }
@@ -34,6 +38,8 @@ export const useSettingsStore = create<SettingsStore>()(
       pttShortcut: "CmdOrCtrl+Shift+Space",
       soundPack: "Jenny",
       soundVolume: 100,
+      outputDevice: null,
+      inputDevice: null,
       lightsControlMode: defaultLightsControlMode,
       confidenceThreshold: 85,
 
@@ -67,6 +73,18 @@ export const useSettingsStore = create<SettingsStore>()(
           emit("settings-changed", { soundVolume: volume })
         }
       },
+      setOutputDevice: (device) => {
+        set({ outputDevice: device })
+        if (!isUpdatingFromEvent) {
+          emit("settings-changed", { outputDevice: device })
+        }
+      },
+      setInputDevice: (device) => {
+        set({ inputDevice: device })
+        if (!isUpdatingFromEvent) {
+          emit("settings-changed", { inputDevice: device })
+        }
+      },
       setLightsControlMode: (mode) => {
         set({ lightsControlMode: mode })
         if (!isUpdatingFromEvent) {
@@ -85,6 +103,12 @@ export const useSettingsStore = create<SettingsStore>()(
       name: "voice-settings",
       onRehydrateStorage: () => (state) => {
         if (state) invoke("set_confidence_threshold", { threshold: state.confidenceThreshold / 100 })
+        if (state && state.outputDevice) {
+          invoke("set_output_device", { device: state.outputDevice }).catch(() => {})
+        }
+        if (state && state.inputDevice) {
+          invoke("set_input_device", { device: state.inputDevice }).catch(() => {})
+        }
       }
     }
   )
@@ -126,6 +150,12 @@ listen<
   }
   if (event.payload.confidenceThreshold !== undefined) {
     useSettingsStore.setState({ confidenceThreshold: event.payload.confidenceThreshold })
+  }
+  if (event.payload.outputDevice !== undefined) {
+    useSettingsStore.setState({ outputDevice: event.payload.outputDevice })
+  }
+  if (event.payload.inputDevice !== undefined) {
+    useSettingsStore.setState({ inputDevice: event.payload.inputDevice })
   }
 
   isUpdatingFromEvent = false

@@ -3,6 +3,9 @@ mod audio;
 use audio::audio_commands::{
     get_sound_packs, is_audio_playing, play_sound, play_sound_sequence, AudioPlayerState,
 };
+use audio::audio_devices::{
+    get_available_input_devices, get_available_output_devices, set_input_device, set_output_device,
+};
 use audio::audio_player::AudioPlayer;
 use tauri_plugin_window_state::StateFlags;
 
@@ -97,7 +100,7 @@ pub fn run() {
 
             // Initialize audio player
             let audio_player = AudioPlayer::new().expect("Failed to initialize audio player");
-            app.manage(AudioPlayerState(audio_player));
+            app.manage(AudioPlayerState(std::sync::Mutex::new(audio_player)));
 
             // Initialize SimVar worker
             app.manage(AppState {
@@ -181,6 +184,10 @@ pub fn run() {
             play_sound_sequence,
             is_audio_playing,
             get_sound_packs,
+            get_available_input_devices,
+            get_available_output_devices,
+            set_output_device,
+            set_input_device,
             get_aircraft_title,
             get_in_cockpit,
             set_confidence_threshold,

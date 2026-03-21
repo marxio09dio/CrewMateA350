@@ -1,8 +1,9 @@
 use crate::audio::audio_player::{play_sequence_trimmed, AudioPlayer};
 use std::path::PathBuf;
+use std::sync::Mutex;
 use tauri::{AppHandle, Manager};
 
-pub struct AudioPlayerState(pub AudioPlayer);
+pub struct AudioPlayerState(pub Mutex<AudioPlayer>);
 
 fn sounds_dir_candidates(app_handle: &AppHandle) -> Vec<PathBuf> {
     let mut dirs = Vec::new();
@@ -63,15 +64,19 @@ pub async fn play_sound(
     let volume = volume.unwrap_or(1.0);
     let path = resolve_sound_path(&app_handle, &pack, &filename)?;
 
-    audio_player
-        .0
+    let guard = audio_player.0.lock().map_err(|e| e.to_string())?;
+    guard
         .play_from_path(path, volume)
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 pub fn is_audio_playing(audio_player: tauri::State<'_, AudioPlayerState>) -> bool {
-    audio_player.0.is_playing()
+    if let Ok(guard) = audio_player.0.lock() {
+        guard.is_playing()
+    } else {
+        false
+    }
 }
 
 /// Play a list of sound files back-to-back with silence trimmed from each.
@@ -94,8 +99,10 @@ pub async fn play_sound_sequence(
     let paths = paths?;
 
     // Move only the two Arc fields so we don't need AudioPlayer: Clone.
-    let stream_handle = audio_player.0.stream_handle.clone();
-    let is_playing = audio_player.0.is_playing.clone();
+    let (stream_handle, is_playing) = {
+        let guard = audio_player.0.lock().map_err(|e| e.to_string())?;
+        (guard.stream_handle.clone(), guard.is_playing.clone())
+    };
 
     // play_sequence_trimmed blocks — run on a thread-pool thread.
     tokio::task::spawn_blocking(move || {

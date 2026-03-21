@@ -1,3 +1,4 @@
+use crate::audio::audio_devices;
 use rodio::{buffer::SamplesBuffer, Decoder, OutputStream, OutputStreamHandle, Sink, Source};
 use std::collections::HashMap;
 use std::fs::File;
@@ -56,7 +57,24 @@ unsafe impl Sync for AudioPlayer {}
 
 impl AudioPlayer {
     pub fn new() -> Result<Self, Box<dyn std::error::Error>> {
-        let (stream, stream_handle) = OutputStream::try_default()?;
+        Self::with_device(None)
+    }
+
+    pub fn with_device(device: Option<String>) -> Result<Self, Box<dyn std::error::Error>> {
+        // If no device specified or "default", use default
+        let (stream, stream_handle) = match device.as_deref() {
+            None | Some("default") => OutputStream::try_default()?,
+            Some(idx) => {
+                let devices = audio_devices::list_output_devices()?;
+                let found = devices
+                    .into_iter()
+                    .find(|d| d.index == idx)
+                    .ok_or_else(|| format!("Output device with index {} not found", idx))?;
+                // Use rodio's try_from_device if available
+                OutputStream::try_from_device(&found.device)?
+            }
+        };
+
         Ok(Self {
             _stream: Rc::new(stream),
             stream_handle: Arc::new(stream_handle),
