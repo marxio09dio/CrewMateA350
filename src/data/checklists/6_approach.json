@@ -15,7 +15,17 @@
     },
     {
       "challenge": "runway_condition.ogg",
-      "response": ["dry", "wet", "compacted snow", "snow", "slippery", "standing water", "slush", "ice", "set and checked"],
+      "response": [
+        "dry",
+        "wet",
+        "compacted snow",
+        "snow",
+        "slippery",
+        "standing water",
+        "slush",
+        "ice",
+        "set and checked"
+      ],
       "label": "Runway condition"
     },
     {

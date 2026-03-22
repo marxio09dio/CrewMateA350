@@ -10,6 +10,12 @@
       "skip_verify": true
     },
     {
+      "label": "Takeoff Wheel Light",
+      "read": "(L:INI_LIGHTS_NOSE)",
+      "on": "2 (>L:INI_LIGHTS_NOSE)",
+      "expect": 2
+    },
+    {
       "label": "APU Bleed",
       "read": "(L:INI_AIR_BLEED_APU)",
       "on": "0 (>L:INI_AIR_BLEED_APU)",
@@ -20,32 +26,6 @@
       "read": "(L:INI_APU_MASTER_SWITCH)",
       "on": "0 (>L:INI_APU_MASTER_SWITCH)",
       "expect": 0
-    },
-    {
-      "label": "pack 1",
-      "read": "(L:INI_AIR_PACK1_BUTTON)",
-      "on": "1 (>L:INI_AIR_PACK1_BUTTON)",
-      "expect": 1
-    },
-    {
-      "label": "pack 2",
-      "read": "(L:INI_AIR_PACK2_BUTTON)",
-      "on": "1 (>L:INI_AIR_PACK2_BUTTON)",
-      "expect": 1,
-      "sound_on_execute": "packs_1_and_2_on.ogg"
-    },
-    {
-      "label": "Takeoff Wheel Light",
-      "read": "(L:INI_LIGHTS_NOSE)",
-      "on": "2 (>L:INI_LIGHTS_NOSE)",
-      "expect": 2
-    },
-    {
-      "label": "Chrono",
-      "read": "(L:INI_FO_CHRONO_BUTTON)",
-      "on": "1 (>L:INI_FO_CHRONO_BUTTON)",
-      "expect": 0,
-      "skip_verify": true
     }
   ]
 }
