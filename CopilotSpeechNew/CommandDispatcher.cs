@@ -426,7 +426,6 @@ namespace VoiceSidecar
             [86] = "running",
             [87] = "advised",
             [88] = "signaled",
-            [89] = "stop",
             [90] = "medium",
             [91] = "btv",
             [92] = "engines_on",
@@ -440,8 +439,7 @@ namespace VoiceSidecar
             // Go around / abort
             [99] = "go_around_flaps",
             [100] = "abort_takeoff",
-            [101] = "continue"
-
+            [101] = "continue",
         };
 
         private static VoiceCommand? DispatchDiscrete(int pid, string raw)

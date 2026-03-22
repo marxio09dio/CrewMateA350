@@ -40,8 +40,6 @@ const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 export const checklistAbortCommands = new Set(["checklist_cancel"])
 
 // ─── Discrete command map ─────────────────────────────────────────────────────
-// Keyed by the semantic name from CommandDispatcher.cs DiscreteNames.
-// Every entry replaces a phrase-based entry in the old createVoiceCommands().
 
 export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   // ── Gear ──────────────────────────────────────────────────────────────────
@@ -254,39 +252,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   checklist_secure_aircraft: () => executeChecklist("secure_aircraft"),
   checklist_cancel: () => abortChecklist(),
 
-  // ── Generic checklist response words ─────────────────────────────────────
-  // These reach checklistRunner.ts via the text field (unchanged). The sound
-  // here is the FO audible acknowledgment when NOT inside a checklist.
-  confirm: () => playSound("check.ogg"),
-  negative: () => playSound("check.ogg"),
-  set: () => playSound("check.ogg"),
-  checked: () => playSound("check.ogg"),
-  on: () => playSound("check.ogg"),
-  off: () => playSound("check.ogg"),
-  armed: () => playSound("check.ogg"),
-  auto: () => playSound("check.ogg"),
-  normal: () => playSound("check.ogg"),
-  retracted: () => playSound("check.ogg"),
-  down: () => playSound("check.ogg"),
-  secured: () => playSound("check.ogg"),
-  removed: () => playSound("check.ogg"),
-  released: () => playSound("check.ogg"),
-  received: () => playSound("check.ogg"),
-  started: () => playSound("check.ogg"),
-  running: () => playSound("check.ogg"),
-  advised: () => playSound("check.ogg"),
-  signaled: () => playSound("check.ogg"),
-  stop: () => playSound("check.ogg"),
-  medium: () => playSound("check.ogg"),
-  btv: () => playSound("check.ogg"),
-  engines_on: () => playSound("check.ogg"),
-  engines_on_wings_on: () => playSound("check.ogg"),
-  on_supplied_by_apu: () => playSound("check.ogg"),
-  config_1: () => playSound("check.ogg"),
-  config_1f: () => playSound("check.ogg"),
-  config_2: () => playSound("check.ogg"),
-  config_3: () => playSound("check.ogg"),
-  rwy_cond: () => playSound("check.ogg"),
+  // ── RTO / Continue  ─────────────────────────────────────
   abort_takeoff: () => playSound("check.ogg"),
   continue: () => playSound("check.ogg")
 }
