@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core"
+import { listen } from "@tauri-apps/api/event"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import { FolderOpen, Volume2, Option } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -20,6 +21,7 @@ export function SettingsWindow() {
   }
 
   const [availableOutputDevices, setAvailableOutputDevices] = useState<AudioDevice[]>([])
+  const [availableInputDevices, setAvailableInputDevices] = useState<AudioDevice[]>([])
 
   const soundPack = useSettingsStore((s) => s.soundPack)
   const setSoundPack = useSettingsStore((s) => s.setSoundPack)
@@ -29,6 +31,8 @@ export function SettingsWindow() {
   const setConfidenceThreshold = useSettingsStore((s) => s.setConfidenceThreshold)
   const outputDevice = useSettingsStore((s) => s.outputDevice)
   const setOutputDevice = useSettingsStore((s) => s.setOutputDevice)
+  const inputDevice = useSettingsStore((s) => s.inputDevice)
+  const setInputDevice = useSettingsStore((s) => s.setInputDevice)
 
   const holdOnIncorrect = useChecklistStore((s) => s.holdOnIncorrect)
   const setHoldOnIncorrect = useChecklistStore((s) => s.setHoldOnIncorrect)
@@ -72,6 +76,28 @@ export function SettingsWindow() {
   }, [outputDevice, setOutputDevice])
 
   useEffect(() => {
+    const fetchInputDevices = async () => {
+      try {
+        const devices = await invoke<AudioDevice[]>("get_speech_input_devices")
+        setAvailableInputDevices(devices ?? [])
+      } catch (e) {
+        console.error("Failed to fetch input devices", e)
+      }
+    }
+
+    fetchInputDevices()
+
+    // Re-fetch when the sidecar restarts
+    const unlistenReady = listen<{ status: string }>("speech_engine_status", (event) => {
+      if (event.payload?.status === "ready") fetchInputDevices()
+    })
+
+    return () => {
+      unlistenReady.then((f) => f())
+    }
+  }, [])
+
+  useEffect(() => {
     getCurrentWindow()
       .show()
       .catch(() => {})
@@ -113,6 +139,32 @@ export function SettingsWindow() {
             <SelectContent className="bg-slate-900 border-slate-600 text-white max-w-[20rem]">
               {availableOutputDevices.map((d) => (
                 <SelectItem key={d.index} value={d.index} className="truncate">
+                  {d.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="grid grid-cols-[120px_1fr] items-center gap-3">
+          <Label className="flex items-center gap-1 text-sm text-slate-300">Input Device</Label>
+          <Select
+            value={inputDevice ?? "default"}
+            onValueChange={(v) => {
+              const device = v === "default" ? null : v
+              setInputDevice(device)
+              invoke("set_input_device", { device }).catch(() => {})
+            }}
+          >
+            <SelectTrigger className="bg-slate-900/50 border-slate-600 text-white text-sm focus:ring-cyan-500 w-56 truncate">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-900 border-slate-600 text-white max-w-[20rem]">
+              <SelectItem value="default" className="truncate">
+                Default
+              </SelectItem>
+              {availableInputDevices.map((d) => (
+                <SelectItem key={d.index} value={d.name} className="truncate">
                   {d.name}
                 </SelectItem>
               ))}
