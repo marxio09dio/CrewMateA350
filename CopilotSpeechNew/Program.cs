@@ -1,6 +1,9 @@
+using System.Collections.Concurrent;
+using System.Speech.AudioFormat;
 using System.Speech.Recognition;
 using System.Speech.Recognition.SrgsGrammar;
 using System.Text.Json;
+using NAudio.Wave;
 using VoiceSidecar;
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -12,6 +15,9 @@ var confidenceThreshold = CONFIDENCE_THRESHOLD;
 // correctly in both dev (src-tauri/bin) and production (bundled resource dir).
 var GRAMMAR_FILE =
     args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "grammar.xml");
+
+// name of the input device to use (empty / "default" = system default)
+var inputDeviceName = args.Length > 1 ? args[1] : "";
 
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
 
@@ -58,14 +64,38 @@ EmitStatus(
     }
 );
 
-try
+WaveInStream? waveInStream = null;
+if (string.IsNullOrEmpty(inputDeviceName) || inputDeviceName == "default")
 {
-    engine.SetInputToDefaultAudioDevice();
+    try
+    {
+        engine.SetInputToDefaultAudioDevice();
+    }
+    catch (InvalidOperationException)
+    {
+        EmitError("No default audio input device found.");
+        Environment.Exit(1);
+    }
 }
-catch (InvalidOperationException)
+else
 {
-    EmitError("No default audio input device found.");
-    Environment.Exit(1);
+    waveInStream = SetInputToNamedDevice(engine, inputDeviceName);
+    if (waveInStream is null)
+    {
+        EmitStatus(
+            "warning",
+            new { message = $"Input device not found: {inputDeviceName}. Falling back to default." }
+        );
+        try
+        {
+            engine.SetInputToDefaultAudioDevice();
+        }
+        catch (InvalidOperationException)
+        {
+            EmitError("No default audio input device found.");
+            Environment.Exit(1);
+        }
+    }
 }
 
 var srgs = new SrgsDocument(System.Xml.XmlReader.Create(File.OpenRead(GRAMMAR_FILE)));
@@ -119,6 +149,25 @@ engine.RecognizeCompleted += (sender, e) =>
 // ─── Start ────────────────────────────────────────────────────────────────────
 
 engine.RecognizeAsync(RecognizeMode.Multiple);
+
+// Emit device list to the UI
+{
+    var devices = new List<object>();
+    for (var i = 0; i < WaveIn.DeviceCount; i++)
+    {
+        var caps = WaveIn.GetCapabilities(i);
+        devices.Add(
+            new
+            {
+                index = i,
+                name = caps.ProductName,
+                isDefault = i == 0,
+            }
+        );
+    }
+    EmitInputDevices(devices);
+}
+
 EmitStatus("ready");
 
 // ─── Stdin config loop ────────────────────────────────────────────────────────
@@ -133,7 +182,10 @@ var stdinThread = new Thread(() =>
         {
             var doc = JsonDocument.Parse(line);
             if (doc.RootElement.TryGetProperty("confidenceThreshold", out var ct))
-                confidenceThreshold = ct.GetSingle();
+            {
+                if (ct.TryGetSingle(out var parsed) && float.IsFinite(parsed))
+                    confidenceThreshold = Math.Clamp(parsed, 0.0f, 1.0f);
+            }
         }
         catch
         { /* ignore malformed input */
@@ -193,9 +245,42 @@ static void EmitSpeech(VoiceCommand command, float confidence)
     );
 }
 
+static void EmitInputDevices(List<object> devices)
+{
+    WriteLine(new { type = "inputDevices", devices });
+}
+
 static void EmitUnrecognized(string text)
 {
     WriteLine(new { type = "speech_unrecognized", text });
+}
+
+static WaveInStream? SetInputToNamedDevice(SpeechRecognitionEngine engine, string deviceName)
+{
+    for (var i = 0; i < WaveIn.DeviceCount; i++)
+    {
+        var caps = WaveIn.GetCapabilities(i);
+        if (
+            caps.ProductName.Contains(deviceName, StringComparison.OrdinalIgnoreCase)
+            || deviceName.Contains(caps.ProductName, StringComparison.OrdinalIgnoreCase)
+        )
+        {
+            var waveIn = new WaveInEvent
+            {
+                DeviceNumber = i,
+                WaveFormat = new WaveFormat(16000, 16, 1),
+                BufferMilliseconds = 100,
+            };
+            var stream = new WaveInStream(waveIn);
+            engine.SetInputToAudioStream(
+                stream,
+                new SpeechAudioFormatInfo(16000, AudioBitsPerSample.Sixteen, AudioChannel.Mono)
+            );
+            waveIn.StartRecording();
+            return stream;
+        }
+    }
+    return null;
 }
 
 static void EmitStatus(string status, object? details = null)
@@ -238,4 +323,91 @@ static void WriteLine(object payload)
 {
     Console.WriteLine(JsonSerializer.Serialize(payload));
     Console.Out.Flush();
+}
+
+// ─── WaveInStream ─────────────────────────────────────────────────────────────
+
+public sealed class WaveInStream : Stream
+{
+    private readonly WaveInEvent _waveIn;
+    private readonly BlockingCollection<byte[]> _queue = new(64);
+    private byte[]? _current;
+    private int _offset;
+    private long _position;
+
+    public WaveInStream(WaveInEvent waveIn)
+    {
+        _waveIn = waveIn;
+        _waveIn.DataAvailable += OnData;
+    }
+
+    private void OnData(object? sender, WaveInEventArgs e)
+    {
+        if (_queue.IsAddingCompleted)
+            return;
+        var chunk = new byte[e.BytesRecorded];
+        Buffer.BlockCopy(e.Buffer, 0, chunk, 0, e.BytesRecorded);
+        _queue.TryAdd(chunk); // silently drop on overflow
+    }
+
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        var filled = 0;
+        while (filled < count)
+        {
+            if (_current == null || _offset >= _current.Length)
+            {
+                try
+                {
+                    _current = _queue.Take();
+                    _offset = 0;
+                }
+                catch (InvalidOperationException)
+                {
+                    break;
+                } // collection completed
+            }
+            var toCopy = Math.Min(_current.Length - _offset, count - filled);
+            Buffer.BlockCopy(_current, _offset, buffer, offset + filled, toCopy);
+            _offset += toCopy;
+            filled += toCopy;
+        }
+        _position += filled;
+        return filled;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _waveIn.DataAvailable -= OnData;
+            _queue.CompleteAdding();
+            _waveIn.StopRecording();
+            _waveIn.Dispose();
+            _queue.Dispose();
+        }
+        base.Dispose(disposing);
+    }
+
+    public override bool CanRead => true;
+
+    public override bool CanSeek => true;
+    public override bool CanWrite => false;
+    public override long Length => long.MaxValue;
+    public override long Position
+    {
+        get => _position;
+        set
+        { /* live stream — ignore position sets */
+        }
+    }
+
+    public override void Flush() { }
+
+    public override long Seek(long offset, SeekOrigin origin) => _position;
+
+    public override void SetLength(long value) { }
+
+    public override void Write(byte[] buffer, int offset, int count) =>
+        throw new NotSupportedException();
 }

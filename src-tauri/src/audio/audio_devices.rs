@@ -119,8 +119,9 @@ pub fn set_output_device(app_handle: AppHandle, device: Option<String>) -> Resul
 }
 
 #[tauri::command]
-pub fn set_input_device(_device: Option<String>) -> Result<(), String> {
-    log::info!("set_input_device called: {:?}", _device);
-    //  not implemented yet
+pub fn set_input_device(app_handle: AppHandle, device: Option<String>) -> Result<(), String> {
+    log::info!("set_input_device called: {:?}", device);
+    let state = app_handle.state::<crate::SpeechBridgeState>();
+    state.0.restart_with_device(device);
     Ok(())
 }

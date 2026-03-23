@@ -7,6 +7,7 @@ use audio::audio_devices::{
     get_available_input_devices, get_available_output_devices, set_input_device, set_output_device,
 };
 use audio::audio_player::AudioPlayer;
+use brigdes::speech_bridge::get_speech_input_devices;
 use tauri_plugin_window_state::StateFlags;
 
 mod brigdes;
@@ -42,7 +43,16 @@ fn get_speech_engine_error(state: tauri::State<'_, SpeechBridgeState>) -> Option
 
 #[tauri::command]
 fn set_confidence_threshold(state: tauri::State<'_, SpeechBridgeState>, threshold: f32) {
-    let json = format!(r#"{{"confidenceThreshold":{:.3}}}"#, threshold);
+    let safe_threshold = if threshold.is_finite() {
+        threshold.clamp(0.0, 1.0)
+    } else {
+        log::warn!(
+            "Received non-finite confidence threshold: {:?}, using default 0.85",
+            threshold
+        );
+        0.85
+    };
+    let json = format!(r#"{{"confidenceThreshold":{:.3}}}"#, safe_threshold);
     state.0.send_config(&json);
 }
 
@@ -55,8 +65,7 @@ struct AppState {
     tx: Mutex<mpsc::Sender<WorkerRequest>>,
 }
 
-#[allow(dead_code)]
-struct SpeechBridgeState(#[allow(dead_code)] Arc<SpeechBridge>);
+pub struct SpeechBridgeState(pub Arc<SpeechBridge>);
 
 enum WorkerRequest {
     Set {
@@ -197,6 +206,7 @@ pub fn run() {
             get_in_cockpit,
             get_speech_engine_error,
             set_confidence_threshold,
+            get_speech_input_devices,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
