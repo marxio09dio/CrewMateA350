@@ -67,7 +67,8 @@ const simVars: { key: string; expression: string }[] = [
   { key: "foVor2Active", expression: "(L:INI_FO_VOR2_ACTIVE)" },
   { key: "foTerrOn", expression: "(L:INI_TERR_ON_FO)" },
   { key: "foWxr2On", expression: "(L:INI_WXR2_ON)" },
-  { key: "autobrakeLevel", expression: "(L:INI_AUTOBRAKE_LEVEL)" }
+  { key: "autobrakeLevel", expression: "(L:INI_AUTOBRAKE_LEVEL)" },
+  { key: "thrlvrclb", expression: "(L:INI_LEVER_IN_CL)" }
 ]
 
 const RETRY_INTERVAL_MS = 5000

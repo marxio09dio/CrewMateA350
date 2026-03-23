@@ -11,6 +11,7 @@ import { useTelemetryStore } from "@/store/telemetryStore"
  */
 interface TriggeredFlags {
   afterStart: boolean
+  packsOn: boolean
   afterTakeoff: boolean
   afterLanding: boolean
   climbTenK: boolean
@@ -26,11 +27,13 @@ interface PrevValues {
   alt: number
   mixture1: number
   mixture2: number
+  thrlvrclb: number
 }
 
 export function useAutoFlows() {
   const triggered = useRef<TriggeredFlags>({
     afterStart: false,
+    packsOn: false,
     afterTakeoff: false,
     afterLanding: false,
     climbTenK: false,
@@ -45,7 +48,8 @@ export function useAutoFlows() {
     spoilersArmed: 0,
     alt: 0,
     mixture1: 1,
-    mixture2: 1
+    mixture2: 1,
+    thrlvrclb: 0
   })
 
   const phase = useRef<"ground" | "airborne">("ground")
@@ -77,6 +81,7 @@ export function useAutoFlows() {
       prev.current.alt = t.alt ?? 0
       prev.current.mixture1 = t.mixture1 ?? 1
       prev.current.mixture2 = t.mixture2 ?? 1
+      prev.current.thrlvrclb = t.thrlvrclb ?? 0
       phase.current = t.onGround ? "ground" : "airborne"
       return
     }
@@ -97,6 +102,7 @@ export function useAutoFlows() {
       // Airborne → Ground
       phase.current = "ground"
       fl.afterTakeoff = false
+      fl.packsOn = false
       fl.climbTenK = false
       fl.descTenK = false
     }
@@ -106,6 +112,12 @@ export function useAutoFlows() {
       if (!fl.afterStart && t.onGround && p.ignitionKnob === 2 && t.ignitionKnob === 1) {
         fl.afterStart = true
         executeFlow("after_start")
+      }
+
+      // Packs on: THR set to CL
+      else if (!fl.packsOn && !t.onGround && !p.thrlvrclb && t.thrlvrclb === 1) {
+        fl.packsOn = true
+        executeFlow("packs_on")
       }
 
       // After Takeoff: flaps retracted to 0 while airborne
@@ -145,6 +157,7 @@ export function useAutoFlows() {
       }
     }
 
+    p.thrlvrclb = t.thrlvrclb ?? 0
     p.onGround = t.onGround
     p.ignitionKnob = t.ignitionKnob ?? 0
     p.flapsIndex = t.flapsIndex ?? 0
