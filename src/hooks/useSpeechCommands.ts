@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api/core"
 import { listen } from "@tauri-apps/api/event"
 import { useEffect, useState } from "react"
 
@@ -21,6 +22,24 @@ export function useSpeechCommands({ voiceEnabled }: UseSpeechCommandsOptions) {
   const [isValidCommand, setIsValidCommand] = useState(false)
   const [isUnrecognized, setIsUnrecognized] = useState(false)
   const [speechKey, setSpeechKey] = useState(0)
+  const [speechEngineError, setSpeechEngineError] = useState<string | null>(null)
+
+  // Detect missing language
+  useEffect(() => {
+    invoke<string | null>("get_speech_engine_error")
+      .then((err) => {
+        if (err) setSpeechEngineError(err)
+      })
+      .catch(() => {})
+
+    const unlistenError = listen<{ message?: string }>("speech_engine_error", (event) => {
+      if (event.payload?.message) setSpeechEngineError(event.payload.message)
+    })
+
+    return () => {
+      unlistenError.then((f) => f())
+    }
+  }, [])
 
   useEffect(() => {
     const unlistenSpeech = listen<SpeechRecognizedPayload>("speech_recognized", async (event) => {
@@ -78,5 +97,5 @@ export function useSpeechCommands({ voiceEnabled }: UseSpeechCommandsOptions) {
     }
   }, [voiceEnabled])
 
-  return { recognizedText, isValidCommand, isUnrecognized, speechKey }
+  return { recognizedText, isValidCommand, isUnrecognized, speechKey, speechEngineError }
 }

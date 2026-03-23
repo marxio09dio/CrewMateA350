@@ -6,6 +6,7 @@ import { ConnectionError } from "@/components/connectionError"
 import { FlowPanel } from "@/components/FlowPanel"
 import { Footer } from "@/components/Footer"
 import { IconToolbar } from "@/components/IconToolbar"
+import { SpeechEngineError } from "@/components/SpeechEngineError"
 import { TextBar } from "@/components/textBar"
 import { useAutoFlows } from "@/hooks/useAutoFlows"
 import { useBaroSync } from "@/hooks/useBaroSync"
@@ -35,7 +36,9 @@ function App() {
   useCallouts(takeoffVr)
   useAutoFlows()
   usePreflightTimer()
-  const { recognizedText, isValidCommand, isUnrecognized, speechKey } = useSpeechCommands({ voiceEnabled })
+  const { recognizedText, isValidCommand, isUnrecognized, speechKey, speechEngineError } = useSpeechCommands({
+    voiceEnabled
+  })
   useCloseConfirm()
 
   useEffect(() => {
@@ -47,11 +50,17 @@ function App() {
   const currentEvent = usePreflightTimerStore((s) => s.currentEvent)
 
   return (
-    <div className="flex  bg-black flex-col min-h-screen">
-      <main className="flex-1 text-white p-2">
-        <div className="max-w-6xl mx-auto">
-          {!connected ? (
-            <ConnectionError />
+    <div className="flex bg-black flex-col min-h-screen">
+      <main className="flex-1 text-white p-2 flex flex-col">
+        <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
+          {speechEngineError ? (
+            <div className="flex-1 flex items-center justify-center">
+              <SpeechEngineError message={speechEngineError} />
+            </div>
+          ) : !connected ? (
+            <div className="flex-1 flex items-center justify-center">
+              <ConnectionError />
+            </div>
           ) : (
             <>
               <IconToolbar

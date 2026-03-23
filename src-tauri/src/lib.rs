@@ -36,6 +36,11 @@ fn get_in_cockpit() -> bool {
 }
 
 #[tauri::command]
+fn get_speech_engine_error(state: tauri::State<'_, SpeechBridgeState>) -> Option<String> {
+    state.0.last_error()
+}
+
+#[tauri::command]
 fn set_confidence_threshold(state: tauri::State<'_, SpeechBridgeState>, threshold: f32) {
     let json = format!(r#"{{"confidenceThreshold":{:.3}}}"#, threshold);
     state.0.send_config(&json);
@@ -190,6 +195,7 @@ pub fn run() {
             set_input_device,
             get_aircraft_title,
             get_in_cockpit,
+            get_speech_engine_error,
             set_confidence_threshold,
         ])
         .run(tauri::generate_context!())

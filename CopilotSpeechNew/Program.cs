@@ -41,7 +41,7 @@ var recognizerInfo =
 if (recognizerInfo is null)
 {
     EmitError(
-        "No English speech recognizer found. Please install Microsoft Speech Recognizer 8.0."
+        "No English speech recognizer found. Please install the English language pack in Windows Settings → Time & Language → Speech, then restart the app."
     );
     Environment.Exit(1);
 }

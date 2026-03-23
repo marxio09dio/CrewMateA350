@@ -8,6 +8,7 @@ use tauri_plugin_shell::ShellExt;
 pub struct SpeechBridge {
     _handle: tauri::AppHandle,
     child: Arc<Mutex<Option<CommandChild>>>,
+    last_error: Arc<Mutex<Option<String>>>,
 }
 
 impl SpeechBridge {
@@ -31,6 +32,8 @@ impl SpeechBridge {
             .expect("Failed to spawn speech recognition sidecar");
 
         let child = Arc::new(Mutex::new(Some(child)));
+        let last_error: Arc<Mutex<Option<String>>> = Arc::new(Mutex::new(None));
+        let last_error_cb = last_error.clone();
         let app_cb = app_handle.clone();
 
         tauri::async_runtime::spawn(async move {
@@ -56,6 +59,13 @@ impl SpeechBridge {
                                     let _ = app_cb.emit("speech_engine_status", value);
                                 }
                                 "error" => {
+                                    let message = value["message"]
+                                        .as_str()
+                                        .unwrap_or("Unknown speech engine error")
+                                        .to_string();
+                                    if let Ok(mut e) = last_error_cb.lock() {
+                                        *e = Some(message);
+                                    }
                                     log::error!("[Speech] Engine error: {}", value);
                                     let _ = app_cb.emit("speech_engine_error", value);
                                 }
@@ -83,7 +93,12 @@ impl SpeechBridge {
         Self {
             _handle: app_handle,
             child,
+            last_error,
         }
+    }
+
+    pub fn last_error(&self) -> Option<String> {
+        self.last_error.lock().ok().and_then(|e| e.clone())
     }
 
     pub fn send_config(&self, json: &str) {
