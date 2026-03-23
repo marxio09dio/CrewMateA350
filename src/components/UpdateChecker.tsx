@@ -13,6 +13,16 @@ interface Status {
   kind: StatusKind
 }
 
+const parseErrorMessage = (error: unknown): string => {
+  if (error instanceof Error && error.message) return error.message
+  if (typeof error === "string") return error
+  try {
+    return JSON.stringify(error)
+  } catch {
+    return "unknown error"
+  }
+}
+
 const statusColour: Record<StatusKind, string> = {
   idle: "text-slate-400",
   info: "text-blue-400",
@@ -39,8 +49,12 @@ export function UpdateChecker() {
         setUpdateInfo(res)
       }
     } catch (e) {
+      const details = parseErrorMessage(e)
       console.error("Update check failed", e)
-      setStatus({ message: "Check failed", kind: "error" })
+      setStatus({
+        message: `Check failed (${details.slice(0, 80)}). Retry in a moment.`,
+        kind: "error"
+      })
     } finally {
       setChecking(false)
     }
@@ -69,8 +83,12 @@ export function UpdateChecker() {
       })
       setStatus({ message: "Relaunch to update", kind: "success" })
     } catch (e) {
+      const details = parseErrorMessage(e)
       console.error("Install failed", e)
-      setStatus({ message: "Install failed", kind: "error" })
+      setStatus({
+        message: `Install failed (${details.slice(0, 80)}). Please retry.`,
+        kind: "error"
+      })
     } finally {
       setInstalling(false)
     }

@@ -30,6 +30,13 @@ interface SettingsStore {
 
 let isUpdatingFromEvent = false
 
+const normalizeThreshold = (threshold: number) => Math.min(100, Math.max(0, threshold))
+const toEngineThreshold = (threshold: number) => normalizeThreshold(threshold) / 100
+
+const applyConfidenceThreshold = async (threshold: number) => {
+  await invoke("set_confidence_threshold", { threshold: toEngineThreshold(threshold) })
+}
+
 export const useSettingsStore = create<SettingsStore>()(
   persist(
     (set) => ({
@@ -92,17 +99,28 @@ export const useSettingsStore = create<SettingsStore>()(
         }
       },
       setConfidenceThreshold: (threshold) => {
-        set({ confidenceThreshold: threshold })
-        invoke("set_confidence_threshold", { threshold: threshold / 100 })
+        const safeThreshold = normalizeThreshold(threshold)
+        set({ confidenceThreshold: safeThreshold })
+        applyConfidenceThreshold(safeThreshold).catch((err) => {
+          console.error("Failed to apply confidence threshold:", err)
+        })
         if (!isUpdatingFromEvent) {
-          emit("settings-changed", { confidenceThreshold: threshold })
+          emit("settings-changed", { confidenceThreshold: safeThreshold })
         }
       }
     }),
     {
       name: "voice-settings",
       onRehydrateStorage: () => (state) => {
-        if (state) invoke("set_confidence_threshold", { threshold: state.confidenceThreshold / 100 })
+        if (state) {
+          const safeThreshold = normalizeThreshold(state.confidenceThreshold)
+          if (safeThreshold !== state.confidenceThreshold) {
+            useSettingsStore.setState({ confidenceThreshold: safeThreshold })
+          }
+          applyConfidenceThreshold(safeThreshold).catch((err) => {
+            console.error("Failed to restore confidence threshold:", err)
+          })
+        }
         if (state && state.outputDevice) {
           invoke("set_output_device", { device: state.outputDevice }).catch(() => {})
         }
