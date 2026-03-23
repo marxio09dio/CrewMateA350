@@ -6,8 +6,6 @@
   "permissions": [
     "core:default",
     "opener:default",
-    "shell:allow-execute",
-    "shell:allow-open",
     "log:default",
     "dialog:default",
     "core:window:allow-close",

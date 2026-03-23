@@ -43,7 +43,16 @@ fn get_speech_engine_error(state: tauri::State<'_, SpeechBridgeState>) -> Option
 
 #[tauri::command]
 fn set_confidence_threshold(state: tauri::State<'_, SpeechBridgeState>, threshold: f32) {
-    let json = format!(r#"{{"confidenceThreshold":{:.3}}}"#, threshold);
+    let safe_threshold = if threshold.is_finite() {
+        threshold.clamp(0.0, 1.0)
+    } else {
+        log::warn!(
+            "Received non-finite confidence threshold: {:?}, using default 0.85",
+            threshold
+        );
+        0.85
+    };
+    let json = format!(r#"{{"confidenceThreshold":{:.3}}}"#, safe_threshold);
     state.0.send_config(&json);
 }
 

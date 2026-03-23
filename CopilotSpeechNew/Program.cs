@@ -82,7 +82,10 @@ else
     waveInStream = SetInputToNamedDevice(engine, inputDeviceName);
     if (waveInStream is null)
     {
-        EmitError($"Input device not found: {inputDeviceName}. Falling back to default.");
+        EmitStatus(
+            "warning",
+            new { message = $"Input device not found: {inputDeviceName}. Falling back to default." }
+        );
         try
         {
             engine.SetInputToDefaultAudioDevice();
@@ -179,7 +182,10 @@ var stdinThread = new Thread(() =>
         {
             var doc = JsonDocument.Parse(line);
             if (doc.RootElement.TryGetProperty("confidenceThreshold", out var ct))
-                confidenceThreshold = ct.GetSingle();
+            {
+                if (ct.TryGetSingle(out var parsed) && float.IsFinite(parsed))
+                    confidenceThreshold = Math.Clamp(parsed, 0.0f, 1.0f);
+            }
         }
         catch
         { /* ignore malformed input */
