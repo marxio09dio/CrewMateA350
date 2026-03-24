@@ -13,6 +13,7 @@ interface TriggeredFlags {
   afterStart: boolean
   packsOn: boolean
   afterTakeoff: boolean
+  landing: boolean
   afterLanding: boolean
   climbTenK: boolean
   descTenK: boolean
@@ -24,6 +25,7 @@ interface PrevValues {
   ignitionKnob: number
   flapsIndex: number
   spoilersArmed: number
+  landingGear: number
   alt: number
   mixture1: number
   mixture2: number
@@ -35,6 +37,7 @@ export function useAutoFlows() {
     afterStart: false,
     packsOn: false,
     afterTakeoff: false,
+    landing: false,
     afterLanding: false,
     climbTenK: false,
     descTenK: false,
@@ -46,6 +49,7 @@ export function useAutoFlows() {
     ignitionKnob: 0,
     flapsIndex: 0,
     spoilersArmed: 0,
+    landingGear: 1,
     alt: 0,
     mixture1: 1,
     mixture2: 1,
@@ -102,6 +106,7 @@ export function useAutoFlows() {
       // Airborne → Ground
       phase.current = "ground"
       fl.afterTakeoff = false
+      fl.landing = false
       fl.packsOn = false
       fl.climbTenK = false
       fl.descTenK = false
@@ -118,6 +123,11 @@ export function useAutoFlows() {
       else if (!fl.packsOn && !t.onGround && !p.thrlvrclb && t.thrlvrclb === 1) {
         fl.packsOn = true
         executeFlow("packs_on")
+      }
+
+      else if (!fl.landing && !t.onGround && !p.flapsIndex && !p.landingGear && t.flapsIndex === 2 && t.landingGear){
+        fl.landing = true
+        executeFlow("landing")
       }
 
       // After Takeoff: flaps retracted to 0 while airborne

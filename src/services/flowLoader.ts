@@ -11,6 +11,7 @@ import cockpitPrep from "@/data/flows/cockpit_prep.json"
 import curtains_close from "@/data/flows/curtains_close.json"
 import curtains_open from "@/data/flows/curtains_open.json"
 import descTenThousand from "@/data/flows/desc_ten_thousand_flow.json"
+import landing from "@/data/flows/landing.json"
 import packsOn from "@/data/flows/packs_on.json"
 import prelimCockpitPrep from "@/data/flows/prelim_cockpit_prep.json"
 import shutdown from "@/data/flows/shutdown.json"
@@ -33,6 +34,7 @@ export const allFlows: Flow[] = [
   afterTakeoff,
   climbTenThousand,
   descTenThousand,
+  landing,
   afterLanding,
   shutdown,
   curtains_open,

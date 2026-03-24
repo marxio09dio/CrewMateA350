@@ -18,8 +18,13 @@
       "label": "Weather Radar",
       "read": "(L:INI_WXR2_ON)",
       "on": "1 (>L:INI_WXR2_ON)",
-      "expect": 1,
-      "skip_verify": true
+      "expect": 1
+    },
+    {
+      "label": "ND SET",
+      "read": "(L:INI_MAP_RANGE_FO_SWITCH)",
+      "on": "11 (>L:INI_MAP_RANGE_FO_SWITCH)",
+      "expect": 11
     },
     {
       "label": "Table",

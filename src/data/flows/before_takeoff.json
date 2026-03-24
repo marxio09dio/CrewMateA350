@@ -24,8 +24,8 @@
     },
     {
       "label": "ND SET",
-      "read": "(L:INI_MAP_MODE_RANGE_FO_SWITCH)",
-      "on": "8 (>L:INI_MAP_MODE_RANGE_FO_SWITCH)",
+      "read": "(L:INI_MAP_RANGE_FO_SWITCH)",
+      "on": "8 (>L:INI_MAP_RANGE_FO_SWITCH)",
       "expect": 8
     },
     {

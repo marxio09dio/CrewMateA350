@@ -6,25 +6,29 @@
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": "0 (>L:INI_BATT_VOLTAGE_SELECTOR)",
-      "expect": 0
+      "expect": 0,
+      "wait_ms": 5000
     },
     {
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": " 1 (>L:INI_BATT_VOLTAGE_SELECTOR)",
-      "expect": 1
+      "expect": 1,
+      "wait_ms": 5000
     },
     {
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": "3 (>L:INI_BATT_VOLTAGE_SELECTOR)",
-      "expect": 3
+      "expect": 3,
+      "wait_ms": 5000
     },
     {
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": "4 (>L:INI_BATT_VOLTAGE_SELECTOR)",
-      "expect": 4
+      "expect": 4,
+      "wait_ms": 5000
     },
     {
       "label": "Battery volts check complete",
@@ -67,7 +71,7 @@
       "read": "(L:INI_GEN_EXT_A_ONLINE)",
       "on": "1 (>L:INI_GEN_EXT_A_ONLINE)",
       "expect": 1,
-      "wait_ms": 15000
+      "wait_ms": 20000
     },
     {
       "label": "IRS 1 NAV",

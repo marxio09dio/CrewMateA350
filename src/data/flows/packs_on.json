@@ -21,6 +21,13 @@
       "on": "1 (>L:INI_FO_CHRONO_BUTTON)",
       "expect": 0,
       "skip_verify": true
+    },
+    {
+      "label": "Chrono",
+      "read": "(L:INI_FO_CHRONO_BUTTON)",
+      "on": "1 (>L:INI_FO_CHRONO_BUTTON)",
+      "expect": 0,
+      "skip_verify": true
     }
   ]
 }

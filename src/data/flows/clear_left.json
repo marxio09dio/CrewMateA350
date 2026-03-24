@@ -5,9 +5,9 @@
   "steps": [
     {
       "label": "ND SET",
-      "read": "(L:INI_MAP_MODE_RANGE_FO_SWITCH)",
-      "on": "1 (>L:INI_MAP_MODE_RANGE_FO_SWITCH)",
-      "expect": 1
+      "read": "(L:INI_MAP_RANGE_FO_SWITCH)",
+      "on": "0 (>L:INI_MAP_RANGE_FO_SWITCH)",
+      "expect": 0
     },
     {
       "label": "Nose Wheel Light",
