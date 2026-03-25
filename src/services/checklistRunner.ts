@@ -6,6 +6,7 @@ import { isSoundPlaying, playSound, playSoundSequence } from "@/services/playSou
 import { useChecklistStore } from "@/store/checklistStore"
 import { usePerformanceStore } from "@/store/performanceStore"
 import { useTelemetryStore } from "@/store/telemetryStore"
+import { useVoiceHintProgressStore } from "@/store/voiceHintProgressStore"
 import type { ChecklistItem } from "@/types/checklist"
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -495,6 +496,7 @@ export async function executeChecklist(checklistId: string): Promise<void> {
         await playSound(checklist.completion)
         await waitForSoundFinished()
         useChecklistStore.getState().setExecutionState("completed")
+        useVoiceHintProgressStore.getState().recordChecklistCompleted(checklist.id)
       } else {
         // Leave execution state as "running" with failed items visible so
         // the pilot can correct and re-run
@@ -512,6 +514,7 @@ export async function executeChecklist(checklistId: string): Promise<void> {
       await playSound(checklist.completion)
       await waitForSoundFinished()
       useChecklistStore.getState().setExecutionState("completed")
+      useVoiceHintProgressStore.getState().recordChecklistCompleted(checklist.id)
     }
   } catch (err) {
     const message = String(err)

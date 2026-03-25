@@ -4,6 +4,7 @@ import { playSound, isSoundPlaying } from "@/services/playSounds"
 import { useFlowStore } from "@/store/flowStore"
 import { usePerformanceStore } from "@/store/performanceStore"
 import { useSettingsStore } from "@/store/settingsStore"
+import { useVoiceHintProgressStore } from "@/store/voiceHintProgressStore"
 import type { Flow } from "@/types/flow"
 import type { FlowStep } from "@/types/flow"
 import type { FlowConditionValue } from "@/types/flow"
@@ -234,6 +235,10 @@ export async function executeFlow(flowId: string): Promise<void> {
     }
 
     useFlowStore.getState().setExecutionState("completed")
+    useVoiceHintProgressStore.getState().recordFlowCompleted(flow.id)
+    if (flow.id === "shutdown") {
+      useVoiceHintProgressStore.getState().resetForColdGround()
+    }
 
     if (flow.sound_end) {
       await waitForSoundFinished()

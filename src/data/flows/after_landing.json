@@ -37,12 +37,6 @@
       "expect": "{landing_anti_ice_eng2_expect}"
     },
     {
-      "label": "ND SET",
-      "read": "(L:INI_MAP_RANGE_FO_SWITCH)",
-      "on": "0 (>L:INI_MAP_RANGE_FO_SWITCH)",
-      "expect": 0
-    },
-    {
       "label": "Weather Radar",
       "read": "(L:INI_WXR2_ON)",
       "on": "0 (>L:INI_WXR2_ON)",

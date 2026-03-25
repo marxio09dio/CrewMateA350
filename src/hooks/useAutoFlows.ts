@@ -123,9 +123,7 @@ export function useAutoFlows() {
       else if (!fl.packsOn && !t.onGround && !p.thrlvrclb && t.thrlvrclb === 1) {
         fl.packsOn = true
         executeFlow("packs_on")
-      }
-
-      else if (!fl.landing && !t.onGround && !p.flapsIndex && !p.landingGear && t.flapsIndex === 2 && t.landingGear){
+      } else if (!fl.landing && !t.onGround && !p.flapsIndex && !p.landingGear && t.flapsIndex === 2 && t.landingGear) {
         fl.landing = true
         executeFlow("landing")
       }

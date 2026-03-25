@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::path::PathBuf;
-use std::sync::{Arc, Mutex};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use tauri::Emitter;
 use tauri::Manager;
@@ -182,10 +182,8 @@ impl SpeechBridge {
                         let is_current_instance =
                             instance_id == active_instance_id_cb.load(Ordering::SeqCst);
                         if is_current_instance && !is_shutting_down_cb.load(Ordering::SeqCst) {
-                            let selected = selected_input_device_cb
-                                .lock()
-                                .ok()
-                                .and_then(|d| d.clone());
+                            let selected =
+                                selected_input_device_cb.lock().ok().and_then(|d| d.clone());
                             let _ = app_cb.emit(
                                 "speech_engine_status",
                                 serde_json::json!({
@@ -339,7 +337,8 @@ impl SpeechBridge {
                                                         .iter()
                                                         .filter_map(|d| {
                                                             let index = d["index"].as_u64()? as u32;
-                                                            let name = d["name"].as_str()?.to_string();
+                                                            let name =
+                                                                d["name"].as_str()?.to_string();
                                                             let is_default = d["isDefault"]
                                                                 .as_bool()
                                                                 .unwrap_or(false);
@@ -351,7 +350,8 @@ impl SpeechBridge {
                                                         })
                                                         .collect();
 
-                                                    if let Ok(mut stored) = input_devices_cb.lock() {
+                                                    if let Ok(mut stored) = input_devices_cb.lock()
+                                                    {
                                                         *stored = devices;
                                                     }
                                                 }
@@ -406,7 +406,11 @@ impl SpeechBridge {
                     });
                 }
                 Err(e) => {
-                    let message = format!("Speech sidecar restart attempt {} failed: {}", attempt + 1, e);
+                    let message = format!(
+                        "Speech sidecar restart attempt {} failed: {}",
+                        attempt + 1,
+                        e
+                    );
                     if let Ok(mut err) = last_error.lock() {
                         *err = Some(message.clone());
                     }

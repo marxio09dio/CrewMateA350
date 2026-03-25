@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer"
 import { IconToolbar } from "@/components/IconToolbar"
 import { SpeechEngineError } from "@/components/SpeechEngineError"
 import { TextBar } from "@/components/textBar"
+import { VoiceGuide } from "@/components/VoiceGuide"
 import { useAutoFlows } from "@/hooks/useAutoFlows"
 import { useBaroSync } from "@/hooks/useBaroSync"
 import { useCallouts } from "@/hooks/useCallouts"
@@ -15,6 +16,7 @@ import { useCloseConfirm } from "@/hooks/useCloseConfirm"
 import { usePreflightTimer } from "@/hooks/usePreflightTimer"
 import { useSimConnection } from "@/hooks/useSimConnection"
 import { useSpeechCommands } from "@/hooks/useSpeechCommands"
+import { useVoiceHints } from "@/hooks/useVoiceHints"
 import { usePerformanceStore } from "@/store/performanceStore"
 import { usePreflightTimerStore } from "@/store/preflightTimerStore"
 import { useSettingsStore } from "@/store/settingsStore"
@@ -39,6 +41,8 @@ function App() {
   const { recognizedText, isValidCommand, isUnrecognized, speechKey, speechEngineError } = useSpeechCommands({
     voiceEnabled
   })
+  const voiceHintPhase = useVoiceHints({ voiceEnabled, connected })
+
   useCloseConfirm()
 
   useEffect(() => {
@@ -81,6 +85,7 @@ function App() {
               )}
               <FlowPanel />
               <ChecklistPanel />
+              <VoiceGuide phase={voiceHintPhase} />
             </>
           )}
         </div>
