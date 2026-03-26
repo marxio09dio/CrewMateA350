@@ -107,9 +107,9 @@ pub async fn open_settings_window(app_handle: AppHandle) -> Result<(), String> {
         "settings",
         "src/windows/settings/settings.html",
         "Settings",
-        390.0,
-        540.0,
-        true, // will add later when we know proper size
+        385.0,
+        500.0,
+        false,
     )
 }
 

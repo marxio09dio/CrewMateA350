@@ -2,11 +2,13 @@ import { invoke } from "@tauri-apps/api/core"
 import { PlaneTakeoff, PlaneLanding, PinIcon, PinOff, Mic, MicOff, SettingsIcon, Clock } from "lucide-react"
 import { useState } from "react"
 
+
 import { Button } from "@/components/ui/button"
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { useFlowStore } from "@/store/flowStore"
 import { usePreflightTimerStore } from "@/store/preflightTimerStore"
+import { useTelemetryStore } from "@/store/telemetryStore"
 import { openLandingWindow, openSettingsWindow, openTakeoffWindow } from "@/windows/windowsHandler"
 
 type IconToolbarProps = {
@@ -26,6 +28,15 @@ export function IconToolbar({ voiceEnabled, onToggleVoice, voiceDisabled }: Icon
   const skipMinute = usePreflightTimerStore((s) => s.skipMinute)
 
   const flowRunning = useFlowStore((s) => s.executionState === "running")
+
+  const telemetry = useTelemetryStore((s) => s.telemetry)
+  const N1_IDLE_MAX = 15
+  const onGround = (telemetry?.onGround ?? 0) > 0.5
+  const enginesOn =
+    (telemetry?.engineN1_1 ?? 0) >= N1_IDLE_MAX ||
+    (telemetry?.engineN1_2 ?? 0) >= N1_IDLE_MAX ||
+    (telemetry?.mixture1 ?? 0) >= 0.5 ||
+    (telemetry?.mixture2 ?? 0) >= 0.5
 
   const timeDisplay = String(Math.floor(remainingSeconds / 60)).padStart(2, "0")
 
@@ -75,7 +86,7 @@ export function IconToolbar({ voiceEnabled, onToggleVoice, voiceDisabled }: Icon
           <TooltipTrigger asChild>
             <Button
               onClick={timerRunning ? skipMinute : startTimer}
-              disabled={flowRunning}
+              disabled={flowRunning || !onGround || enginesOn}
               className={cn(
                 baseBtn,
                 timerRunning ? "border-blue-600 hover:bg-blue-600/10 w-auto px-2 gap-1.5" : "hover:bg-blue-400/10"
