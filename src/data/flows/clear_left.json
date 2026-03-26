@@ -4,12 +4,6 @@
   "sound_start": "clear_right.ogg",
   "steps": [
     {
-      "label": "ND SET",
-      "read": "(L:INI_MAP_RANGE_FO_SWITCH)",
-      "on": "0 (>L:INI_MAP_RANGE_FO_SWITCH)",
-      "expect": 0
-    },
-    {
       "label": "Nose Wheel Light",
       "read": "(L:INI_LIGHTS_NOSE)",
       "on": "1 (>L:INI_LIGHTS_NOSE)",

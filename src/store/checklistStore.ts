@@ -28,7 +28,7 @@ export const useChecklistStore = create<ChecklistStore>()(
       stepStatuses: [],
       executionState: "idle",
       error: null,
-      holdOnIncorrect: true,
+      holdOnIncorrect: false,
 
       setChecklist: (checklist) =>
         set({

@@ -217,7 +217,7 @@ async function executeNormalItem(item: ChecklistItem, index: number, signal: Abo
 
         // Baro/feet confirmation: require a numeric value (digits or word form).
         const expectsFeet = responseList.some((r) => r.toLowerCase().includes("feet"))
-        if (item.baro_confirmation || expectsFeet) {
+        if ((item.baro_confirmation || expectsFeet) && !s.includes("set and checked")) {
           if (!(/\b\d{2,4}\b/.test(s) || NUMBER_WORDS_RE.test(s))) continue
         }
 

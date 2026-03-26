@@ -4,6 +4,7 @@ import { getDisplayResponses } from "@/services/checklistResponseHelper"
 import { resolveVoiceHints } from "@/services/voiceHintResolver"
 import type { VoiceHintPhase } from "@/services/voiceHintResolver"
 import { useChecklistStore } from "@/store/checklistStore"
+import { usePreflightTimerStore } from "@/store/preflightTimerStore"
 import { useTelemetryStore } from "@/store/telemetryStore"
 import { useVoiceHintProgressStore } from "@/store/voiceHintProgressStore"
 
@@ -18,6 +19,7 @@ export function useVoiceHints({ voiceEnabled, connected }: UseVoiceHintsOptions)
   const lastCl = useVoiceHintProgressStore((s) => s.lastCompletedChecklistId)
   const lastFl = useVoiceHintProgressStore((s) => s.lastCompletedFlowId)
   const onAirborneTransition = useVoiceHintProgressStore((s) => s.onAirborneTransition)
+  const preflightTimerRunning = usePreflightTimerStore((s) => s.isRunning)
 
   const currentChecklist = useChecklistStore((s) => s.currentChecklist)
   const currentStepIndex = useChecklistStore((s) => s.currentStepIndex)
@@ -59,7 +61,18 @@ export function useVoiceHints({ voiceEnabled, connected }: UseVoiceHintsOptions)
       telemetry,
       lastCompletedChecklistId: lastCl,
       lastCompletedFlowId: lastFl,
-      voiceChecklistRunning
+      voiceChecklistRunning,
+      preflightTimerRunning
     })
-  }, [voiceEnabled, connected, telemetry, lastCl, lastFl, executionState, currentChecklist, currentStepIndex])
+  }, [
+    voiceEnabled,
+    connected,
+    telemetry,
+    lastCl,
+    lastFl,
+    executionState,
+    currentChecklist,
+    currentStepIndex,
+    preflightTimerRunning
+  ])
 }

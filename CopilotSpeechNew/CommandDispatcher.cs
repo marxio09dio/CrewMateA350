@@ -33,7 +33,6 @@ namespace VoiceSidecar
                 2 => FlightLevel(cval, raw),
                 3 => AltitudeFeet(cval, raw),
                 4 => Speed(cval, raw),
-                5 => Frequency(cval, raw),
                 7 => Altimeter(cval, raw),
                 8 => Fuel(cval, "kg", balanced: false, raw),
                 9 => Fuel(cval, "kg", balanced: true, raw),
@@ -87,22 +86,6 @@ namespace VoiceSidecar
             if (!int.TryParse(cval, out var v) || v < 60 || v > 400)
                 return null;
             return Cmd("speed", raw, new() { ["value"] = v, ["unit"] = "knots" });
-        }
-
-        private static VoiceCommand? Frequency(string cval, string raw)
-        {
-            // cval = "118300" → 118.300
-            if (cval.Length != 6 || !int.TryParse(cval, out var raw6))
-                return null;
-            var intPart = raw6 / 1000;
-            var decPart = raw6 % 1000;
-            if (intPart < 118 || intPart > 136)
-                return null;
-            var freq = double.Parse(
-                $"{intPart}.{decPart:D3}",
-                System.Globalization.CultureInfo.InvariantCulture
-            );
-            return Cmd("frequency", raw, new() { ["value"] = freq });
         }
 
         private static VoiceCommand? Altimeter(string cval, string raw)

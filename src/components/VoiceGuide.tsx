@@ -17,9 +17,7 @@ export function VoiceGuide({ phase }: VoiceGuideProps) {
 
   return (
     <div className="mt-2 text-xs">
-      <div className={`text-[10px] font-semibold uppercase tracking-wide mb-1.5 ${titleColor}`}>
-        {isChecklistMode ? `Checklist — ${phase.title}` : phase.title}
-      </div>
+      <div className={`text-[10px] font-semibold uppercase tracking-wide mb-1.5 ${titleColor}`}></div>
       <div className="flex flex-wrap gap-1">
         {phrases.map((p) => (
           <span key={p} className={`rounded px-1.5 py-px font-mono text-[10px] border ${tagClass}`}>

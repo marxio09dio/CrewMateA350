@@ -253,7 +253,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   checklist_cancel: () => abortChecklist(),
 
   // ── RTO / Continue  ─────────────────────────────────────
-  abort_takeoff: () => playSound("check.ogg"),
+  //abort_takeoff: () => playSound("check.ogg"),
   continue: () => playSound("check.ogg")
 }
 

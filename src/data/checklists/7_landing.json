@@ -5,8 +5,8 @@
   "items": [
     {
       "label": "Spoilers Armed",
-      "var": "(A:SPOILERS ARMED, Bool)",
-      "expected": true,
+      "var": "(L:INI_SPOILERS_ARMED)",
+      "expected": 1,
       "incorrect": "check_spoilers.ogg"
     },
     {

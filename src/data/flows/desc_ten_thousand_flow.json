@@ -35,8 +35,8 @@
     {
       "label": "ND SET",
       "read": "(L:INI_MAP_RANGE_FO_SWITCH)",
-      "on": "8 (>L:INI_MAP_RANGE_FO_SWITCH)",
-      "expect": 8
+      "on": "6 (>L:INI_MAP_RANGE_FO_SWITCH)",
+      "expect": 6
     },
     {
       "label": "FO LS",

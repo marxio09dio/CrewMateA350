@@ -48,7 +48,7 @@
     "flowId": "table_close"
   },
   {
-    "minuteMark": 1,
+    "minuteMark": 3,
     "label": "Before start procedure and checklist",
     "type": "flow",
     "flowId": "before_start"

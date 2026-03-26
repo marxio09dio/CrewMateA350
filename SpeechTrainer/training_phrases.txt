@@ -24,10 +24,7 @@ set speed two five zero
 speed one eight zero knots
 set speed three two zero
 
-# ── COM frequency ─────────────────────────────────────────────────────────────
-tune one one eight decimal three zero zero
-contact one two one decimal five zero zero
-frequency one two eight decimal eight zero zero
+ 
 
 # ── Transponder ───────────────────────────────────────────────────────────────
 squawk two zero zero zero

@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware"
 
 export type LightsControlMode = "virtual" | "user"
 
-const defaultLightsControlMode: LightsControlMode = "virtual"
+const defaultLightsControlMode: LightsControlMode = "user"
 
 interface SettingsStore {
   voiceEnabled: boolean
