@@ -2,7 +2,6 @@ import { invoke } from "@tauri-apps/api/core"
 import { PlaneTakeoff, PlaneLanding, PinIcon, PinOff, Mic, MicOff, SettingsIcon, Clock } from "lucide-react"
 import { useState } from "react"
 
-
 import { Button } from "@/components/ui/button"
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"

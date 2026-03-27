@@ -14,13 +14,14 @@
     "windows": [
       {
         "title": "Crewmate INI A350",
-        "width": 325,
-        "height": 255,
-        "minWidth": 325,
-        "minHeight": 255,
+        "width": 360,
+        "height": 270,
+        "minWidth": 360,
+        "minHeight": 270,
         "maximizable": false,
         "fullscreen": false,
-        "visible": false
+        "visible": false,
+        "resizable": false
       }
     ],
     "security": {

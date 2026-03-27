@@ -324,8 +324,8 @@
       <item>thrust climb<tag>out="THR CLB";</tag></item>
       <item>thrust idle<tag>out="THR IDLE";</tag></item>
       <item>thrust max continuous<tag>out="THR MCT";</tag></item>
-      <item>thrust dee climb<tag>THR DCLB</tag></item>
-      <item>thrust descend<tag>THR DES</tag></item>
+      <item>thrust dee climb<tag>out="THR DCLB";</tag></item>
+      <item>thrust descend<tag>out="THR DES";</tag></item>
       <item>speed<tag>out="SPEED";</tag></item>
       <item>mach<tag>out="MACH";</tag></item>
       <item>lever climb<tag>out="LVR CLB";</tag></item>

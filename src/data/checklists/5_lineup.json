@@ -4,7 +4,7 @@
   "items": [
     {
       "challenge": "cabin_crew.ogg",
-      "response": ["advised", "signaled"],
+      "response": ["secured", "signaled"],
       "label": "Cabin Advisory"
     },
     {
