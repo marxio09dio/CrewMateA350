@@ -139,6 +139,9 @@ $phrases = @{
     "check_beacon"                              = "Beacon is not on"
     "check_belts"                               = "Seat belt sign is not on"
     "pressure_zero"                             = "Pressure zero"
+    "standard_cross_checked"                    = "Standard cross checked"
+    "passing_flight_level"                      = "Passing flight level"
+    "now_at"                                    = "Now"
     "starting_engine_2"                          = "Starting engine two"
 }
 

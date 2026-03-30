@@ -1,6 +1,8 @@
+import { buildPassingAltitudeSequence } from "@/hooks/useCallouts"
 import { abortChecklist, executeChecklist } from "@/services/checklistRunner"
 import { executeFlow } from "@/services/flowRunner"
-import { playSound } from "@/services/playSounds"
+import { playSound, playSoundSequence } from "@/services/playSounds"
+import { usePassingAltitudeStore } from "@/store/passingAltitudeStore"
 import { usePerformanceStore } from "@/store/performanceStore"
 import { usePreflightTimerStore } from "@/store/preflightTimerStore"
 import { useTelemetryStore } from "@/store/telemetryStore"
@@ -165,8 +167,25 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
 
   // ── Baro ──────────────────────────────────────────────────────────────────
   set_standard: () => {
-    playSound("standard_set.ogg")
+    const t = useTelemetryStore.getState().telemetry
+    const passingAlt = usePassingAltitudeStore.getState()
+
     setStdBaro(1)
+
+    // Only trigger passing altitude callout if:
+    // - Airborne
+    // - Climbing (VS > 100 fpm)
+    // - Not already tracking a passing altitude
+    if (t && !t.onGround && t.vs > 100 && !passingAlt.isTracking()) {
+      const targetAlt = t.pAlt + t.vs * (9 / 60)
+
+      // Play "standard crosschecked, passing FL XXX" sequence
+      const sequence = buildPassingAltitudeSequence(targetAlt)
+      playSoundSequence(sequence)
+
+      // Store target for "now" callout detection
+      passingAlt.setTarget(targetAlt)
+    }
   },
 
   // ── APU ───────────────────────────────────────────────────────────────────
