@@ -492,6 +492,7 @@
       <item>left side clear<tag>out.pid="37";</tag></item>
       <item>clear left side<tag>out.pid="37";</tag></item>
       <item>runway entry procedure<tag>out.pid="38";</tag></item>
+      <item>start engine two<tag>out.pid="39";</tag></item>
       <item>clear to line up<tag>out.pid="38";</tag></item>
       <item>takeoff<tag>out.pid="40";</tag></item>
       <!-- Prepare / setup -->
@@ -506,6 +507,8 @@
       <item>starting engine two<tag>out.pid="35";</tag></item>
       <item>starting engine number two<tag>out.pid="35";</tag></item>
       <item>starting two<tag>out.pid="35";</tag></item>
+      <item>shutdown engine one<tag>out.pid="41";</tag></item>
+      <item>shutdown engine two<tag>out.pid="42";</tag></item>
       <item>starting number two<tag>out.pid="35";</tag></item>
       <item>start the apu<tag>out.pid="36";</tag></item>
       <item>start apu<tag>out.pid="36";</tag></item>
