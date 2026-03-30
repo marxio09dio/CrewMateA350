@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback } from "react"
 
 import { playSound, isSoundPlaying } from "@/services/playSounds"
 import { useGoAroundStore } from "@/store/goAroundStore"
+import { usePassingAltitudeStore } from "@/store/passingAltitudeStore"
 import { useTelemetryStore } from "@/store/telemetryStore"
 import type { Telemetry } from "@/store/telemetryStore"
 
@@ -53,6 +54,26 @@ const getTakeoffThrustTarget = (t: Telemetry) => {
 const crossedUp = (prev: number, curr: number, threshold: number) => prev < threshold && curr >= threshold
 
 const crossedDown = (prev: number, curr: number, threshold: number) => prev > threshold && curr <= threshold
+
+/**
+ * Build audio sequence for "standard crosschecked, passing FL XXX"
+ * @param targetAlt Target altitude in feet
+ * @returns Array of audio filenames to play in sequence
+ */
+export const buildPassingAltitudeSequence = (targetAlt: number): string[] => {
+  const sequence: string[] = ["standard_cross_checked.ogg", "passing_flight_level.ogg"]
+
+  const flightLevel = Math.round(targetAlt / 100)
+  //  FL050, FL100, FL250, etc.
+  const flString = flightLevel.toString().padStart(3, "0")
+
+  // digit files
+  for (const digit of flString) {
+    sequence.push(`${digit}.ogg`)
+  }
+
+  return sequence
+}
 
 const advancePhase = (ls: LandingSequenceState, next: LandingPhase, now: number) => {
   ls.phase = next
@@ -303,12 +324,31 @@ export function useCallouts(vrSpeed: number) {
       al.transitionLevel = true
     }
 
+    // Passing altitude "now" callout
+    const passingAltStore = usePassingAltitudeStore.getState()
+    if (passingAltStore.targetAltitude !== null && !passingAltStore.hasCalled) {
+      // Check BOTH indicated and pressure altitude (use whichever is higher after setting standard)
+      const altReached = t.alt >= passingAltStore.targetAltitude
+      const pAltReached = t.pAlt >= passingAltStore.targetAltitude
+
+      if (altReached || pAltReached) {
+        playSound("now_at.ogg")
+        passingAltStore.markCalled()
+        // Clear state
+        setTimeout(() => {
+          passingAltStore.reset()
+        }, 500)
+      }
+    }
+
     // Re-arm at taxi speed
     if (t.onGround && t.ias < 30) {
       sp.calledThrustSet = false
       sp.calledVr = false
       sp.called100 = false
       sp.vrInhibit = false
+      // Reset passing altitude state
+      usePassingAltitudeStore.getState().reset()
     }
 
     // Landing sequence
@@ -338,6 +378,10 @@ export function useCallouts(vrSpeed: number) {
 
     // Reset on sustained climb-away
     if (!t.onGround && t.vs > 500) {
+      // Only reset passing altitude on actual go-around (landing sequence was active)
+      if (ls.phase !== "idle" || ls.done) {
+        usePassingAltitudeStore.getState().reset()
+      }
       resetLanding(ls)
       ls.wasAirborne = false
     }
