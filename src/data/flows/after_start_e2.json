@@ -5,7 +5,7 @@
     {
       "label": "Ignition Knob",
       "read": "(L:INI_IGNITION_KNOB)",
-      "on": "1 (L:INI_IGNITION_KNOB)",
+      "on": "1 (>L:INI_IGNITION_KNOB)",
       "expect": 1
     }
   ]
