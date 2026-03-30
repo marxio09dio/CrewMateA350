@@ -257,8 +257,8 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   clear_left: () => executeFlow("clear_left"),
   runway_entry_procedure: () => executeFlow("before_takeoff"),
   start_engine_2: () => executeFlow("start_engine_2"),
-  shutdown_engine_1: () => executeFlow("shutdown_engine_1"),
-  shutdown_engine_2: () => executeFlow("shutdown_engine_2"),
+  shutdown_engine_1: () => executeFlow("shutdown_e1"),
+  shutdown_engine_2: () => executeFlow("shutdown_e2"),
   clear_for_takeoff: () => executeFlow("takeoff"),
 
   // ── Checklists ────────────────────────────────────────────────────────────
