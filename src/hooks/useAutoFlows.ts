@@ -11,6 +11,7 @@ import { useTelemetryStore } from "@/store/telemetryStore"
  */
 interface TriggeredFlags {
   afterStart: boolean
+  afterStartE2: boolean
   packsOn: boolean
   afterTakeoff: boolean
   landing: boolean
@@ -25,6 +26,7 @@ interface PrevValues {
   ignitionKnob: number
   flapsIndex: number
   spoilersArmed: number
+  engineN1_2: number
   landingGear: number
   alt: number
   mixture1: number
@@ -35,6 +37,7 @@ interface PrevValues {
 export function useAutoFlows() {
   const triggered = useRef<TriggeredFlags>({
     afterStart: false,
+    afterStartE2: false,
     packsOn: false,
     afterTakeoff: false,
     landing: false,
@@ -48,6 +51,7 @@ export function useAutoFlows() {
     onGround: 1,
     ignitionKnob: 0,
     flapsIndex: 0,
+    engineN1_2: 0,
     spoilersArmed: 0,
     landingGear: 1,
     alt: 0,
@@ -98,6 +102,7 @@ export function useAutoFlows() {
       // Ground → Airborne
       phase.current = "airborne"
       fl.afterStart = false
+      fl.afterStartE2 = false
       fl.shutdown = false
       fl.afterLanding = false
     }
@@ -117,6 +122,12 @@ export function useAutoFlows() {
       if (!fl.afterStart && t.onGround && p.ignitionKnob === 2 && t.ignitionKnob === 1) {
         fl.afterStart = true
         executeFlow("after_start")
+      }
+
+      // Placeholder item, can be modded
+      if (!fl.afterStartE2 && t.onGround && t.ignitionKnob === 2 && t.engineN1_2 > 22) {
+        fl.afterStartE2 = true
+        executeFlow("after_start_e2")
       }
 
       // Packs on: THR set to CL

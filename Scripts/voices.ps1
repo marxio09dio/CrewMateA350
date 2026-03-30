@@ -139,6 +139,7 @@ $phrases = @{
     "check_beacon"                              = "Beacon is not on"
     "check_belts"                               = "Seat belt sign is not on"
     "pressure_zero"                             = "Pressure zero"
+    "starting_engine_2"                          = "Starting engine two"
 }
 
 # Derive folder name from voice: "en-US-JennyNeural" -> "Jenny"

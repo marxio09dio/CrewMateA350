@@ -2,6 +2,7 @@ import { simvarGet } from "@/API/simvarApi"
 import afterControlsCheck from "@/data/flows/after_flight_controls_check.json"
 import afterLanding from "@/data/flows/after_landing.json"
 import afterStart from "@/data/flows/after_start.json"
+import afterStartE2 from "@/data/flows/after_start_e2.json"
 import afterTakeoff from "@/data/flows/after_takeoff.json"
 import beforeStart from "@/data/flows/before_start.json"
 import beforeTakeoff from "@/data/flows/before_takeoff.json"
@@ -14,7 +15,9 @@ import descTenThousand from "@/data/flows/desc_ten_thousand_flow.json"
 import landing from "@/data/flows/landing.json"
 import packsOn from "@/data/flows/packs_on.json"
 import prelimCockpitPrep from "@/data/flows/prelim_cockpit_prep.json"
-import shutdown from "@/data/flows/shutdown.json"
+import parking from "@/data/flows/shutdown.json"
+import shutdown_e1 from "@/data/flows/shutdown_e1.json"
+import shutdown_e2 from "@/data/flows/shutdown_e2.json"
 import table_close from "@/data/flows/table_close.json"
 import table_open from "@/data/flows/table_open.json"
 import takeoff from "@/data/flows/takeoff.json"
@@ -26,6 +29,7 @@ export const allFlows: Flow[] = [
   cockpitPrep,
   beforeStart,
   afterStart,
+  afterStartE2,
   clearLeft,
   afterControlsCheck,
   beforeTakeoff,
@@ -36,7 +40,9 @@ export const allFlows: Flow[] = [
   descTenThousand,
   landing,
   afterLanding,
-  shutdown,
+  shutdown_e1,
+  shutdown_e2,
+  parking,
   curtains_open,
   curtains_close,
   table_open,

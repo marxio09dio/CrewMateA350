@@ -359,8 +359,11 @@ namespace VoiceSidecar
             // Flows
             [37] = "clear_left",
             [38] = "runway_entry_procedure",
+            [39] = "start_engine_2",
             [40] = "clear_for_takeoff",
             // Shutdown
+            [41] = "shutdown_engine_1",
+            [42] = "shutdown_engine_2",
             [43] = "shutdown",
             // Flight controls
             [44] = "flight_controls_check",
