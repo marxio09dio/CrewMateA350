@@ -10,6 +10,7 @@
        TOPLEVEL
   ════════════════════════════════════════════════════════════════════════════ -->
   <rule id="TOPLEVEL" scope="public">
+    <item repeat="0-1">please</item>
     <one-of>
       <item>
         <ruleref uri="#FO_COMMANDS" />
@@ -24,6 +25,7 @@
         <tag>out.ActionRuleId="DISCRETE_COMMANDS"; out.CmdId=rules.DISCRETE_COMMANDS.pid;</tag>
       </item>
     </one-of>
+    <item repeat="0-1">please</item>
   </rule>
 
   <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -440,7 +442,8 @@
       <item>flaps three<tag>out.pid="6";</tag></item>
       <item>flaps full<tag>out.pid="7";</tag></item>
       <!-- Autopilot -->
-      <item>autopilot engage<tag>out.pid="8";</tag></item>
+      <item>autopilot on<tag>out.pid="8";</tag></item>
+      <item>autopilot one one<tag>out.pid="8";</tag></item>
       <item>auto pilot on<tag>out.pid="8";</tag></item>
       <item>auto pilot one on<tag>out.pid="8";</tag></item>
       <item>autopilot off<tag>out.pid="9";</tag></item>
@@ -539,6 +542,7 @@
       <!-- Cabin crew -->
       <item>cabin crew arm slides and cross check<tag>out.pid="60";</tag></item>
       <item>cabin crew arm slides<tag>out.pid="60";</tag></item>
+      <item>cabin crew disarm slides<tag>out.pid="121";</tag></item>
       <!-- Brake -->
       <item>brake check<tag>out.pid="61";</tag></item>
       <!-- Altimeter -->
@@ -589,6 +593,23 @@
       <item>abort takeoff<tag>out.pid="100";</tag></item>
       <item>continue<tag>out.pid="101";</tag></item>
       <item>stop<tag>out.pid="100";</tag></item>
+      <!-- Ground engineer -->
+      <item>ground from cockpit<tag>out.pid="113";</tag></item>
+      <item>cockpit to ground<tag>out.pid="113";</tag></item>
+      <item>connect GPU<tag>out.pid="114";</tag></item>
+      <item>connect ground power<tag>out.pid="114";</tag></item>
+      <item>disconnect GPU<tag>out.pid="115";</tag></item>
+      <item>disconnect ground power<tag>out.pid="115";</tag></item>
+      <item>connect ASU<tag>out.pid="116";</tag></item>
+      <item>connect air starter<tag>out.pid="116";</tag></item>
+      <item>disconnect ASU<tag>out.pid="117";</tag></item>
+      <item>disconnect air starter<tag>out.pid="117";</tag></item>
+      <item>connect ACU<tag>out.pid="118";</tag></item>
+      <item>connect air conditioning<tag>out.pid="118";</tag></item>
+      <item>disconnect ACU<tag>out.pid="119";</tag></item>
+      <item>disconnect air conditioning<tag>out.pid="119";</tag></item>
+      <item>disconnect all<tag>out.pid="120";</tag></item>
+      <item>disconnect all services<tag>out.pid="120";</tag></item>
     </one-of>
   </rule>
 

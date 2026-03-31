@@ -33,6 +33,8 @@ export function SettingsWindow() {
   const setOutputDevice = useSettingsStore((s) => s.setOutputDevice)
   const inputDevice = useSettingsStore((s) => s.inputDevice)
   const setInputDevice = useSettingsStore((s) => s.setInputDevice)
+  const geSoundPack = useSettingsStore((s) => s.geSoundPack)
+  const setGeSoundPack = useSettingsStore((s) => s.setGeSoundPack)
 
   const holdOnIncorrect = useChecklistStore((s) => s.holdOnIncorrect)
   const setHoldOnIncorrect = useChecklistStore((s) => s.setHoldOnIncorrect)
@@ -46,8 +48,13 @@ export function SettingsWindow() {
         const packs = await invoke<string[]>("get_sound_packs")
         const valid = packs ?? []
         setAvailableSoundPacks(valid)
-        if (valid.length > 0 && !valid.includes(soundPack)) {
-          setSoundPack(valid[0])
+        const copilot = valid.filter((p) => !p.startsWith("GE_"))
+        if (copilot.length > 0 && !copilot.includes(soundPack)) {
+          setSoundPack(copilot[0])
+        }
+        const ge = valid.filter((p) => p.startsWith("GE_"))
+        if (ge.length > 0 && !ge.includes(geSoundPack)) {
+          setGeSoundPack(ge[0])
         }
       } catch (error) {
         console.error("Failed to fetch sound packs:", error)
@@ -55,7 +62,7 @@ export function SettingsWindow() {
     }
 
     fetchSoundPacks()
-  }, [soundPack, setSoundPack])
+  }, [soundPack, setSoundPack, geSoundPack, setGeSoundPack])
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -108,23 +115,43 @@ export function SettingsWindow() {
       <div className="space-y-4">
         <SectionHeader icon={<Volume2 className="h-3 w-3 text-cyan-400 shrink-0" />} label="Audio" />
 
-        <div className="grid grid-cols-[120px_1fr] items-center gap-3">
+        <div className="grid grid-cols-[110px_1fr] items-center gap-3">
           <Label className="text-sm text-slate-300">Copilot</Label>
           <Select value={soundPack} onValueChange={setSoundPack}>
             <SelectTrigger className="bg-slate-900/50 border-slate-600 text-white text-sm focus:ring-cyan-500 w-56 truncate">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-slate-900 border-slate-600 text-white max-w-[20rem]">
-              {availableSoundPacks.map((pack) => (
-                <SelectItem key={pack} value={pack} className="truncate">
-                  {pack}
-                </SelectItem>
-              ))}
+              {availableSoundPacks
+                .filter((p) => !p.startsWith("GE_"))
+                .map((pack) => (
+                  <SelectItem key={pack} value={pack} className="truncate">
+                    {pack}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>
 
-        <div className="grid grid-cols-[120px_1fr] items-center gap-3">
+        <div className="grid grid-cols-[110px_1fr] items-center gap-3">
+          <Label className="text-sm text-slate-300">Ground Eng.</Label>
+          <Select value={geSoundPack} onValueChange={setGeSoundPack}>
+            <SelectTrigger className="bg-slate-900/50 border-slate-600 text-white text-sm focus:ring-cyan-500 w-56 truncate">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-900 border-slate-600 text-white max-w-[20rem]">
+              {availableSoundPacks
+                .filter((p) => p.startsWith("GE_"))
+                .map((pack) => (
+                  <SelectItem key={pack} value={pack} className="truncate">
+                    {pack.replace(/^GE_/, "")}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="grid grid-cols-[110px_1fr] items-center gap-3">
           <Label className="text-sm text-slate-300">Output Device</Label>
           <Select
             value={outputDevice ?? "default"}
@@ -146,7 +173,7 @@ export function SettingsWindow() {
           </Select>
         </div>
 
-        <div className="grid grid-cols-[120px_1fr] items-center gap-3">
+        <div className="grid grid-cols-[110px_1fr] items-center gap-3">
           <Label className="flex items-center gap-1 text-sm text-slate-300">Input Device</Label>
           <Select
             value={inputDevice ?? "default"}

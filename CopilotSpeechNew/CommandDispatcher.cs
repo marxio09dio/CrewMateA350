@@ -388,6 +388,7 @@ namespace VoiceSidecar
             [59] = "parking_brake_set",
             // Cabin crew
             [60] = "cabin_crew_arm_slides",
+            [121] = "cabin_crew_disarm_slides",
             // Brake
             [61] = "brake_check",
             // Altimeter
@@ -426,6 +427,15 @@ namespace VoiceSidecar
             [99] = "go_around_flaps",
             [100] = "abort_takeoff",
             [101] = "continue",
+            // Ground engineer
+            [113] = "ground_call",
+            [114] = "connect_gpu",
+            [115] = "disconnect_gpu",
+            [116] = "connect_asu",
+            [117] = "disconnect_asu",
+            [118] = "connect_acu",
+            [119] = "disconnect_acu",
+            [120] = "disconnect_all_ground",
         };
 
         private static VoiceCommand? DispatchDiscrete(int pid, string raw)

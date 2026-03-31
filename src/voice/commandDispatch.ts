@@ -2,9 +2,11 @@ import { buildPassingAltitudeSequence } from "@/hooks/useCallouts"
 import { abortChecklist, executeChecklist } from "@/services/checklistRunner"
 import { executeFlow } from "@/services/flowRunner"
 import { playSound, playSoundSequence } from "@/services/playSounds"
+import { useGroundEngineerStore } from "@/store/groundEngineerStore"
 import { usePassingAltitudeStore } from "@/store/passingAltitudeStore"
 import { usePerformanceStore } from "@/store/performanceStore"
 import { usePreflightTimerStore } from "@/store/preflightTimerStore"
+import { useSettingsStore } from "@/store/settingsStore"
 import { useTelemetryStore } from "@/store/telemetryStore"
 
 import { setEngAntiIce, setWingAntiIce } from "./commands/anti_ice"
@@ -32,11 +34,15 @@ import { setFlaps } from "./commands/flaps"
 import { flightControlsCheck } from "./commands/flight_controls_check"
 import { setGearHandle } from "./commands/gear"
 import { executeGoAround } from "./commands/goAround"
+import { disconnectAllGround, setACU, setASU, setGPU } from "./commands/groundServices"
 import { setLandingLights, setStrobeLights, setTaxiLights } from "./commands/lights"
 import { setSeatBelts } from "./commands/seat_belts"
 import { setWipers } from "./commands/wipers"
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+const randomDelay = (min: number, max: number) => delay(min + Math.random() * (max - min))
+
+const gePack = () => useSettingsStore.getState().geSoundPack
 
 // Commands that are allowed to fire even while a checklist is running.
 export const checklistAbortCommands = new Set(["checklist_cancel"])
@@ -235,7 +241,8 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   wipers_fast_intermittent: () => setWipers(2),
 
   // ── Cabin crew / doors ────────────────────────────────────────────────────
-  cabin_crew_arm_slides: () => setDoorSlides(1),
+ cabin_crew_arm_slides: () => setDoorSlides(true),
+cabin_crew_disarm_slides: () => setDoorSlides(false),
 
   // ── Brake check ───────────────────────────────────────────────────────────
   brake_check: () => playSound("pressure_zero.ogg"),
@@ -276,7 +283,63 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
 
   // ── RTO / Continue  ─────────────────────────────────────
   //abort_takeoff: () => playSound("check.ogg"),
-  continue: () => playSound("check.ogg")
+  continue: () => playSound("check.ogg"),
+
+  // ── Ground engineer ───────────────────────────────────────────────────────
+  ground_call: async () => {
+    await randomDelay(2000, 6000)
+    await playSound("go_ahead.ogg", { pack: gePack() })
+    useGroundEngineerStore.getState().activate()
+  },
+  connect_gpu: async () => {
+    if (!useGroundEngineerStore.getState().isActive) return
+    useGroundEngineerStore.getState().deactivate()
+    await randomDelay(3000, 8000)
+    await setGPU(true)
+    await playSound("gpu_on.ogg", { pack: gePack() })
+  },
+  disconnect_gpu: async () => {
+    if (!useGroundEngineerStore.getState().isActive) return
+    useGroundEngineerStore.getState().deactivate()
+    await randomDelay(3000, 8000)
+    await setGPU(false)
+    await playSound("gpu_off.ogg", { pack: gePack() })
+  },
+  connect_asu: async () => {
+    if (!useGroundEngineerStore.getState().isActive) return
+    useGroundEngineerStore.getState().deactivate()
+    await randomDelay(3000, 8000)
+    await setASU(true)
+    await playSound("asu_on.ogg", { pack: gePack() })
+  },
+  disconnect_asu: async () => {
+    if (!useGroundEngineerStore.getState().isActive) return
+    useGroundEngineerStore.getState().deactivate()
+    await randomDelay(3000, 8000)
+    await setASU(false)
+    await playSound("asu_off.ogg", { pack: gePack() })
+  },
+  connect_acu: async () => {
+    if (!useGroundEngineerStore.getState().isActive) return
+    useGroundEngineerStore.getState().deactivate()
+    await randomDelay(3000, 8000)
+    await setACU(true)
+    await playSound("acu_on.ogg", { pack: gePack() })
+  },
+  disconnect_acu: async () => {
+    if (!useGroundEngineerStore.getState().isActive) return
+    useGroundEngineerStore.getState().deactivate()
+    await randomDelay(3000, 8000)
+    await setACU(false)
+    await playSound("acu_off.ogg", { pack: gePack() })
+  },
+  disconnect_all_ground: async () => {
+    if (!useGroundEngineerStore.getState().isActive) return
+    useGroundEngineerStore.getState().deactivate()
+    await randomDelay(5000, 12000)
+    await disconnectAllGround()
+    await playSound("gpu_off.ogg", { pack: gePack() })
+  }
 }
 
 // ─── FO command dispatcher (heading, altitude, speed, fma) ────────

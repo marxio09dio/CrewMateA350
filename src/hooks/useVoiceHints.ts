@@ -4,6 +4,7 @@ import { getDisplayResponses } from "@/services/checklistResponseHelper"
 import { resolveVoiceHints } from "@/services/voiceHintResolver"
 import type { VoiceHintPhase } from "@/services/voiceHintResolver"
 import { useChecklistStore } from "@/store/checklistStore"
+import { useGroundEngineerStore } from "@/store/groundEngineerStore"
 import { usePreflightTimerStore } from "@/store/preflightTimerStore"
 import { useTelemetryStore } from "@/store/telemetryStore"
 import { useVoiceHintProgressStore } from "@/store/voiceHintProgressStore"
@@ -24,6 +25,7 @@ export function useVoiceHints({ voiceEnabled, connected }: UseVoiceHintsOptions)
   const currentChecklist = useChecklistStore((s) => s.currentChecklist)
   const currentStepIndex = useChecklistStore((s) => s.currentStepIndex)
   const executionState = useChecklistStore((s) => s.executionState)
+  const groundEngineerActive = useGroundEngineerStore((s) => s.isActive)
 
   const prevGroundedRef = useRef<boolean | null>(null)
 
@@ -57,6 +59,23 @@ export function useVoiceHints({ voiceEnabled, connected }: UseVoiceHintsOptions)
       }
     }
 
+    // While the ground engineer is listening, show available service commands
+    if (groundEngineerActive) {
+      return {
+        id: "ground_engineer",
+        title: "Ground engineer",
+        phrases: [
+          "connect GPU",
+          "disconnect GPU",
+          "connect ASU",
+          "disconnect ASU",
+          "connect ACU",
+          "disconnect ACU",
+          "disconnect all"
+        ]
+      }
+    }
+
     return resolveVoiceHints({
       telemetry,
       lastCompletedChecklistId: lastCl,
@@ -73,6 +92,7 @@ export function useVoiceHints({ voiceEnabled, connected }: UseVoiceHintsOptions)
     executionState,
     currentChecklist,
     currentStepIndex,
-    preflightTimerRunning
+    preflightTimerRunning,
+    groundEngineerActive
   ])
 }

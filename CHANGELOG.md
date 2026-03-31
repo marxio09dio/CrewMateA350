@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.x.x] - 2026-xx-xx
+
+- Added passing altitude callout on "set standard" - @marxio09dio
+- Added Single Engine taxi flows (shutdown Eng1/2 Commands, Start Eng2 Command) - @alexlenh
+- Added Random delays between flows steps - @alexlenh
+- Chocks will be auto removed on the before start flow - @marxio09dio
+- Added Ground Enginner (connects/disconects GPU/ASU/ACU) - @marxio09dio
+- Added optional prefix and suffix "please" (i.e "please diconnect GPU", "Flaps 0 please") - @marxio09dio
+- Added arm and disarm slides commands - @marxio09dio
+
+## [0.2.0] - 2026-03-27
+
+- Removed unused grammar - @alexlenh @marxio09dio
+- Added runway conditions grammar - @alexlenh
+- Various manual corrections - @alexlenh
+- Fixed "Voice Trainer" not being bundled - @marxio09dio
+- Added visual feedback for speech-related errors (i.e. language pack not installed) - @marxio09dio
+- Improved speech engine error handling - @marxio09dio
+- Changed (packs off T.O. logic, it will be turned on when CLB thrust is set as per FCOM) - @alexlenh
+- Added option to choose microphone device - @marxio09dio
+- Improved various error handling throughout the app - @marxio09dio
+- Adjusted various flows - @alexlenh
+- Added helper panel (hints what to say) - @marxio09dio
+- Fixed issue with spoilers check on landing checklist - @marxio09dio
+
 ## [0.1.9] - 2026-03-21
 
 - Replaced VOSK with Windows Speach Engine - @marxio09dio

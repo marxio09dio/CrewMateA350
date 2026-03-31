@@ -40,10 +40,7 @@
     {
       "challenge": "radar.ogg",
       "response": ["on", "set and checked"],
-      "label": "Radar",
-      "var": "(L:INI_WXR1_ON), number",
-      "expected": 1,
-      "incorrect": "are_you_sure.ogg"
+      "label": "Radar"
     }
   ],
   "completion": "taxi_checklist_completed.ogg"

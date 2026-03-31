@@ -12,6 +12,7 @@ interface SettingsStore {
   voiceMode: "continuous" | "ptt"
   pttShortcut: string
   soundPack: string
+  geSoundPack: string
   soundVolume: number
   outputDevice?: string | null
   inputDevice?: string | null
@@ -21,6 +22,7 @@ interface SettingsStore {
   setVoiceMode: (mode: "continuous" | "ptt") => void
   setPttShortcut: (shortcut: string) => void
   setSoundPack: (pack: string) => void
+  setGeSoundPack: (pack: string) => void
   setSoundVolume: (volume: number) => void
   setOutputDevice: (device: string | null) => void
   setInputDevice: (device: string | null) => void
@@ -44,6 +46,7 @@ export const useSettingsStore = create<SettingsStore>()(
       voiceMode: "continuous",
       pttShortcut: "CmdOrCtrl+Shift+Space",
       soundPack: "Jenny",
+      geSoundPack: "GE_Davis",
       soundVolume: 100,
       outputDevice: null,
       inputDevice: null,
@@ -72,6 +75,12 @@ export const useSettingsStore = create<SettingsStore>()(
         set({ soundPack: pack })
         if (!isUpdatingFromEvent) {
           emit("settings-changed", { soundPack: pack })
+        }
+      },
+      setGeSoundPack: (pack) => {
+        set({ geSoundPack: pack })
+        if (!isUpdatingFromEvent) {
+          emit("settings-changed", { geSoundPack: pack })
         }
       },
       setSoundVolume: (volume) => {
@@ -159,6 +168,9 @@ listen<
   }
   if (event.payload.soundPack !== undefined) {
     useSettingsStore.setState({ soundPack: event.payload.soundPack })
+  }
+  if (event.payload.geSoundPack !== undefined) {
+    useSettingsStore.setState({ geSoundPack: event.payload.geSoundPack })
   }
   if (event.payload.soundVolume !== undefined) {
     useSettingsStore.setState({ soundVolume: event.payload.soundVolume })

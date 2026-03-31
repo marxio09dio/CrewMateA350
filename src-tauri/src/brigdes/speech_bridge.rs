@@ -218,6 +218,7 @@ impl SpeechBridge {
         Ok(())
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn schedule_restart(
         app_handle: tauri::AppHandle,
         grammar_path: PathBuf,
