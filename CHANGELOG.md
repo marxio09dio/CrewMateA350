@@ -2,14 +2,16 @@
 
 ## [0.x.x] - 2026-xx-xx
 
-- Added passing altitude callout on "set standard" - @marxio09dio
-- Added Single Engine taxi flows (shutdown Eng1/2 Commands, Start Eng2 Command) - @alexlenh
-- Added Random delays between flows steps - @alexlenh
-- Chocks will be auto removed on the before start flow - @marxio09dio
-- Added Ground Enginner (connects/disconects GPU/ASU/ACU) - @marxio09dio
-- Added optional prefix and suffix "please" (i.e "please diconnect GPU", "Flaps 0 please") - @marxio09dio
-- Added arm and disarm slides commands - @marxio09dio
-- Added optional 5 minutes wait before shutting down engines - @marxio09dio
+- Added a passing altitude callout when setting standard – @marxio09dio
+- Implemented single-engine taxi flows, including Engine 1/2 shutdown commands and Engine 2 start command – @alexlenh
+- Introduced random delays between flow steps for more realism – @alexlenh
+- Chocks are now automatically removed during the before-start flow and automatically placed during the shutdown flow – @marxio09dio
+- Added a Ground Engineer role to handle GPU/ASU/ACU connections and disconnections – @marxio09dio
+- Commands now support optional “please” as a prefix or suffix (e.g., “please disconnect GPU”, “flaps 0 please”) – @marxio09dio
+- Added commands to arm and disarm slides – @marxio09dio
+- Added an optional 5-minute delay before engine shutdown – @marxio09dio
+- Minor tweaks to voice hint logic – @marxio09dio
+- Crewmate now opens the checklist (C/L) menu on the right-side MCDU (actions must still be completed manually due to lack of LVAR support for checklist items) – @marxio09dio
 
 ## [0.2.0] - 2026-03-27
 

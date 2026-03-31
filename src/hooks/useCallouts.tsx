@@ -394,7 +394,14 @@ export function useCallouts(vrSpeed: number) {
     // Process landing phases (skip if idle or audio still playing)
     if (ls.phase !== "idle" && !(await isSoundPlaying())) {
       const elapsed = ls.phaseStartTime ? now - ls.phaseStartTime : 0
-      phaseHandlers[ls.phase](ls, t, elapsed, now)
+      const handler = (phaseHandlers as Record<string, Function>)[ls.phase]
+      if (typeof handler === "function") {
+        handler(ls, t, elapsed, now)
+      } else {
+        console.warn(`[useCallouts] Unknown landing phase: ${ls.phase}`)
+        // Reset landing sequence to avoid repeated errors
+        resetLanding(ls)
+      }
     }
 
     // Update previous values

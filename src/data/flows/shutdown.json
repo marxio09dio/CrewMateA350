@@ -88,6 +88,12 @@
         "read": "(L:INI_IS_HUD)",
         "one_of": [1]
       }
+    },
+    {
+      "label": "Set Chocks",
+      "read": "(L:INI_CHOCKS_ENABLED)",
+      "on": "1 (>L:INI_CHOCKS_ENABLED)",
+      "expect": 1
     }
   ]
 }

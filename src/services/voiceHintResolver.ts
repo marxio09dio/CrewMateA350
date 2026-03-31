@@ -112,12 +112,12 @@ export function resolveVoiceHints(args: ResolveVoiceHintsArgs): VoiceHintPhase |
   //
   const slowGround = ias <= LINEUP_MAX_IAS
 
-  // After landing checklist → touch-and-go / go-around options
-  if (lastCl === "landing" && ias <= TAXI_MAX_IAS) {
+  // After the after_landing flow has completed → show after-landing hints (on ground)
+  if (lastFl === "after_landing" && ias <= TAXI_MAX_IAS) {
     return {
       id: "after_landing_hints",
       title: "After landing",
-      phrases: ["continue", "go around flaps", "go around altitude X"]
+      phrases: ["shutdown engine X", "taxi lights off"]
     }
   }
 

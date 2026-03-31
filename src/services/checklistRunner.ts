@@ -1,6 +1,6 @@
 import { listen } from "@tauri-apps/api/event"
 
-import { simvarGet } from "@/API/simvarApi"
+import { simvarGet, simvarSet } from "@/API/simvarApi"
 import { getChecklistById } from "@/services/checklistLoader"
 import { isSoundPlaying, playSound, playSoundSequence } from "@/services/playSounds"
 import { useChecklistStore } from "@/store/checklistStore"
@@ -480,6 +480,7 @@ export async function executeChecklist(checklistId: string): Promise<void> {
   const silent = checklist.mode === "silent"
 
   try {
+    await simvarSet(`1 (>L:INI_MCDU2_CL_MENU)`)
     if (silent) {
       // ── Silent mode: auto-check all items, collect results ─────────────
       let allPassed = true
