@@ -18,6 +18,7 @@ interface SettingsStore {
   inputDevice?: string | null
   lightsControlMode: LightsControlMode
   confidenceThreshold: number
+  postLandingShutdownEnabled: boolean
   setVoiceEnabled: (enabled: boolean) => void
   setVoiceMode: (mode: "continuous" | "ptt") => void
   setPttShortcut: (shortcut: string) => void
@@ -28,6 +29,7 @@ interface SettingsStore {
   setInputDevice: (device: string | null) => void
   setLightsControlMode: (mode: LightsControlMode) => void
   setConfidenceThreshold: (threshold: number) => void
+  setPostLandingShutdownEnabled: (enabled: boolean) => void
 }
 
 let isUpdatingFromEvent = false
@@ -52,6 +54,7 @@ export const useSettingsStore = create<SettingsStore>()(
       inputDevice: null,
       lightsControlMode: defaultLightsControlMode,
       confidenceThreshold: 85,
+      postLandingShutdownEnabled: true,
 
       setVoiceEnabled: (enabled) => {
         set({ voiceEnabled: enabled })
@@ -116,6 +119,12 @@ export const useSettingsStore = create<SettingsStore>()(
         if (!isUpdatingFromEvent) {
           emit("settings-changed", { confidenceThreshold: safeThreshold })
         }
+      },
+      setPostLandingShutdownEnabled: (enabled) => {
+        set({ postLandingShutdownEnabled: enabled })
+        if (!isUpdatingFromEvent) {
+          emit("settings-changed", { postLandingShutdownEnabled: enabled })
+        }
       }
     }),
     {
@@ -152,6 +161,7 @@ listen<
       | "setSoundVolume"
       | "setLightsControlMode"
       | "setConfidenceThreshold"
+      | "setPostLandingShutdownEnabled"
     >
   >
 >("settings-changed", (event) => {
@@ -180,6 +190,9 @@ listen<
   }
   if (event.payload.confidenceThreshold !== undefined) {
     useSettingsStore.setState({ confidenceThreshold: event.payload.confidenceThreshold })
+  }
+  if (event.payload.postLandingShutdownEnabled !== undefined) {
+    useSettingsStore.setState({ postLandingShutdownEnabled: event.payload.postLandingShutdownEnabled })
   }
   if (event.payload.outputDevice !== undefined) {
     useSettingsStore.setState({ outputDevice: event.payload.outputDevice })

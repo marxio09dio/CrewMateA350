@@ -36,6 +36,9 @@ export function SettingsWindow() {
   const geSoundPack = useSettingsStore((s) => s.geSoundPack)
   const setGeSoundPack = useSettingsStore((s) => s.setGeSoundPack)
 
+  const postLandingShutdownEnabled = useSettingsStore((s) => s.postLandingShutdownEnabled)
+  const setPostLandingShutdownEnabled = useSettingsStore((s) => s.setPostLandingShutdownEnabled)
+
   const holdOnIncorrect = useChecklistStore((s) => s.holdOnIncorrect)
   const setHoldOnIncorrect = useChecklistStore((s) => s.setHoldOnIncorrect)
 
@@ -230,6 +233,17 @@ export function SettingsWindow() {
             id="lightsControlMode"
             checked={lightsControlMode === "virtual"}
             onCheckedChange={(checked) => setLightsControlMode(checked ? "virtual" : "user")}
+          />
+        </div>
+
+        <div className="grid grid-cols-[1fr_auto] items-center gap-3">
+          <Label htmlFor="postLandingShutdownEnabled" className="text-sm text-slate-300 cursor-pointer">
+            5 minutes to allow shutting down engines
+          </Label>
+          <Checkbox
+            id="postLandingShutdownEnabled"
+            checked={postLandingShutdownEnabled}
+            onCheckedChange={(checked) => setPostLandingShutdownEnabled(checked === true)}
           />
         </div>
 

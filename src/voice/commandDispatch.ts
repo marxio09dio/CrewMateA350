@@ -241,8 +241,8 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   wipers_fast_intermittent: () => setWipers(2),
 
   // ── Cabin crew / doors ────────────────────────────────────────────────────
- cabin_crew_arm_slides: () => setDoorSlides(true),
-cabin_crew_disarm_slides: () => setDoorSlides(false),
+  cabin_crew_arm_slides: () => setDoorSlides(true),
+  cabin_crew_disarm_slides: () => setDoorSlides(false),
 
   // ── Brake check ───────────────────────────────────────────────────────────
   brake_check: () => playSound("pressure_zero.ogg"),

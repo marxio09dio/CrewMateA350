@@ -134,6 +134,38 @@ async function shouldExecuteStep(step: FlowStep): Promise<boolean> {
   return condition.one_of.some((expected) => matchesValue(conditionValue, expected))
 }
 
+// Post-landing silent timer (announces when it expires)
+let postLandingTimerExpiresAt: number | null = null
+let postLandingTimerTimeoutId: ReturnType<typeof setTimeout> | null = null
+
+function isPostLandingTimerActive(): boolean {
+  return postLandingTimerExpiresAt !== null && Date.now() < postLandingTimerExpiresAt
+}
+
+function clearPostLandingTimer(): void {
+  if (postLandingTimerTimeoutId) {
+    clearTimeout(postLandingTimerTimeoutId as unknown as number)
+    postLandingTimerTimeoutId = null
+  }
+  postLandingTimerExpiresAt = null
+}
+
+function startPostLandingTimer(delayMinutes: number): void {
+  clearPostLandingTimer()
+  const safeMinutes = Math.max(1, Math.floor(delayMinutes))
+  const delayMs = safeMinutes * 60 * 1000
+  postLandingTimerExpiresAt = Date.now() + delayMs
+  postLandingTimerTimeoutId = setTimeout(async () => {
+    postLandingTimerExpiresAt = null
+    postLandingTimerTimeoutId = null
+    try {
+      await playSound("five_minutes.ogg")
+    } catch (err) {
+      console.error("[FlowRunner] Failed to play post-landing expiry announcement:", err)
+    }
+  }, delayMs)
+}
+
 export async function executeFlow(flowId: string): Promise<void> {
   const store = useFlowStore.getState()
 
@@ -148,9 +180,31 @@ export async function executeFlow(flowId: string): Promise<void> {
     return
   }
 
+  // Guard engine shutdown flows while post-landing timer is active
+  const engineShutdownIds = new Set(["shutdown_eng1", "shutdown_eng2"])
+  if (engineShutdownIds.has(flowId)) {
+    const settings = useSettingsStore.getState()
+    if (settings.postLandingShutdownEnabled && isPostLandingTimerActive()) {
+      try {
+        await playSound("five_minutes_not_passed.ogg")
+      } catch (err) {
+        console.error("[FlowRunner] Failed to play blocked shutdown announcement:", err)
+      }
+      return
+    }
+  }
+
   const flow: Flow = await resolveFlow(rawFlow)
 
   store.setFlow(flow)
+
+  // If this is the after-landing flow, start the silent post-landing timer
+  if (flow.id === "after_landing") {
+    const settings = useSettingsStore.getState()
+    if (settings.postLandingShutdownEnabled) {
+      startPostLandingTimer(5)
+    }
+  }
 
   abortController = new AbortController()
   const { signal } = abortController

@@ -9,6 +9,7 @@
 - Added Ground Enginner (connects/disconects GPU/ASU/ACU) - @marxio09dio
 - Added optional prefix and suffix "please" (i.e "please diconnect GPU", "Flaps 0 please") - @marxio09dio
 - Added arm and disarm slides commands - @marxio09dio
+- Added optional 5 minutes wait before shutting down engines - @marxio09dio
 
 ## [0.2.0] - 2026-03-27
 
@@ -99,20 +100,20 @@
 
 ## [0.1.5] - 2026-03-08
 
-- Added start APU" voice commands
-- Added "speed checked" callout when lowering the gear
-- Added "go around flaps" command and go around flows
-- Added open and close all curtains
-- Added option to hold or skip on wrong checklists items
-- Added "slides" checklist item on before start will now check if the slides are all armed
-- Fixed improved connection to sim logic
-- Fixed vars reads on checklists
+- Added start APU" voice commands - @marxio09dio
+- Added "speed checked" callout when lowering the gear - @marxio09dio
+- Added "go around flaps" command and go around flows - @marxio09dio
+- Added open and close all curtains - @marxio09dio
+- Added option to hold or skip on wrong checklists items - @marxio09dio
+- Added "slides" checklist item on before start will now check if the slides are all armed - @marxio09dio
+- Fixed improved connection to sim logic - @marxio09dio
+- Fixed vars reads on checklists - @marxio09dio
 
 ## [0.1.4] - 2026-03-06
 
-- Added Appdata shortcut
-- Fixed simconnection status logic
+- Added Appdata shortcut - @marxio09dio
+- Fixed simconnection status logic - @marxio09dio
 
 ## [0.1.3] - 2026-03-03
 
-- Initial public realease
+- Initial public realease - @marxio09dio
