@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.x.x] - 2026-xx-xx
+## [0.3.0] - 2026-04-03
 
 - Added a passing altitude callout when setting standard – @marxio09dio
 - Implemented single-engine taxi flows, including Engine 1/2 shutdown commands and Engine 2 start command – @alexlenh
