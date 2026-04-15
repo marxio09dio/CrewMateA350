@@ -38,6 +38,7 @@ import { disconnectAllGround, setACU, setASU, setGPU } from "./commands/groundSe
 import { setLandingLights, setStrobeLights, setTaxiLights } from "./commands/lights"
 import { setSeatBelts } from "./commands/seat_belts"
 import { setWipers } from "./commands/wipers"
+import { setIgnKnob, startEngine2 } from "./commands/engine"
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 const randomDelay = (min: number, max: number) => delay(min + Math.random() * (max - min))
@@ -194,10 +195,17 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
     }
   },
 
-  // ── APU ───────────────────────────────────────────────────────────────────
+  // ── APU and Engine ───────────────────────────────────────────────────────────────────
   apu_start: () => {
     playSound("check.ogg")
     setStartAPU(1)
+  },
+  start_engine_2: async () => {
+    playSound("check.ogg")
+    setIgnKnob(2)
+    playSound("starting_engine_2.ogg")
+    await new Promise(resolve => setTimeout(resolve, 4000));
+    startEngine2(1)
   },
 
   // ── Anti-ice ──────────────────────────────────────────────────────────────
@@ -263,7 +271,6 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   // ── Flows ─────────────────────────────────────────────────────────────────
   clear_left: () => executeFlow("clear_left"),
   runway_entry_procedure: () => executeFlow("before_takeoff"),
-  start_engine_2: () => executeFlow("start_engine_2"),
   shutdown_engine_1: () => executeFlow("shutdown_eng1"),
   shutdown_engine_2: () => executeFlow("shutdown_eng2"),
   clear_for_takeoff: () => executeFlow("takeoff"),
