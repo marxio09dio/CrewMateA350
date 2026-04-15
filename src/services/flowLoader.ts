@@ -14,7 +14,6 @@ import afterStart from "@/data/flows/4_after_start.json"
 import afterStartE2 from "@/data/flows/4a_after_start_e2.json"
 import clearLeft from "@/data/flows/5_clear_left.json"
 import afterControlsCheck from "@/data/flows/6_after_flight_controls_check.json"
-import starteng2 from "@/data/flows/6a_start_engine_two.json"
 import beforeTakeoff from "@/data/flows/7_before_takeoff.json"
 import takeoff from "@/data/flows/8_takeoff.json"
 import packsOn from "@/data/flows/9_packs_on.json"
@@ -47,8 +46,7 @@ export const allFlows: Flow[] = [
   curtains_open,
   curtains_close,
   table_open,
-  table_close,
-  starteng2
+  table_close
 ] as Flow[]
 
 export function getFlowById(id: string): Flow | undefined {
