@@ -1,0 +1,24 @@
+{
+  "id": "after_start_e2",
+  "name": "After Start Engine 2",
+  "steps": [
+    {
+      "label": "Ignition Knob",
+      "read": "(L:INI_IGNITION_KNOB)",
+      "on": "1 (>L:INI_IGNITION_KNOB)",
+      "expect": 1
+    },
+    {
+      "label": "Engine 2 Anti Ice",
+      "read": "(L:INI_ENG_ANTI_ICE2_STATE)",
+      "on": "{anti_ice_eng2_cmd}",
+      "expect": "{anti_ice_eng2_expect}"
+    },
+    {
+      "label": "Wing Anti Ice",
+      "read": "(L:INI_WING_ANTI_ICE1_STATE)",
+      "on": "{anti_ice_wing_cmd}",
+      "expect": "{anti_ice_wing_expect}"
+    }
+  ]
+}

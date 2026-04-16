@@ -147,11 +147,11 @@ Speak these phrases clearly during flight. The FO uses partial matching — you 
 | "Let's prepare the aircraft" | Starts the preflight countdown timer to help you track preparation time. |
 
 ### Ground Engineer
-| Say                          | What happens                                                             |
-| ---------------------------- | ------------------------------------------------------------------------ |
-| "Ground from cockpit"        | Ground Engineer will ask whats your request                              |
-| "Cockpit to ground"          | Ground Engineer will ask whats your request                              |
 
+| Say                   | What happens                                |
+| --------------------- | ------------------------------------------- |
+| "Ground from cockpit" | Ground Engineer will ask whats your request |
+| "Cockpit to ground"   | Ground Engineer will ask whats your request |
 
 ### Gear
 

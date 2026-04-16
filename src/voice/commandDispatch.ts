@@ -30,6 +30,7 @@ import {
 } from "./commands/autoPilot"
 import { setStdBaro } from "./commands/baro"
 import { setDoorSlides } from "./commands/doorSlides"
+import { setIgnKnob, startEngine2 } from "./commands/engine"
 import { setFlaps } from "./commands/flaps"
 import { flightControlsCheck } from "./commands/flight_controls_check"
 import { setGearHandle } from "./commands/gear"
@@ -194,10 +195,17 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
     }
   },
 
-  // ── APU ───────────────────────────────────────────────────────────────────
+  // ── APU and Engine ───────────────────────────────────────────────────────────────────
   apu_start: () => {
     playSound("check.ogg")
     setStartAPU(1)
+  },
+  start_engine_2: async () => {
+    playSound("check.ogg")
+    setIgnKnob(2)
+    playSound("starting_engine_2.ogg")
+    await new Promise(resolve => setTimeout(resolve, 4000));
+    startEngine2(1)
   },
 
   // ── Anti-ice ──────────────────────────────────────────────────────────────
@@ -263,7 +271,6 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
   // ── Flows ─────────────────────────────────────────────────────────────────
   clear_left: () => executeFlow("clear_left"),
   runway_entry_procedure: () => executeFlow("before_takeoff"),
-  start_engine_2: () => executeFlow("start_engine_2"),
   shutdown_engine_1: () => executeFlow("shutdown_eng1"),
   shutdown_engine_2: () => executeFlow("shutdown_eng2"),
   clear_for_takeoff: () => executeFlow("takeoff"),
@@ -347,6 +354,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
 export async function dispatchFoCommand(commandType: string, payload: Record<string, unknown>): Promise<boolean> {
   const verb = (payload.verb as string | undefined) ?? "set"
   const isPull = verb === "pull"
+  const isMng = verb === "manage"
 
   switch (commandType) {
     case "discrete": {
@@ -370,11 +378,13 @@ export async function dispatchFoCommand(commandType: string, payload: Record<str
     case "altitude": {
       playSound("check.ogg")
       const feet = payload.flightLevel != null ? (payload.flightLevel as number) * 100 : (payload.value as number)
+      setAltitudeDial(feet)
+      await delay(200)
       if (isPull) {
         setSelAlt(1)
-        await delay(500)
+      } else if (isMng) {
+        setManagedAlt(1)
       }
-      setAltitudeDial(feet)
       return true
     }
 
