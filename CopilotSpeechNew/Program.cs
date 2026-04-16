@@ -202,25 +202,33 @@ Thread.Sleep(Timeout.Infinite);
 
 static void EmitSpeech(VoiceCommand command, float confidence)
 {
+    var raw = command.Raw;
     // Detect pull vs set from the raw spoken text
-    var isPull = command.Raw.StartsWith("pull ", StringComparison.OrdinalIgnoreCase);
-    var verb = isPull ? "pull" : "set";
+string verb = raw.Contains("pull", StringComparison.OrdinalIgnoreCase) ? "pull" :
+                    raw.Contains("manage", StringComparison.OrdinalIgnoreCase) ? "manage" : "set";
 
     // Reconstruct normalized text with correct verb so checklistRunner.ts still works
-    var text = command.Type switch
-    {
-        "heading" when command.Payload.TryGetValue("value", out var v) => $"{verb} heading {v}",
-        "altitude" when command.Payload.TryGetValue("flightLevel", out var fl) =>
-            $"{verb} flight level {fl}",
-        "altitude" when command.Payload.TryGetValue("value", out var v) => $"{verb} altitude {v}",
-        "speed" when command.Payload.TryGetValue("value", out var v) => $"{verb} speed {v}",
-        _ => command.Raw,
-    };
+string  text = command.Type switch
+{
+        "heading" when command.Payload.TryGetValue("value", out var v) => 
+            $"{verb} heading {v}",
+
+        "speed" when command.Payload.TryGetValue("value", out var v) => 
+            $"{verb} speed {v}",
+
+        "altitude" when command.Payload.TryGetValue("flightLevel", out var fl) => 
+            verb == "set" ? $"set flight level {fl}" : $"flight level {fl} {verb}",
+
+        "altitude" when command.Payload.TryGetValue("value", out var v) => 
+            verb == "set" ? $"set altitude {v}" : $"altitude {v} {verb}",
+
+    _ => command.Raw,
+};
 
     // Build enriched payload: original payload + verb for parametric commands
     Dictionary<string, object>? outPayload =
         command.Type is "heading" or "altitude" or "speed"
-            ? new Dictionary<string, object>(command.Payload) { ["verb"] = verb }
+            ? new Dictionary<string, object>(command.Payload) { ["verb"] = verb}
         : command.Payload.Count > 0 ? command.Payload
         : null;
 

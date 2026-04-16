@@ -30,6 +30,7 @@ import {
 } from "./commands/autoPilot"
 import { setStdBaro } from "./commands/baro"
 import { setDoorSlides } from "./commands/doorSlides"
+import { setIgnKnob, startEngine2 } from "./commands/engine"
 import { setFlaps } from "./commands/flaps"
 import { flightControlsCheck } from "./commands/flight_controls_check"
 import { setGearHandle } from "./commands/gear"
@@ -38,7 +39,6 @@ import { disconnectAllGround, setACU, setASU, setGPU } from "./commands/groundSe
 import { setLandingLights, setStrobeLights, setTaxiLights } from "./commands/lights"
 import { setSeatBelts } from "./commands/seat_belts"
 import { setWipers } from "./commands/wipers"
-import { setIgnKnob, startEngine2 } from "./commands/engine"
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 const randomDelay = (min: number, max: number) => delay(min + Math.random() * (max - min))
@@ -204,7 +204,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
     playSound("check.ogg")
     setIgnKnob(2)
     playSound("starting_engine_2.ogg")
-    await new Promise(resolve => setTimeout(resolve, 4000));
+    await new Promise((resolve) => setTimeout(resolve, 4000))
     startEngine2(1)
   },
 
@@ -354,6 +354,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
 export async function dispatchFoCommand(commandType: string, payload: Record<string, unknown>): Promise<boolean> {
   const verb = (payload.verb as string | undefined) ?? "set"
   const isPull = verb === "pull"
+  const isMng = verb === "manage"
 
   switch (commandType) {
     case "discrete": {
@@ -377,11 +378,13 @@ export async function dispatchFoCommand(commandType: string, payload: Record<str
     case "altitude": {
       playSound("check.ogg")
       const feet = payload.flightLevel != null ? (payload.flightLevel as number) * 100 : (payload.value as number)
+      setAltitudeDial(feet)
+      await delay(200)
       if (isPull) {
         setSelAlt(1)
-        await delay(500)
+      } else if (isMng) {
+        setManagedAlt(1)
       }
-      setAltitudeDial(feet)
       return true
     }
 

@@ -47,24 +47,19 @@
 
       <!-- Flight level -->
       <item>
-        <item repeat="0-1">
-          <ruleref uri="#VERB" />
-        </item>
+        <item repeat="0-1">set</item>
         <item>flight level</item>
         <ruleref uri="#HDG_SPD_FL_VALUE" />
+        <item repeat="0-1"><ruleref uri="#VERBALT"/></item>
         <tag>out.pid="2"; out.cval=rules.HDG_SPD_FL_VALUE;</tag>
       </item>
 
       <!-- Altitude feet -->
       <item>
-        <one-of>
-          <item>
-            <ruleref uri="#VERB" />
-            <item>altitude</item>
-          </item>
-        </one-of>
+        <item repeat="0-1">set</item>
+        <item>altitude</item>
         <ruleref uri="#ALTITUDE_VALUE" />
-        <item repeat="0-1">feet</item>
+        <item repeat="0-1"><ruleref uri="#VERBALT"/></item>
         <tag>out.pid="3"; out.cval=rules.ALTITUDE_VALUE;</tag>
       </item>
 
@@ -623,6 +618,14 @@
     </one-of>
   </rule>
 
+  <rule id="VERBALT">
+    <one-of>
+      <item>manage</item>
+      <item>pull</item>
+    </one-of>
+  </rule>
+
+
   <!-- ═══════════════════════════════════════════════════════════════════════════
        NUMBER PRIMITIVES
   ════════════════════════════════════════════════════════════════════════════ -->
@@ -691,12 +694,23 @@
 
   <!-- 3-digit value: "two seven zero" → "270" -->
   <rule id="HDG_SPD_FL_VALUE">
-    <ruleref uri="#NUMBERS" />
-    <tag>out.a=rules.NUMBERS;</tag>
-    <ruleref uri="#NUMBERS" />
-    <tag>out.b=rules.NUMBERS;</tag>
-    <ruleref uri="#NUMBERS" />
-    <tag>out=out.a+out.b+rules.NUMBERS;</tag>
+  <one-of>
+    <!-- Handle digit-by-digit: "one zero zero" -->
+    <item>
+      <ruleref uri="#NUMBERS" />
+      <tag>out.a=rules.NUMBERS;</tag>
+      <ruleref uri="#NUMBERS" />
+      <tag>out.b=rules.NUMBERS;</tag>
+      <ruleref uri="#NUMBERS" />
+      <tag>out=out.a+out.b+rules.NUMBERS;</tag>
+    </item>
+
+    <!-- Handle hundreds: "one hundred" -->
+    <item>
+      <ruleref uri="#ALTV_HUNDREDS" />
+      <tag>out=rules.ALTV_HUNDREDS;</tag>
+    </item>
+  </one-of>
   </rule>
 
   <!-- 3-or-4-digit altimeter value
