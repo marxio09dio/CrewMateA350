@@ -119,8 +119,6 @@ export function useAutoFlows() {
         executeFlow("after_start")
       }
 
-
-
       // Packs on: THR set to CL
       else if (!fl.packsOn && !t.onGround && !p.thrlvrclb && t.thrlvrclb === 1) {
         fl.packsOn = true
