@@ -28,7 +28,7 @@ interface PreflightTimerStore {
   dequeueEvent: () => TimelineEvent | undefined
 }
 
-const TOTAL_SECONDS = 60 * 60
+const TOTAL_SECONDS = Math.max(...timelineData.map((e) => e.minuteMark)) * 60
 
 export const usePreflightTimerStore = create<PreflightTimerStore>((set, get) => ({
   isRunning: false,
