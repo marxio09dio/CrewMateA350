@@ -227,7 +227,7 @@ export async function executeFlow(flowId: string): Promise<void> {
 
       if (!(await shouldExecuteStep(step))) {
         setStepStatus(i, "skipped")
-        if (i < flow.steps.length - 1) {
+        if (i < flow.steps.length - 1 && !step.skip_delay) {
           await abortableSleep(getRandomDelay(), signal)
         }
         continue
@@ -295,7 +295,7 @@ export async function executeFlow(flowId: string): Promise<void> {
         }
       }
 
-      if (i < flow.steps.length - 1) {
+      if (i < flow.steps.length - 1 && !step.skip_delay) {
         await abortableSleep(getRandomDelay(), signal)
       }
     }

@@ -204,7 +204,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
     playSound("check.ogg")
     setIgnKnob(2)
     playSound("starting_engine_2.ogg")
-    await new Promise(resolve => setTimeout(resolve, 4000));
+    await new Promise((resolve) => setTimeout(resolve, 4000))
     startEngine2(1)
   },
 

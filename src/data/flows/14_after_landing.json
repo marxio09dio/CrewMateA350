@@ -28,7 +28,8 @@
       "label": "Engine 1 Anti Ice",
       "read": "(L:INI_ENG_ANTI_ICE1_STATE)",
       "on": "{landing_anti_ice_eng1_cmd}",
-      "expect": "{landing_anti_ice_eng1_expect}"
+      "expect": "{landing_anti_ice_eng1_expect}",
+      "skip_delay": true
     },
     {
       "label": "Engine 2 Anti Ice",

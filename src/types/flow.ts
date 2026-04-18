@@ -12,6 +12,7 @@ export interface FlowStep {
   hold_ms?: number
   wait_ms?: number
   skip_verify?: boolean
+  skip_delay?: boolean
   sound?: string
   sound_on_execute?: string
   only_if?: FlowCondition
