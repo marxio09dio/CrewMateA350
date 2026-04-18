@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.x] - 2026-XX-XX
+
+- Improved engine 2 start flow - @alexlenh
+- Adjusted delays between flow items - @alexlenh
+
 ## [0.3.0] - 2026-04-03
 
 - Added a passing altitude callout when setting standard – @marxio09dio
