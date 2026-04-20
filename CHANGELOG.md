@@ -4,6 +4,8 @@
 
 - Improved engine 2 start flow - @alexlenh
 - Adjusted delays between flow items - @alexlenh
+- Fixed flows not being auto executed - @marxio09dio
+- Relaxed "thrust set" callouts thresholds - @marxio09dio
 
 ## [0.3.0] - 2026-04-03
 
