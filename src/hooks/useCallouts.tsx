@@ -41,7 +41,7 @@ interface PreviousValues {
   fcuAlt: number
 }
 
-const THRUST_SET_MARGIN = 1
+const THRUST_SET_MARGIN = 3
 
 const getTakeoffThrustTarget = (t: Telemetry) => {
   if ((t.iniFlexTemperature ?? 0) > 1) {

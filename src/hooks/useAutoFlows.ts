@@ -82,10 +82,11 @@ export function useAutoFlows() {
       prev.current.ignitionKnob = t.ignitionKnob ?? 0
       prev.current.flapsIndex = t.flapsIndex ?? 0
       prev.current.spoilersArmed = t.spoilersArmed ?? 0
+      prev.current.landingGear = t.landingGear ?? 1
       prev.current.alt = t.alt ?? 0
+      prev.current.thrlvrclb = t.thrlvrclb ?? 0
       prev.current.mixture1 = t.mixture1 ?? 1
       prev.current.mixture2 = t.mixture2 ?? 1
-      prev.current.thrlvrclb = t.thrlvrclb ?? 0
       phase.current = t.onGround ? "ground" : "airborne"
       return
     }
@@ -119,17 +120,19 @@ export function useAutoFlows() {
         executeFlow("after_start")
       }
 
-      // Packs on: THR set to CL
+      // Packs on: THR lever moved to CLB detent while airborne
       else if (!fl.packsOn && !t.onGround && !p.thrlvrclb && t.thrlvrclb === 1) {
         fl.packsOn = true
         executeFlow("packs_on")
-      } else if (!fl.landing && !t.onGround && !p.flapsIndex && !p.landingGear && t.flapsIndex === 2 && t.landingGear) {
+      }
+
+      // Landing: gear extended while airborne
+      else if (!fl.landing && !t.onGround && p.landingGear === 0 && t.landingGear === 1) {
         fl.landing = true
         executeFlow("landing")
       }
 
-      // After Takeoff: flaps retracted to 0 while airborne
-      else if (!fl.afterTakeoff && !t.onGround && p.flapsIndex > 0 && t.flapsIndex === 0) {
+      if (!fl.afterTakeoff && !t.onGround && p.flapsIndex > 0 && t.flapsIndex === 0) {
         fl.afterTakeoff = true
         executeFlow("after_takeoff")
       }
@@ -170,6 +173,7 @@ export function useAutoFlows() {
     p.ignitionKnob = t.ignitionKnob ?? 0
     p.flapsIndex = t.flapsIndex ?? 0
     p.spoilersArmed = t.spoilersArmed ?? 0
+    p.landingGear = t.landingGear ?? 1
     p.alt = t.alt ?? 0
     p.mixture1 = t.mixture1 ?? 1
     p.mixture2 = t.mixture2 ?? 1
