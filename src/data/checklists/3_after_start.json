@@ -42,13 +42,13 @@
     },
     {
       "challenge": "flight_controls.ogg",
-      "response": ["checked"],
+      "response": ["checked", "set and checked"],
       "label": "Flight Controls",
       "copilot_confirmation": "checked.ogg"
     },
     {
       "challenge": "ground_clearance.ogg",
-      "response": ["received"],
+      "response": ["received", "set and checked"],
       "label": "Ground Clearance"
     }
   ],

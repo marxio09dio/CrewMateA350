@@ -30,7 +30,7 @@
     },
     {
       "challenge": "auto_brake.ogg",
-      "response": ["set and checked", "medium", "BTV"],
+      "response": ["medium", "BTV", "set and checked"],
       "label": "Auto Brake"
     }
   ],

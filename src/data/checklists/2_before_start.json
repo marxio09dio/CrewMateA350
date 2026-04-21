@@ -7,19 +7,19 @@
       "var": "(A:BRAKE PARKING INDICATOR, Bool)",
       "expected": true,
       "incorrect": "are_you_sure.ogg",
-      "response": ["set"],
+      "response": ["set", "set and checked"],
       "label": "Parking Brake"
     },
     {
       "challenge": "takeoff_speeds_and_thrust.ogg",
-      "response": ["*"],
+      "response": ["*", "set and checked"],
       "label": "Takeoff Speeds and Thrust",
       "takeoff_confirmation": true
     },
 
     {
       "challenge": "slides.ogg",
-      "response": ["armed"],
+      "response": ["armed", "set and checked"],
       "label": "Slides",
       "incorrect": "are_you_sure.ogg",
       "var": "(L:INI_DOOR0_ARMED)",
@@ -33,7 +33,7 @@
     },
     {
       "challenge": "nws_disc_memo.ogg",
-      "response": ["checked"],
+      "response": ["checked", "set and checked"],
       "label": "Nose Wheel disconnect Memo"
     }
   ],

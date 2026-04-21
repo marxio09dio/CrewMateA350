@@ -44,12 +44,12 @@
     },
     {
       "challenge": "takeoff_speeds_and_thrust.ogg",
-      "response": ["set and checked"],
+      "response": ["*", "set and checked"],
       "label": "Takeoff Speeds and Thrust"
     },
     {
       "challenge": "fcualt.ogg",
-      "response": ["set and checked"],
+      "response": ["set", "set and checked"],
       "label": "FCU ALT"
     }
   ],
