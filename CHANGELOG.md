@@ -1,11 +1,12 @@
 # Changelog
 
-## [0.3.x] - 2026-XX-XX
+## [0.3.1] - 2026-XX-XX
 
 - Improved engine 2 start flow - @alexlenh
 - Adjusted delays between flow items - @alexlenh
 - Fixed flows not being auto executed - @marxio09dio
 - Relaxed "thrust set" callouts thresholds - @marxio09dio
+- Added "set altimeters/qnh" command - @marxio09dio
 
 ## [0.3.0] - 2026-04-03
 
