@@ -394,7 +394,7 @@ export function useCallouts(vrSpeed: number) {
     // Process landing phases (skip if idle or audio still playing)
     if (ls.phase !== "idle" && !(await isSoundPlaying())) {
       const elapsed = ls.phaseStartTime ? now - ls.phaseStartTime : 0
-      const handler = (phaseHandlers as Record<string, Function>)[ls.phase]
+      const handler = (phaseHandlers as Record<string, (...args: unknown[]) => unknown>)[ls.phase]
       if (typeof handler === "function") {
         handler(ls, t, elapsed, now)
       } else {

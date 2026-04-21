@@ -94,7 +94,7 @@ export function resolveVoiceHints(args: ResolveVoiceHintsArgs): VoiceHintPhase |
       return {
         id: "descent_approach",
         title: "Descent / approach",
-        phrases: ["approach checklist", "gear down", "flaps X"]
+        phrases: ["set altimeters/QNH", "approach checklist", "gear down", "flaps X"]
       }
     }
 

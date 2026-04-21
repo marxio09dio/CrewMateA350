@@ -13,11 +13,11 @@ async function monitorEngine2Start() {
   // Polling for up to 60 seconds
   for (let i = 0; i < 600; i++) {
     const n1 = await simvarGet("(A:TURB ENG N1:2,Percent)")
-    
+
     // Trigger flow when N1 hits the target window
     if (n1 !== null && n1 >= 21) {
       executeFlow("after_start_e2")
-      break 
+      break
     }
     await delay(100)
   }

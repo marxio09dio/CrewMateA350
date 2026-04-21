@@ -108,7 +108,7 @@ This tutorial assumes you are parked at the gate with engines off. You are the C
 
 ### Approach
 
-- After passing the transition level and/or setting the barometric reference, complete the APPROACH checklist.
+- After passing the transition level call for "set altimeters/QNH", complete the APPROACH checklist.
 
 ### Landing
 

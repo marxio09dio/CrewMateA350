@@ -204,31 +204,33 @@ static void EmitSpeech(VoiceCommand command, float confidence)
 {
     var raw = command.Raw;
     // Detect pull vs set from the raw spoken text
-string verb = raw.Contains("pull", StringComparison.OrdinalIgnoreCase) ? "pull" :
-                    raw.Contains("manage", StringComparison.OrdinalIgnoreCase) ? "manage" : "set";
+    string verb =
+        raw.Contains("pull", StringComparison.OrdinalIgnoreCase) ? "pull"
+        : raw.Contains("manage", StringComparison.OrdinalIgnoreCase) ? "manage"
+        : "set";
 
     // Reconstruct normalized text with correct verb so checklistRunner.ts still works
-string  text = command.Type switch
-{
-        "heading" when command.Payload.TryGetValue("value", out var v) => 
-            $"{verb} heading {v}",
+    string text = command.Type switch
+    {
+        "heading" when command.Payload.TryGetValue("value", out var v) => $"{verb} heading {v}",
 
-        "speed" when command.Payload.TryGetValue("value", out var v) => 
-            $"{verb} speed {v}",
+        "speed" when command.Payload.TryGetValue("value", out var v) => $"{verb} speed {v}",
 
-        "altitude" when command.Payload.TryGetValue("flightLevel", out var fl) => 
-            verb == "set" ? $"set flight level {fl}" : $"flight level {fl} {verb}",
+        "altitude" when command.Payload.TryGetValue("flightLevel", out var fl) => verb == "set"
+            ? $"set flight level {fl}"
+            : $"flight level {fl} {verb}",
 
-        "altitude" when command.Payload.TryGetValue("value", out var v) => 
-            verb == "set" ? $"set altitude {v}" : $"altitude {v} {verb}",
+        "altitude" when command.Payload.TryGetValue("value", out var v) => verb == "set"
+            ? $"set altitude {v}"
+            : $"altitude {v} {verb}",
 
-    _ => command.Raw,
-};
+        _ => command.Raw,
+    };
 
     // Build enriched payload: original payload + verb for parametric commands
     Dictionary<string, object>? outPayload =
         command.Type is "heading" or "altitude" or "speed"
-            ? new Dictionary<string, object>(command.Payload) { ["verb"] = verb}
+            ? new Dictionary<string, object>(command.Payload) { ["verb"] = verb }
         : command.Payload.Count > 0 ? command.Payload
         : null;
 

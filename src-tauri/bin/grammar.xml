@@ -50,7 +50,9 @@
         <item repeat="0-1">set</item>
         <item>flight level</item>
         <ruleref uri="#HDG_SPD_FL_VALUE" />
-        <item repeat="0-1"><ruleref uri="#VERBALT"/></item>
+        <item repeat="0-1">
+          <ruleref uri="#VERBALT" />
+        </item>
         <tag>out.pid="2"; out.cval=rules.HDG_SPD_FL_VALUE;</tag>
       </item>
 
@@ -59,7 +61,9 @@
         <item repeat="0-1">set</item>
         <item>altitude</item>
         <ruleref uri="#ALTITUDE_VALUE" />
-        <item repeat="0-1"><ruleref uri="#VERBALT"/></item>
+        <item repeat="0-1">
+          <ruleref uri="#VERBALT" />
+        </item>
         <tag>out.pid="3"; out.cval=rules.ALTITUDE_VALUE;</tag>
       </item>
 
@@ -542,6 +546,8 @@
       <item>brake check<tag>out.pid="61";</tag></item>
       <!-- Altimeter -->
       <item>set standard<tag>out.pid="64";</tag></item>
+      <item>set altimeters<tag>out.pid="122";</tag></item>
+      <item>set qnh<tag>out.pid="122";</tag></item>
       <!-- Generic responses / checklist replies -->
       <item>confirm<tag>out.pid="70";</tag></item>
       <item>confirmed<tag>out.pid="70";</tag></item>
@@ -625,7 +631,6 @@
     </one-of>
   </rule>
 
-
   <!-- ═══════════════════════════════════════════════════════════════════════════
        NUMBER PRIMITIVES
   ════════════════════════════════════════════════════════════════════════════ -->
@@ -694,23 +699,23 @@
 
   <!-- 3-digit value: "two seven zero" → "270" -->
   <rule id="HDG_SPD_FL_VALUE">
-  <one-of>
-    <!-- Handle digit-by-digit: "one zero zero" -->
-    <item>
-      <ruleref uri="#NUMBERS" />
-      <tag>out.a=rules.NUMBERS;</tag>
-      <ruleref uri="#NUMBERS" />
-      <tag>out.b=rules.NUMBERS;</tag>
-      <ruleref uri="#NUMBERS" />
-      <tag>out=out.a+out.b+rules.NUMBERS;</tag>
-    </item>
+    <one-of>
+      <!-- Handle digit-by-digit: "one zero zero" -->
+      <item>
+        <ruleref uri="#NUMBERS" />
+        <tag>out.a=rules.NUMBERS;</tag>
+        <ruleref uri="#NUMBERS" />
+        <tag>out.b=rules.NUMBERS;</tag>
+        <ruleref uri="#NUMBERS" />
+        <tag>out=out.a+out.b+rules.NUMBERS;</tag>
+      </item>
 
-    <!-- Handle hundreds: "one hundred" -->
-    <item>
-      <ruleref uri="#ALTV_HUNDREDS" />
-      <tag>out=rules.ALTV_HUNDREDS;</tag>
-    </item>
-  </one-of>
+      <!-- Handle hundreds: "one hundred" -->
+      <item>
+        <ruleref uri="#ALTV_HUNDREDS" />
+        <tag>out=rules.ALTV_HUNDREDS;</tag>
+      </item>
+    </one-of>
   </rule>
 
   <!-- 3-or-4-digit altimeter value

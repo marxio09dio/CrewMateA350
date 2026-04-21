@@ -393,6 +393,7 @@ namespace VoiceSidecar
             [61] = "brake_check",
             // Altimeter
             [64] = "set_standard",
+            [122] = "set_altimeter",
             // Generic checklist responses
             [70] = "confirm",
             [71] = "negative",

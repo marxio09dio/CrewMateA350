@@ -1,3 +1,4 @@
+import { simvarSet } from "@/API/simvarApi"
 import { buildPassingAltitudeSequence } from "@/hooks/useCallouts"
 import { abortChecklist, executeChecklist } from "@/services/checklistRunner"
 import { executeFlow } from "@/services/flowRunner"
@@ -177,7 +178,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
     const t = useTelemetryStore.getState().telemetry
     const passingAlt = usePassingAltitudeStore.getState()
 
-    setStdBaro(1)
+    setStdBaro(3)
 
     // Only trigger passing altitude callout if:
     // - Airborne
@@ -193,6 +194,13 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
       // Store target for "now" callout detection
       passingAlt.setTarget(targetAlt)
     }
+  },
+
+  set_altimeter: async () => {
+    playSound("check.ogg")
+    await setStdBaro(0)
+    await delay(500)
+    await simvarSet("(>K:BAROMETRIC)")
   },
 
   // ── APU and Engine ───────────────────────────────────────────────────────────────────
