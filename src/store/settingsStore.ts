@@ -58,6 +58,7 @@ export const useSettingsStore = create<SettingsStore>()(
 
       setVoiceEnabled: (enabled) => {
         set({ voiceEnabled: enabled })
+        invoke("set_muted", { muted: !enabled }).catch(() => {})
         if (!isUpdatingFromEvent) {
           emit("settings-changed", { voiceEnabled: enabled })
         }

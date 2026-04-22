@@ -45,7 +45,8 @@
     {
       "challenge": "takeoff_speeds_and_thrust.ogg",
       "response": ["*", "set and checked"],
-      "label": "Takeoff Speeds and Thrust"
+      "label": "Takeoff Speeds and Thrust",
+      "takeoff_confirmation": true
     },
     {
       "challenge": "fcualt.ogg",

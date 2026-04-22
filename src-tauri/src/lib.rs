@@ -56,6 +56,12 @@ fn set_confidence_threshold(state: tauri::State<'_, SpeechBridgeState>, threshol
     state.0.send_config(&json);
 }
 
+#[tauri::command]
+fn set_muted(state: tauri::State<'_, SpeechBridgeState>, muted: bool) {
+    let json = format!(r#"{{"muted":{}}}"#, muted);
+    state.0.send_config(&json);
+}
+
 mod windows;
 use windows::{
     close_app, open_landing_window, open_settings_window, open_takeoff_window, set_always_on_top,
@@ -206,6 +212,7 @@ pub fn run() {
             get_in_cockpit,
             get_speech_engine_error,
             set_confidence_threshold,
+            set_muted,
             get_speech_input_devices,
         ])
         .run(tauri::generate_context!())

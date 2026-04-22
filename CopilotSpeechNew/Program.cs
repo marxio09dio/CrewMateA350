@@ -10,6 +10,7 @@ using VoiceSidecar;
 
 const float CONFIDENCE_THRESHOLD = 0.85f;
 var confidenceThreshold = CONFIDENCE_THRESHOLD;
+var muted = false;
 
 // Grammar path is passed as the first argument by the Tauri bridge so it resolves
 // correctly in both dev (src-tauri/bin) and production (bundled resource dir).
@@ -106,6 +107,8 @@ engine.LoadGrammar(grammar);
 
 engine.SpeechRecognized += (sender, e) =>
 {
+    if (muted) return;
+
     if (e.Result.Confidence < confidenceThreshold)
     {
         EmitUnrecognized(e.Result.Text);
@@ -185,6 +188,10 @@ var stdinThread = new Thread(() =>
             {
                 if (ct.TryGetSingle(out var parsed) && float.IsFinite(parsed))
                     confidenceThreshold = Math.Clamp(parsed, 0.0f, 1.0f);
+            }
+            if (doc.RootElement.TryGetProperty("muted", out var m))
+            {
+                muted = m.GetBoolean();
             }
         }
         catch
