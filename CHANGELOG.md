@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.1] - 2026-XX-XX
+## [0.3.1] - 2026-04-22
 
 - Improved engine 2 start flow - @alexlenh
 - Adjusted delays between flow items - @alexlenh
