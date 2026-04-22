@@ -7,6 +7,7 @@
 - Fixed flows not being auto executed - @marxio09dio
 - Relaxed "thrust set" callouts thresholds - @marxio09dio
 - Added "set altimeters/qnh" command - @marxio09dio
+- Fixed speach engine not respecting mic status - @marxio09dio
 
 ## [0.3.0] - 2026-04-03
 
