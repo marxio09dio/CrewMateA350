@@ -38,7 +38,8 @@ export function usePreflightTimer() {
   useEffect(() => {
     const id = setInterval(() => {
       const store = usePreflightTimerStore.getState()
-      if (!store.isRunning) return
+      const flowState = useFlowStore.getState().executionState
+      if (!store.isRunning || flowState === "running") return
 
       store.tick()
 

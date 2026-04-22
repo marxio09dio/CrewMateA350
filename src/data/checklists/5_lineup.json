@@ -4,12 +4,12 @@
   "items": [
     {
       "challenge": "cabin_crew.ogg",
-      "response": ["secured", "signaled"],
+      "response": ["secured", "signaled", "set and checked"],
       "label": "Cabin Advisory"
     },
     {
       "challenge": "takeoff_runway.ogg",
-      "response": ["confirmed"],
+      "response": ["confirmed", "set and checked"],
       "label": "Take off Runway",
       "copilot_confirmation": "confirmed.ogg"
     },

@@ -14,7 +14,7 @@
     },
     {
       "challenge": "external_power.ogg",
-      "response": ["off", "set and checked", "on"],
+      "response": ["off", "on", "set and checked"],
       "label": "External Power"
     },
     {

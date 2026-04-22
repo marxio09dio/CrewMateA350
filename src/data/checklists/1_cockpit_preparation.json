@@ -4,7 +4,7 @@
   "items": [
     {
       "challenge": "gear_pins_and_covers.ogg",
-      "response": ["removed"],
+      "response": ["removed", "set and checked"],
       "label": "Gear Pins and Covers"
     },
     {
