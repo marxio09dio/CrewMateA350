@@ -40,7 +40,7 @@ enum WriteOp {
     },
     KeyEvent {
         name: String,
-        value: u32,
+        value: i32,
     },
 }
 
@@ -87,7 +87,7 @@ fn parse_write(expr: &str) -> Option<WriteOp> {
     if let Some((val, rest)) = expr.split_once(" (>K:") {
         return Some(WriteOp::KeyEvent {
             name: rest.strip_suffix(')')?.into(),
-            value: val.trim().parse().ok()?,
+            value: val.trim().parse::<i32>().ok()?,
         });
     }
     // K event with no value prefix: (>K:EVENT_NAME) → value defaults to 0
@@ -207,7 +207,7 @@ impl SimVars {
     }
 
     /// Transmit a key event (input event) with an integer payload.
-    fn trigger_key_event(&mut self, event_name: &str, value: u32) -> Result<()> {
+    fn trigger_key_event(&mut self, event_name: &str, value: i32) -> Result<()> {
         info!(
             "SimVars: trigger key event '{}' with data {}",
             event_name, value
@@ -240,7 +240,7 @@ impl SimVars {
                 self.handle,
                 sys::SIMCONNECT_OBJECT_ID_USER,
                 event_id,
-                value,
+                value as u32, // Bit-cast i32 to u32 for SimConnect
                 sys::SIMCONNECT_GROUP_PRIORITY_HIGHEST,
                 sys::SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY,
             );
@@ -444,7 +444,7 @@ fn execute_write(sim: &mut SimVars, expr: &str) -> Result<(), String> {
             .write_var(&datum, &unit, value)
             .map_err(|e| e.to_string()),
         Some(WriteOp::KeyEvent { name, value }) => sim
-            .trigger_key_event(&name, value)
+            .trigger_key_event(&name, value as i32)
             .map_err(|e| e.to_string()),
         None => Err(format!("unrecognised write expression: {expr}")),
     }

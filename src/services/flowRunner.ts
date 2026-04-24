@@ -233,12 +233,6 @@ export async function executeFlow(flowId: string): Promise<void> {
         continue
       }
 
-      if (step.sound) {
-        await waitForSoundFinished()
-        await playSound(step.sound)
-        await waitForSoundFinished()
-      }
-
       const currentValue = await readValue(step.read)
       checkAbort(signal)
 
@@ -256,9 +250,16 @@ export async function executeFlow(flowId: string): Promise<void> {
       await writeValue(step.on)
       checkAbort(signal)
 
+      if (step.sound_on_execute) {
+        await waitForSoundFinished()
+        await playSound(step.sound_on_execute)
+        await waitForSoundFinished()
+        checkAbort(signal)
+      }
+
       if (step.hold_ms) {
         await abortableSleep(step.hold_ms, signal)
-        const releaseExpr = step.on.replace(/^\d+\s+/, "0 ")
+        const releaseExpr = step.on.replace(/^-?\d+\s+/, "0 ")
         await writeValue(releaseExpr)
         checkAbort(signal)
       }
@@ -267,15 +268,14 @@ export async function executeFlow(flowId: string): Promise<void> {
         await abortableSleep(step.wait_ms, signal)
       }
 
-      if (step.sound_on_execute) {
-        await waitForSoundFinished()
-        await playSound(step.sound_on_execute)
-        await waitForSoundFinished()
-        checkAbort(signal)
-      }
-
       if (step.skip_verify) {
         setStepStatus(i, "done")
+        if (step.sound_after_execute) {
+          await abortableSleep(2000, signal)
+          await waitForSoundFinished()
+          await playSound(step.sound_after_execute)
+          await waitForSoundFinished()
+        }
       } else {
         setStepStatus(i, "verifying")
         let verified = false
@@ -292,6 +292,15 @@ export async function executeFlow(flowId: string): Promise<void> {
         setStepStatus(i, verified ? "done" : "failed")
         if (!verified) {
           console.warn(`[FlowRunner] Step "${step.label}" verification failed (expected ${expectedValue})`)
+        } else {
+          // Play sound_after_execute if step was successful (after 2 second delay)
+          if (step.sound_after_execute) {
+            await abortableSleep(2000, signal)
+            await waitForSoundFinished()
+            await playSound(step.sound_after_execute)
+            await waitForSoundFinished()
+            checkAbort(signal)
+          }
         }
       }
 
