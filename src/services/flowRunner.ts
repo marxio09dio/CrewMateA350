@@ -233,6 +233,9 @@ export async function executeFlow(flowId: string): Promise<void> {
         continue
       }
 
+      if (i > 0 && flow.steps[i - 1].skip_delay) {
+        await abortableSleep(100, signal)
+      }
       const currentValue = await readValue(step.read)
       checkAbort(signal)
 
@@ -281,7 +284,7 @@ export async function executeFlow(flowId: string): Promise<void> {
         let verified = false
         for (let attempt = 0; attempt < 5; attempt++) {
           checkAbort(signal)
-          await sleep(300)
+          if (!step.skip_delay) await sleep(300)
           const newValue = await readValue(step.read)
           if (matchesValue(newValue, expectedValue)) {
             verified = true
@@ -295,7 +298,7 @@ export async function executeFlow(flowId: string): Promise<void> {
         } else {
           // Play sound_after_execute if step was successful (after 2 second delay)
           if (step.sound_after_execute) {
-            await abortableSleep(2000, signal)
+            if (!step.skip_delay) await abortableSleep(2000, signal)
             await waitForSoundFinished()
             await playSound(step.sound_after_execute)
             await waitForSoundFinished()
