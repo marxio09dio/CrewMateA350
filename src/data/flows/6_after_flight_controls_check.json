@@ -6,8 +6,7 @@
       "label": "Elevator Full Up",
       "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
       "on": "-16384 (>K:ELEVATOR_SET)",
-      "expect": 0.93,
-      "sound_after_execute": "full_up.ogg"
+      "expect": 0.93
     },
     {
       "label": "Elevator Neutral",
@@ -19,22 +18,19 @@
       "label": "Elevator Full Down",
       "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
       "on": "16384 (>K:ELEVATOR_SET)",
-      "expect": -0.53,
-      "sound_after_execute": "full_down.ogg"
+      "expect": -0.53
     },
     {
       "label": "Elevator Neutral",
       "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
       "on": "0 (>K:ELEVATOR_SET)",
-      "expect": 0,
-      "sound_after_execute": "neutral.ogg"
+      "expect": 0
     },
     {
       "label": "Aileron Full Left",
       "read": "(A:AILERON LEFT DEFLECTION PCT, Percent Over 100)",
       "on": "16383 (>K:AILERON_SET)",
-      "expect": -1,
-      "sound_after_execute": "full_left.ogg"
+      "expect": -1
     },
     {
       "label": "Aileron Neutral",
@@ -46,16 +42,13 @@
       "label": "Aileron Full Right",
       "read": "(A:AILERON RIGHT DEFLECTION PCT, Percent Over 100)",
       "on": "-16384 (>K:AILERON_SET)",
-      "expect": 1,
-
-      "sound_after_execute": "full_right.ogg"
+      "expect": 1
     },
     {
       "label": "Aileron Neutral",
       "read": "(A:AILERON POSITION, Percent Over 100)",
       "on": "0 (>K:AILERON_SET)",
-      "expect": 0,
-      "sound_after_execute": "neutral.ogg"
+      "expect": 0
     },
     {
       "label": "Terrain Display",

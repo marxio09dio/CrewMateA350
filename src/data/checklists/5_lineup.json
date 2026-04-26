@@ -19,9 +19,17 @@
       "response": ["on", "on supplied by apu", "off", "set and checked"],
       "validations": [
         {
-          "when": { "responses": ["on", "on supplied by apu"] },
+          "when": { "responses": ["on"] },
           "checks": [
             { "type": "store", "store": "takeoff.packs", "equals": "on" },
+            { "type": "simvar", "var": "(L:INI_AIR_PACK1_BUTTON)", "expected": 1 },
+            { "type": "simvar", "var": "(L:INI_AIR_PACK2_BUTTON)", "expected": 1 }
+          ]
+        },
+        {
+          "when": { "responses": ["on supplied by apu"] },
+          "checks": [
+            { "type": "store", "store": "takeoff.packs", "equals": "apu" },
             { "type": "simvar", "var": "(L:INI_AIR_PACK1_BUTTON)", "expected": 1 },
             { "type": "simvar", "var": "(L:INI_AIR_PACK2_BUTTON)", "expected": 1 }
           ]
@@ -42,6 +50,11 @@
               "groups": [
                 [
                   { "type": "store", "store": "takeoff.packs", "equals": "on" },
+                  { "type": "simvar", "var": "(L:INI_AIR_PACK1_BUTTON)", "expected": 1 },
+                  { "type": "simvar", "var": "(L:INI_AIR_PACK2_BUTTON)", "expected": 1 }
+                ],
+                [
+                  { "type": "store", "store": "takeoff.packs", "equals": "apu" },
                   { "type": "simvar", "var": "(L:INI_AIR_PACK1_BUTTON)", "expected": 1 },
                   { "type": "simvar", "var": "(L:INI_AIR_PACK2_BUTTON)", "expected": 1 }
                 ],

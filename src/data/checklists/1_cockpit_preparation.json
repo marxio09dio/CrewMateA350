@@ -17,7 +17,7 @@
       "validations": [
         {
           "when": { "always": true },
-          "checks": [{ "type": "simvar", "var": "(L:INI_SEATBELTS_SWITCH), number", "expected": 1 }]
+          "checks": [{ "type": "simvar", "var": "(L:INI_SEATBELTS_SWITCH)", "expected": 0 }]
         }
       ],
       "incorrect": "check_belts.ogg"

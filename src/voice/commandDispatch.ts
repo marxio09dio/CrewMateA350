@@ -194,7 +194,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
       // Store target for "now" callout detection
       passingAlt.setTarget(targetAlt)
     }
-  }, // changed to button commands
+  }, // might need a look, it breaks when you want to preset
 
   set_altimeter: async () => {
     playSound("check.ogg")

@@ -20,14 +20,14 @@
           "when": { "always": true },
           "checks": [
             { "type": "store", "store": "landing.flaps", "equals": "3" },
-            { "type": "simvar", "store": "(A:FLAPS HANDLE INDEX, number)", "expected": 3 }
+            { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 3 }
           ]
         },
         {
           "when": { "always": true },
           "checks": [
             { "type": "store", "store": "landing.flaps", "equals": "Full" },
-            { "type": "simvar", "store": "(A:FLAPS HANDLE INDEX, number)", "expected": 4 }
+            { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 4 }
           ]
         }
       ],
