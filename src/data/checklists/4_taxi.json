@@ -11,21 +11,21 @@
           "when": { "responses": ["config one plus f"] },
           "checks": [
             { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 1 },
-            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "2" }
+            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "expected": 2 }
           ]
         },
         {
           "when": { "responses": ["config two"] },
           "checks": [
             { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 2 },
-            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "3" }
+            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "expected": 3 }
           ]
         },
         {
           "when": { "responses": ["config three"] },
           "checks": [
             { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 3 },
-            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "5" }
+            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "expected": 5 }
           ]
         },
         {
@@ -36,15 +36,15 @@
               "groups": [
                 [
                   { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 1 },
-                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "2" }
+                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "expected": 2 }
                 ],
                 [
                   { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 2 },
-                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "3" }
+                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "expected": 3 }
                 ],
                 [
                   { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 3 },
-                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "5" }
+                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "expected": 5 }
                 ]
               ]
             }

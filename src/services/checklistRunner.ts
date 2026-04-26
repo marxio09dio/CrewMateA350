@@ -179,8 +179,10 @@ async function executeSilentItem(item: ChecklistItem, index: number, signal: Abo
     if (rule.checks) {
       const ok = await runChecks(rule.checks, signal)
       if (!ok) {
-        if (rule.incorrect || item.incorrect) {
-          await playSound(rule.incorrect ?? item.incorrect!)
+        const incorrectSound = rule.incorrect ?? item.incorrect
+        if (incorrectSound) {
+          await waitForSoundFinished()
+          await playSound(incorrectSound)
           await waitForSoundFinished()
         }
         setStepStatus(index, "failed")

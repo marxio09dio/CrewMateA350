@@ -69,7 +69,7 @@
       "challenge": "flight_controls.ogg",
       "response": ["checked", "set and checked"],
       "label": "Flight Controls",
-      "copilot_confirmation": "checked.ogg"
+      "copilot_response": "checked.ogg"
     },
     {
       "challenge": "ground_clearance.ogg",
