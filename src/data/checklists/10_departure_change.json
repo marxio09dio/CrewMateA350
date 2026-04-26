@@ -11,36 +11,51 @@
       "challenge": "flap_settings.ogg",
       "response": ["config one plus f", "config two", "config three", "set and checked"],
       "label": "Flap Settings",
-      "simvar_check": {
-        "var_name": "(A:FLAPS HANDLE INDEX, number)",
-        "var_type": "simvar",
-        "validation_map": [
-          {
-            "sim_value": 1.0,
-            "expected_response": "config one plus f",
-            "copilot_confirmation": "config_1_plus_f.ogg"
-          },
-          {
-            "sim_value": 2.0,
-            "expected_response": "config two",
-            "copilot_confirmation": "config_2.ogg"
-          },
-          {
-            "sim_value": 3.0,
-            "expected_response": "config three",
-            "copilot_confirmation": "config_3.ogg"
-          }
-        ]
-      },
-      "lvar_plan_check": {
-        "var_name": "(L:TO_FLAPS_CONF)",
-        "validation_map": [
-          { "lvar_value": 2, "expected_response": "config one plus f" },
-          { "lvar_value": 3, "expected_response": "config two" },
-          { "lvar_value": 5, "expected_response": "config three" }
-        ],
-        "incorrect": "are_you_sure.ogg"
-      }
+      "validations": [
+        {
+          "when": { "responses": ["config one plus f"] },
+          "checks": [
+            { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 1 },
+            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "2" }
+          ]
+        },
+        {
+          "when": { "responses": ["config two"] },
+          "checks": [
+            { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 2 },
+            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "3" }
+          ]
+        },
+        {
+          "when": { "responses": ["config three"] },
+          "checks": [
+            { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 3 },
+            { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "5" }
+          ]
+        },
+        {
+          "when": { "responses": ["set and checked"] },
+          "checks": [
+            {
+              "type": "any",
+              "groups": [
+                [
+                  { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 1 },
+                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "2" }
+                ],
+                [
+                  { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 2 },
+                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "3" }
+                ],
+                [
+                  { "type": "simvar", "var": "(A:FLAPS HANDLE INDEX, number)", "expected": 3 },
+                  { "type": "simvar", "var": "(L:TO_FLAPS_CONF)", "equals": "5" }
+                ]
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "challenge": "takeoff_speeds_and_thrust.ogg",

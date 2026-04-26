@@ -4,10 +4,14 @@
   "items": [
     {
       "challenge": "parking_brake.ogg",
-      "var": "(A:BRAKE PARKING INDICATOR, Bool)",
-      "expected": true,
       "incorrect": "are_you_sure.ogg",
       "response": ["set", "set and checked"],
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(A:BRAKE PARKING INDICATOR, Bool)", "expected": true }]
+        }
+      ],
       "label": "Parking Brake"
     },
     {
@@ -27,8 +31,12 @@
     },
     {
       "label": "Beacon On",
-      "var": "(L:INI_LIGHTS_BEACON, Bool)",
-      "expected": true,
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(L:INI_LIGHTS_BEACON, Bool)", "expected": true }]
+        }
+      ],
       "incorrect": "check_beacon.ogg"
     },
     {

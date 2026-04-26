@@ -5,25 +5,42 @@
   "items": [
     {
       "label": "Spoilers Armed",
-      "var": "(L:INI_SPOILERS_ARMED)",
-      "expected": 1,
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(L:INI_SPOILERS_ARMED)", "expected": 1 }]
+        }
+      ],
       "incorrect": "check_spoilers.ogg"
     },
     {
       "label": "Flaps",
-      "store_check": {
-        "store": "landing.flaps",
-        "validation_map": [
-          { "store_value": "3", "simvar_name": "(A:FLAPS HANDLE INDEX, number)", "expected_simvar": 3.0 },
-          { "store_value": "Full", "simvar_name": "(A:FLAPS HANDLE INDEX, number)", "expected_simvar": 4.0 }
-        ],
-        "incorrect": "check_flaps.ogg"
-      }
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [
+            { "type": "store", "store": "landing.flaps", "equals": "3" },
+            { "type": "simvar", "store": "(A:FLAPS HANDLE INDEX, number)", "expected": 3 }
+          ]
+        },
+        {
+          "when": { "always": true },
+          "checks": [
+            { "type": "store", "store": "landing.flaps", "equals": "Full" },
+            { "type": "simvar", "store": "(A:FLAPS HANDLE INDEX, number)", "expected": 4 }
+          ]
+        }
+      ],
+      "incorrect": "check_flaps.ogg"
     },
     {
       "label": "Gear Down",
-      "var": "(A:GEAR HANDLE POSITION,Position)",
-      "expected": 1.0,
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(A:GEAR HANDLE POSITION,Position)", "expected": 1 }]
+        }
+      ],
       "incorrect": "check_landing_gear.ogg"
     }
   ],

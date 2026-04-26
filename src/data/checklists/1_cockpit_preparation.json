@@ -14,8 +14,12 @@
     },
     {
       "label": "Seatbelts on",
-      "var": "(L:INI_SEATBELTS_SWITCH), number",
-      "expected": 2,
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(L:INI_SEATBELTS_SWITCH), number", "expected": 1 }]
+        }
+      ],
       "incorrect": "check_belts.ogg"
     },
     {
