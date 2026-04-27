@@ -1,6 +1,6 @@
 {
   "id": "after_flight_controls_check",
-  "name": "Taxi Procedure",
+  "name": "Taxi",
   "steps": [
     {
       "label": "Elevator Full Up",
@@ -18,7 +18,7 @@
       "label": "Elevator Full Down",
       "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
       "on": "16384 (>K:ELEVATOR_SET)",
-      "expect": -0.53
+      "expect": -1
     },
     {
       "label": "Elevator Neutral",
