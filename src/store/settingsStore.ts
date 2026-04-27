@@ -16,6 +16,7 @@ interface SettingsStore {
   soundVolume: number
   outputDevice?: string | null
   inputDevice?: string | null
+  holdOnIncorrect: boolean
   lightsControlMode: LightsControlMode
   confidenceThreshold: number
   postLandingShutdownEnabled: boolean
@@ -27,6 +28,7 @@ interface SettingsStore {
   setSoundVolume: (volume: number) => void
   setOutputDevice: (device: string | null) => void
   setInputDevice: (device: string | null) => void
+  setHoldOnIncorrect: (hold: boolean) => void
   setLightsControlMode: (mode: LightsControlMode) => void
   setConfidenceThreshold: (threshold: number) => void
   setPostLandingShutdownEnabled: (enabled: boolean) => void
@@ -48,10 +50,11 @@ export const useSettingsStore = create<SettingsStore>()(
       voiceMode: "continuous",
       pttShortcut: "CmdOrCtrl+Shift+Space",
       soundPack: "Jenny",
-      geSoundPack: "GE_Davis",
+      geSoundPack: "GE_Christopher",
       soundVolume: 100,
       outputDevice: null,
       inputDevice: null,
+      holdOnIncorrect: false,
       lightsControlMode: defaultLightsControlMode,
       confidenceThreshold: 85,
       postLandingShutdownEnabled: true,
@@ -103,6 +106,12 @@ export const useSettingsStore = create<SettingsStore>()(
         set({ inputDevice: device })
         if (!isUpdatingFromEvent) {
           emit("settings-changed", { inputDevice: device })
+        }
+      },
+      setHoldOnIncorrect: (hold) => {
+        set({ holdOnIncorrect: hold })
+        if (!isUpdatingFromEvent) {
+          emit("settings-changed", { holdOnIncorrect: hold })
         }
       },
       setLightsControlMode: (mode) => {
@@ -185,6 +194,9 @@ listen<
   }
   if (event.payload.soundVolume !== undefined) {
     useSettingsStore.setState({ soundVolume: event.payload.soundVolume })
+  }
+  if (event.payload.holdOnIncorrect !== undefined) {
+    useSettingsStore.setState({ holdOnIncorrect: event.payload.holdOnIncorrect })
   }
   if (event.payload.lightsControlMode !== undefined) {
     useSettingsStore.setState({ lightsControlMode: event.payload.lightsControlMode })

@@ -9,7 +9,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
-import { useChecklistStore } from "@/store/checklistStore"
 import { useSettingsStore } from "@/store/settingsStore"
 
 export function SettingsWindow() {
@@ -39,8 +38,8 @@ export function SettingsWindow() {
   const postLandingShutdownEnabled = useSettingsStore((s) => s.postLandingShutdownEnabled)
   const setPostLandingShutdownEnabled = useSettingsStore((s) => s.setPostLandingShutdownEnabled)
 
-  const holdOnIncorrect = useChecklistStore((s) => s.holdOnIncorrect)
-  const setHoldOnIncorrect = useChecklistStore((s) => s.setHoldOnIncorrect)
+  const holdOnIncorrect = useSettingsStore((s) => s.holdOnIncorrect)
+  const setHoldOnIncorrect = useSettingsStore((s) => s.setHoldOnIncorrect)
 
   const lightsControlMode = useSettingsStore((s) => s.lightsControlMode)
   const setLightsControlMode = useSettingsStore((s) => s.setLightsControlMode)
