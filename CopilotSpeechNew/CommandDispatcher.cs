@@ -361,7 +361,7 @@ namespace VoiceSidecar
             [38] = "runway_entry_procedure",
             [39] = "start_engine_2",
             [40] = "clear_for_takeoff",
-            [122] = "before_start",
+            [123] = "before_start",
             // Shutdown
             [41] = "shutdown_engine_1",
             [42] = "shutdown_engine_2",

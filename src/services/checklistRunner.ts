@@ -186,9 +186,7 @@ async function findPassingRule(
   // and items with no response-based validations)
   for (const rule of validations) {
     const w = rule.when
-    const conditionMet =
-      (w.store && getStoreValue(w.store.path) === w.store.equals) ||
-      w.always === true
+    const conditionMet = (w.store && getStoreValue(w.store.path) === w.store.equals) || w.always === true
 
     if (!conditionMet) continue
 

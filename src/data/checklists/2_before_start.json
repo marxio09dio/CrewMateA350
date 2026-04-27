@@ -38,7 +38,7 @@
       "validations": [
         {
           "when": { "always": true },
-          "checks": [{ "type": "simvar", "var": "(L:INI_LIGHTS_BEACON, Bool)", "expected": true }]
+          "checks": [{ "type": "simvar", "var": "(L:INI_LIGHTS_BEACON)", "expected": 1 }]
         }
       ],
       "incorrect": "check_beacon.ogg"

@@ -20,8 +20,7 @@
       "read": "(L:INI_FO_CHRONO_BUTTON)",
       "on": "1 (>L:INI_FO_CHRONO_BUTTON)",
       "expect": 1,
-      "skip_verify": true,
-      "skip_delay": true
+      "skip_verify": true
     },
     {
       "label": "Chrono",
