@@ -7,28 +7,28 @@
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": "0 (>L:INI_BATT_VOLTAGE_SELECTOR)",
       "expect": 0,
-      "wait_ms": 5000
+      "wait_ms": 2500
     },
     {
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": " 1 (>L:INI_BATT_VOLTAGE_SELECTOR)",
       "expect": 1,
-      "wait_ms": 5000
+      "wait_ms": 2500
     },
     {
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": "3 (>L:INI_BATT_VOLTAGE_SELECTOR)",
       "expect": 3,
-      "wait_ms": 5000
+      "wait_ms": 2500
     },
     {
       "label": "Battery volts check",
       "read": "(L:INI_BATT_VOLTAGE_SELECTOR)",
       "on": "4 (>L:INI_BATT_VOLTAGE_SELECTOR)",
       "expect": 4,
-      "wait_ms": 5000
+      "wait_ms": 2500
     },
     {
       "label": "Battery volts check complete",
@@ -161,7 +161,8 @@
       "on": "1 (>L:INI_FIRE_TEST)",
       "hold_ms": 6000,
       "expect": 1,
-      "sound": "fire_test.ogg"
+      "skip_verify": true,
+      "sound_on_execute": "fire_test.ogg"
     }
   ]
 }

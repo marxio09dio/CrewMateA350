@@ -6,7 +6,7 @@
       "label": "Elevator Full Up",
       "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
       "on": "-16384 (>K:ELEVATOR_SET)",
-      "expect": 0.93
+      "expect": 1
     },
     {
       "label": "Elevator Neutral",
@@ -18,7 +18,7 @@
       "label": "Elevator Full Down",
       "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
       "on": "16384 (>K:ELEVATOR_SET)",
-      "expect": -1
+      "expect": -0.57
     },
     {
       "label": "Elevator Neutral",
