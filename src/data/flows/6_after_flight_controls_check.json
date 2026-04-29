@@ -34,7 +34,7 @@
     },
     {
       "label": "Aileron Neutral",
-      "read": "(A:AILERON POSITION, Percent Over 100)",
+      "read": "(A:AILERON LEFT DEFLECTION PCT, Percent Over 100)",
       "on": "0 (>K:AILERON_SET)",
       "expect": 0
     },
@@ -46,7 +46,7 @@
     },
     {
       "label": "Aileron Neutral",
-      "read": "(A:AILERON POSITION, Percent Over 100)",
+      "read": "(A:AILERON RIGHT DEFLECTION PCT, Percent Over 100)",
       "on": "0 (>K:AILERON_SET)",
       "expect": 0
     },
