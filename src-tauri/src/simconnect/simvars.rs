@@ -444,7 +444,7 @@ fn execute_write(sim: &mut SimVars, expr: &str) -> Result<(), String> {
             .write_var(&datum, &unit, value)
             .map_err(|e| e.to_string()),
         Some(WriteOp::KeyEvent { name, value }) => sim
-            .trigger_key_event(&name, value as i32)
+            .trigger_key_event(&name, value)
             .map_err(|e| e.to_string()),
         None => Err(format!("unrecognised write expression: {expr}")),
     }
