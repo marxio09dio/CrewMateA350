@@ -4,10 +4,14 @@
   "items": [
     {
       "challenge": "parking_brake.ogg",
-      "var": "(A:BRAKE PARKING INDICATOR, Bool)",
-      "expected": true,
       "incorrect": "are_you_sure.ogg",
       "response": ["set", "set and checked"],
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(A:BRAKE PARKING INDICATOR, Bool)", "expected": true }]
+        }
+      ],
       "label": "Parking Brake"
     },
     {
@@ -22,13 +26,21 @@
       "response": ["armed", "set and checked"],
       "label": "Slides",
       "incorrect": "are_you_sure.ogg",
-      "var": "(L:INI_DOOR0_ARMED)",
-      "expected": 1.0
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(L:INI_DOOR0_ARMED)", "expected": 1 }]
+        }
+      ]
     },
     {
       "label": "Beacon On",
-      "var": "(L:INI_LIGHTS_BEACON, Bool)",
-      "expected": true,
+      "validations": [
+        {
+          "when": { "always": true },
+          "checks": [{ "type": "simvar", "var": "(L:INI_LIGHTS_BEACON)", "expected": 1 }]
+        }
+      ],
       "incorrect": "check_beacon.ogg"
     },
     {

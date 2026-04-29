@@ -1,5 +1,5 @@
-import { getCurrentWindow } from "@tauri-apps/api/window"
 import { invoke } from "@tauri-apps/api/core"
+import { getCurrentWindow } from "@tauri-apps/api/window"
 import { useEffect } from "react"
 
 import { ChecklistPanel } from "@/components/ChecklistPanel"
@@ -56,7 +56,7 @@ function App() {
   // but the sidecar always starts unmuted.
   useEffect(() => {
     invoke("set_muted", { muted: !voiceEnabled }).catch(() => {})
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const currentEvent = usePreflightTimerStore((s) => s.currentEvent)

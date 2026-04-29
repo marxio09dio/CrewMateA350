@@ -286,7 +286,7 @@ export function useCallouts(vrSpeed: number) {
     }
 
     if (!t.onGround && t.vs < -100 && !al.tenThousandDescent && crossedDown(p.alt, t.alt, 10000)) {
-      playSound(t.transitionLevel > 10000 ? "fl_100.ogg" : "ten_thousand.ogg")
+      playSound(t.transitionLevel < 10000 ? "fl_100.ogg" : "ten_thousand.ogg")
       al.tenThousandDescent = true
     }
 

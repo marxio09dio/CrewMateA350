@@ -6,45 +6,70 @@
       "label": "Anti Ice",
       "challenge": "anti_ice.ogg",
       "response": ["engines on", "engines on wings on", "off", "set and checked"],
-      "store_check": {
-        "store": "takeoff.antiIce",
-        "validation_map": [
-          {
-            "store_value": "off",
-            "expected_response": "off",
-            "simvar_checks": [
-              { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 0 },
-              { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 0 },
-              { "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
-            ]
-          },
-          {
-            "store_value": "oneng",
-            "expected_response": "engines on",
-            "simvar_checks": [
-              { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
-              { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
-              { "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
-            ]
-          },
-          {
-            "store_value": "onengwing",
-            "expected_response": "engines on wings on",
-            "simvar_checks": [
-              { "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
-              { "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
-              { "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 1 }
-            ]
-          }
-        ],
-        "incorrect": "are_you_sure.ogg"
-      }
+      "incorrect": "are_you_sure.ogg",
+      "validations": [
+        {
+          "when": { "responses": ["off"] },
+          "checks": [
+            { "type": "store", "store": "takeoff.antiIce", "equals": "off" },
+            { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 0 },
+            { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 0 },
+            { "type": "simvar", "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
+          ]
+        },
+        {
+          "when": { "responses": ["engines on"] },
+          "checks": [
+            { "type": "store", "store": "takeoff.antiIce", "equals": "oneng" },
+            { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
+            { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
+            { "type": "simvar", "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
+          ]
+        },
+        {
+          "when": { "responses": ["engines on wings on"] },
+          "checks": [
+            { "type": "store", "store": "takeoff.antiIce", "equals": "onengwing" },
+            { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
+            { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
+            { "type": "simvar", "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 1 }
+          ]
+        },
+        {
+          "when": { "responses": ["set and checked"] },
+          "checks": [
+            {
+              "type": "any",
+              "groups": [
+                [
+                  { "type": "store", "store": "takeoff.antiIce", "equals": "off" },
+                  { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 0 },
+                  { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 0 },
+                  { "type": "simvar", "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
+                ],
+                [
+                  { "type": "store", "store": "takeoff.antiIce", "equals": "oneng" },
+                  { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
+                  { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
+                  { "type": "simvar", "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 0 }
+                ],
+                [
+                  { "type": "store", "store": "takeoff.antiIce", "equals": "onengwing" },
+                  { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE1_STATE)", "expected": 1 },
+                  { "type": "simvar", "var": "(L:INI_ENG_ANTI_ICE2_STATE)", "expected": 1 },
+                  { "type": "simvar", "var": "(L:INI_WING_ANTI_ICE1_STATE)", "expected": 1 }
+                ]
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "challenge": "flight_controls.ogg",
       "response": ["checked", "set and checked"],
       "label": "Flight Controls",
-      "copilot_confirmation": "checked.ogg"
+      "copilot_response": "checked.ogg"
     },
     {
       "challenge": "ground_clearance.ogg",

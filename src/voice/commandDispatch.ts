@@ -194,7 +194,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
       // Store target for "now" callout detection
       passingAlt.setTarget(targetAlt)
     }
-  },
+  }, // might need a look, it breaks when you want to preset
 
   set_altimeter: async () => {
     playSound("check.ogg")
@@ -278,6 +278,7 @@ export const discreteCommandMap: Record<string, () => void | Promise<void>> = {
 
   // ── Flows ─────────────────────────────────────────────────────────────────
   clear_left: () => executeFlow("clear_left"),
+  before_start: () => executeFlow("before_start"),
   runway_entry_procedure: () => executeFlow("before_takeoff"),
   shutdown_engine_1: () => executeFlow("shutdown_eng1"),
   shutdown_engine_2: () => executeFlow("shutdown_eng2"),

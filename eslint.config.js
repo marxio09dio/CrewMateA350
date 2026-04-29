@@ -1,6 +1,7 @@
 import js from "@eslint/js"
-import tseslint from "typescript-eslint"
 import importPlugin from "eslint-plugin-import"
+import reactHooks from "eslint-plugin-react-hooks"
+import tseslint from "typescript-eslint"
 
 export default [
   {
@@ -21,9 +22,12 @@ export default [
 
   {
     plugins: {
-      import: importPlugin
+      import: importPlugin,
+      "react-hooks": reactHooks
     },
     rules: {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       "import/order": [
         "error",
         {

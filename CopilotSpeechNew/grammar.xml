@@ -497,6 +497,7 @@
       <item>start engine two<tag>out.pid="39";</tag></item>
       <item>clear to line up<tag>out.pid="38";</tag></item>
       <item>takeoff<tag>out.pid="40";</tag></item>
+      <item>before start procedure<tag>out.pid="123";</tag></item>
       <!-- Prepare / setup -->
       <item>lets prepare the aircraft<tag>out.pid="33";</tag></item>
       <item>lets prepare the flight<tag>out.pid="33";</tag></item>

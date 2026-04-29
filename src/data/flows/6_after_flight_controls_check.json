@@ -1,7 +1,55 @@
 {
   "id": "after_flight_controls_check",
-  "name": "After Flight Controls Check",
+  "name": "Taxi",
   "steps": [
+    {
+      "label": "Elevator Full Up",
+      "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
+      "on": "-16384 (>K:ELEVATOR_SET)",
+      "expect": 1
+    },
+    {
+      "label": "Elevator Neutral",
+      "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
+      "on": "0 (>K:ELEVATOR_SET)",
+      "expect": 0
+    },
+    {
+      "label": "Elevator Full Down",
+      "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
+      "on": "16384 (>K:ELEVATOR_SET)",
+      "expect": -0.57
+    },
+    {
+      "label": "Elevator Neutral",
+      "read": "(A:ELEVATOR DEFLECTION PCT, Percent Over 100)",
+      "on": "0 (>K:ELEVATOR_SET)",
+      "expect": 0
+    },
+    {
+      "label": "Aileron Full Left",
+      "read": "(A:AILERON LEFT DEFLECTION PCT, Percent Over 100)",
+      "on": "16383 (>K:AILERON_SET)",
+      "expect": -1
+    },
+    {
+      "label": "Aileron Neutral",
+      "read": "(A:AILERON LEFT DEFLECTION PCT, Percent Over 100)",
+      "on": "0 (>K:AILERON_SET)",
+      "expect": 0
+    },
+    {
+      "label": "Aileron Full Right",
+      "read": "(A:AILERON RIGHT DEFLECTION PCT, Percent Over 100)",
+      "on": "-16384 (>K:AILERON_SET)",
+      "expect": 1
+    },
+    {
+      "label": "Aileron Neutral",
+      "read": "(A:AILERON RIGHT DEFLECTION PCT, Percent Over 100)",
+      "on": "0 (>K:AILERON_SET)",
+      "expect": 0
+    },
     {
       "label": "Terrain Display",
       "read": "(L:INI_TERR_ON_FO)",
