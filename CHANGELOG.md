@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.2] - 2026-05-XX
+## [0.3.2] - 2026-05-02
 
 - Added First Officer flight controls check - @alexlenh
 - Added "before start procedure" voice command to start the before-start flow on demand - @alexlenh
